@@ -118,6 +118,17 @@ class Solicitud_Model extends CI_Model
 			$descripcionPrenda = $datos['descripcionPrenda'];
 			$estadoPrenda = 1;
 		}
+
+		// Datos de la hipoteca
+		if (isset($datos['nombreHipoteca'], $datos['precioHipoteca'], $datos['descripcionHipoteca']))
+		{
+			$existeHipoteca = true;
+		    $nombreHipoteca = $datos['nombreHipoteca'];
+			$precioHipoteca = $datos['precioHipoteca'];
+			$descripcionHipoteca = $datos['descripcionHipoteca'];
+			$estadoHipoteca= 1;
+		}
+
 	   // Guardando la solicitud
 	   $sql = "INSERT INTO tbl_solicitudes(codigoSolicitud, fechaRecibido, observaciones, estadoSolicitud, cobraMora, tipoCredito, idCliente, idLineaPlazo, idEstadoSolicitud)
 	   		   VALUES('$codigoSolicitud', '$fechaRecibido', '$observaciones', '$estado', '$mora', '$tipoC' ,'$idCliente', '$idLineaPlazo', '$idEstadoSolicitud')";
@@ -154,6 +165,17 @@ class Solicitud_Model extends CI_Model
 						$this->db->query($sql5);
 					}
 				}
+
+				if (isset($existeHipoteca))
+				{
+					for ($i=0; $i < sizeof($nombreHipoteca) ; $i++) 
+					{ 
+						$sql6 = "INSERT INTO tbl_hipotecas(nombre, valorado, descripcion, estado, idSolicitud)
+		    					VALUES('$nombreHipoteca[$i]', '$precioHipoteca[$i]', '$descripcionHipoteca[$i]', '$estadoHipoteca', '$idSoli')";
+						$this->db->query($sql6);
+					}
+				}
+
 				return true;
 			}
 			else{
@@ -221,6 +243,13 @@ class Solicitud_Model extends CI_Model
 	public function ObtenerGarantias($id)
 	{
 		$sql = "SELECT * FROM tbl_garantias WHERE idSolicitud='$id' ORDER BY idGarantia DESC";
+		$datos = $this->db->query($sql);
+		return $datos;
+	}
+
+	public function ObtenerHipoteca($id)
+	{
+		$sql = "SELECT * FROM tbl_hipotecas WHERE idSolicitud='$id' ORDER BY idHipoteca DESC";
 		$datos = $this->db->query($sql);
 		return $datos;
 	}
@@ -441,6 +470,61 @@ class Solicitud_Model extends CI_Model
 
 			$sql = "UPDATE tbl_garantias SET nombre='$nombrePrenda', valorado='$precioPrenda', descripcion='$descripcionPrenda'
 					WHERE idGarantia='$idPrenda'";
+			if ($this->db->query($sql))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public function AgregarHipoteca($datos)
+	{
+		if ($datos != null)
+		{
+		    $idSolicitud = $datos['id_solicitud'];
+		    $nombreHipoteca = $datos['nombre_hipoteca'];
+			$precioHipoteca = $datos['precio_hipoteca'];
+			$descripcionHipoteca = $datos['descripcion_hipoteca'];
+			$estadoHipoteca = 1;
+
+			$sql = "INSERT INTO tbl_hipotecas(nombre, valorado, descripcion, estado, idSolicitud)
+		    					VALUES('$nombreHipoteca', '$precioHipoteca', '$descripcionHipoteca', '$estadoHipoteca', '$idSolicitud')";
+			if ($this->db->query($sql))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+
+	public function ActualizarHipoteca($datos)
+	{
+		if ($datos != null)
+		{
+		    $idHipoteca = $datos['id_hipoteca'];
+		    $nombreHipoteca = $datos['nombre_hipoteca'];
+			$precioHipoteca = $datos['precio_hipoteca'];
+			$descripcionHipoteca = $datos['descripcion_hipoteca'];
+			// $generoFiador = $datos['genero_fiadorA'];
+
+			$sql = "UPDATE tbl_hipotecas SET nombre='$nombreHipoteca', valorado='$precioHipoteca', descripcion='$descripcionHipoteca'
+					WHERE idHipoteca='$idHipoteca'";
 			if ($this->db->query($sql))
 			{
 				return true;

@@ -132,6 +132,7 @@ class Solicitud extends CI_Controller {
 		$this->load->view('Base/nav');
 		$fiadores = $this->Solicitud_Model->ObtenerFiadores($id);
 		$garantias = $this->Solicitud_Model->ObtenerGarantias($id);
+		$hipotecas = $this->Solicitud_Model->ObtenerHipoteca($id);
 		$datos = $this->Solicitud_Model->DetalleSolicitud($id);
 		// $data = array('datos' => $datos );
 		// if (sizeof($fiadores->result() > 0))
@@ -149,7 +150,7 @@ class Solicitud extends CI_Controller {
 		// {
 		// 	$data = array('datos' => $datos, 'garantias' => $garantias);
 		// }
-		$data = array('datos' => $datos, 'fiadores' => $fiadores ,'garantias' => $garantias, 'idSoli' => $id);
+		$data = array('datos' => $datos, 'fiadores' => $fiadores ,'garantias' => $garantias, 'hipotecas' => $hipotecas, 'idSoli' => $id);
 		$this->load->view('Solicitud/detalle_solicitud', $data);
 		$this->load->view('Base/footer');
 	}
@@ -282,6 +283,38 @@ class Solicitud extends CI_Controller {
 		}
 		else{
 			$this->session->set_flashdata("errorr","Error la garantia prendaria no se pudo <b>actualizar</b>.");
+			redirect(base_url()."Solicitud/");
+
+		}
+	}
+
+	public function AgregarHipoteca()
+	{
+		$datos = $this->input->post();
+		$id = $datos["id_solicitud"];
+		$bool = $this->Solicitud_Model->AgregarHipoteca($datos);
+		if($bool){
+				$this->session->set_flashdata("guardar","La hipoteca a sido <b>agregada</b> con éxito.");
+				redirect(base_url()."Solicitud/DetalleSolicitud/".$id); 
+		}
+		else{
+			$this->session->set_flashdata("errorr","Error la hipoteca no se pudo <b>agregar</b>.");
+			redirect(base_url()."Solicitud/");
+
+		}
+	}
+
+	public function ActualizarHipoteca()
+	{
+		$datos = $this->input->post();
+		$id = $datos["id_solicitud"];
+		$bool = $this->Solicitud_Model->ActualizarHipoteca($datos);
+		if($bool){
+				$this->session->set_flashdata("actualizado","La hipoteca a sido <b>actualizada</b> con éxito.");
+				redirect(base_url()."Solicitud/DetalleSolicitud/".$id); 
+		}
+		else{
+			$this->session->set_flashdata("errorr","Error la hipoteca no se pudo <b>actualizar</b>.");
 			redirect(base_url()."Solicitud/");
 
 		}

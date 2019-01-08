@@ -36,11 +36,11 @@
                         $encabezado = '<h3 class="panel-title">Solicitud de prestamo ';
                       if ($tipoSolicitud == 1)
                       {
-                        $encabezado .= 'créditos Popular</h3>';
+                        $encabezado .= 'crédito popular</h3>';
                       }
                       if ($tipoSolicitud == 2)
                       {
-                        $encabezado .= 'otro crédito</h3>';
+                        $encabezado .= 'crédito hipotecario</h3>';
                       }
                         echo $encabezado;
                     ?>                
@@ -53,10 +53,13 @@
                 <div class="margn">
                 <?php 
                   if ($tipoSolicitud == 1)
-                      {
-                        $encabezado .= 'créditos Popular</h3>';
-                        echo '<input type="hidden" value="Crédito popular" name="tipoCredito">';
-                      }
+                    {
+                      echo '<input type="hidden" value="Crédito popular" name="tipoCredito">';
+                    }
+                  if ($tipoSolicitud == 2)
+                    {
+                      echo '<input type="hidden" value="Crédito hipotecario" name="tipoCredito">';
+                    }
                 ?>
                 <!-- Primera Linea del formulario-->
                     <div class="row">
@@ -159,30 +162,67 @@
                       <div class="btn-group-vertical">
                              <button title="Nuevo Fiador" type="button" class="btn btn-primary waves-effect waves-light m-d-5 btn-custom" id="fiador" data-toggle="modal" data-target="#agregarFiador"><i class="fa fa-user-plus fa-lg"></i> Fiador</button>
                              <button title="Nueva Prenda" type="button" class="btn btn-primary waves-effect waves-light m-d-5 btn-custom" id="prenda" data-toggle="modal" data-target="#agregarPrenda"><i class="fa fa-tags fa-lg"></i> Prenda</button>
-                             <?php
-                                if ($tipoSolicitud != 1) {
-                                  echo '<button title="Nueva Hipoteca" type="button" class="btn btn-primary waves-effect waves-light m-d-5 btn-custom" id="hipoteca" data-toggle="modal" data-target="#agregarFiador"><i class="fa fa-file-text fa-lg"></i> Hipoteca</button>';
-                                }
-                             ?>
+                             <button title="Nueva Hipoteca" type="button" class="btn btn-primary waves-effect waves-light m-d-5 btn-custom" id="hipoteca" data-toggle="modal" data-target="#agregarHipoteca"><i class="fa fa-file-text fa-lg"></i> Hipoteca</button>
                       </div>
                       </div>
                     </div>
                     <!-- Fin de la cuarta Linea del formulario-->
                     <div id="">
                   <!-- Agregar Fiador -->
-                  <div class="margn" style="display:none" id="mostrarF"><div class="row"><div class="col-md-12"><table class="table" id="fiadores"><thead><div class="alert alert-success"><strong style="color: #424949;">DATOS DEL FIADOR</strong></div></thead><tbody>
-                  </tbody></table></div></div></div><br>
+                  <div class="margn" style="display:none" id="mostrarF">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <table class="table" id="fiadores">
+                          <thead>
+                            <div class="alert alert-success">
+                              <strong style="color: #424949;">DATOS DEL FIADOR</strong>
+                            </div>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div><br>
                   <!--Fin Agregar Fiador -->
 
+                  <!-- Agregar Garantia -->
+                  <div class="margn" style="display:none" id="mostrarG">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <table class="table" id="garantia">
+                          <thead>
+                            <div class="alert alert-success">
+                              <strong style="color: #424949;">DATOS DE LA GARANTIA</strong>
+                            </div>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div><br>
 
-      
+                  <!-- Agregar Garantia -->
+                  <div class="margn" style="display:none" id="mostrarH">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <table class="table" id="hipotecas">
+                          <thead>
+                            <div class="alert alert-success">
+                              <strong style="color: #424949;">DATOS DE LA HIPOTECA</strong>
+                            </div>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div><br>
+                    
 
-                    <!-- Agregar Garantia -->
-                    <div class="margn" style="display:none" id="mostrarG"><div class="row"><div class="col-md-12"><table class="table" id="garantia"><thead><div class="alert alert-success"><strong style="color: #424949;">DATOS DE LA GARANTIA</strong></div></thead><tbody>
-                            <!-- <label for="">Id Cliente(Este ira oculto, utual es solo para muestra)</label> -->
-                    </tbody></table></div></div></div><br>
-                            <input type="hidden" value="1" class="form-control" id="id_cliente" name="id_cliente" placeholder="">
-                            <input type="hidden" value="1" class="form-control" id="numero_cuotas" name="numero_cuotas" placeholder="">
+                    <input type="hidden" value="1" class="form-control" id="id_cliente" name="id_cliente" placeholder="">
+                    <input type="hidden" value="1" class="form-control" id="numero_cuotas" name="numero_cuotas" placeholder="">
                     <!-- Fin Agregar Garantia -->
                     </div>
                     <button type="submit" onclick="validarCliente()" class="btn btn-success waves-effect waves-light m-d-5"><i class="fa fa-save fa-lg"></i> Guardar</button>
@@ -388,6 +428,51 @@
 <!-- Fin de ventana modal -->
 <!-- ============================================================== -->
 
+
+
+<!-- ============================================================== -->
+<!-- Ventana Modal para agregar hipoteca-->
+<!-- ============================================================== -->
+<div class="modal fade" id="agregarHipoteca" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" onclick="limpiar()">&times;</button>
+          <h4 class="modal-title">Nueva Hipoteca</h4>
+        </div>
+        <div class="modal-body">
+            <form action="" autocomplete="off" id="FormNuevaSolicitudModalPrenda">
+              <div class="margn">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                          <label for="">Nombre de la prenda</label>
+                          <input type="text" class="form-control" id="nombre_hipoteca" name="nombre_hipoteca" placeholder="Nombre de la prenda">
+                    </div>
+                    <div class="form-group col-md-6">
+                          <label for="">Precio valorado</label>
+                          <input type="text" class="form-control validaDigit" id="precio_hipoteca" name="precio_hipoteca" placeholder="Precio de la prenda">
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-12">
+                          <label for="">Descripción</label>
+                          <textarea class="form-control resize" rows="3" id="descripcion_hipoteca" name="descripcion_hipoteca"></textarea>
+                    </div>
+                </div>
+                <div align="center">
+                  <button type="button" class="btn btn-success waves-effect waves-light m-b-5" onclick="agregarHipoteca()"><i class="fa fa-check-square-o fa-lg"></i> Agregar</button>
+                  <button type="reset" class="btn btn-default waves-effect waves-light m-b-5" ><i class="fa fa-refresh fa-lg"></i> Limpiar</button>
+                  <button type="button" class="btn btn-default waves-effect waves-light m-b-5" data-dismiss="modal" onclick="limpiar()"><i class="fa fa-close fa-lg"></i> Cerrar</button>
+                </div>
+              </div>
+            </form>    
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- ============================================================== -->
+<!-- Fin de ventana modal -->
+<!-- ============================================================== -->
 
 <script type="text/javascript">
   $(document).on("ready", main);
@@ -630,6 +715,46 @@ if (nombre != "" && precio != "" && descripcion != "")
     });
   }
 }
+
+
+function agregarHipoteca()
+{
+  nombre = $("#nombre_hipoteca").val();
+  precio = $("#precio_hipoteca").val();
+  descripcion = $("#descripcion_hipoteca").val();
+
+if (nombre != "" && precio != "" && descripcion != "")
+  {
+    $(document).ready(function(){
+    $.Notification.autoHideNotify('success', 'top center', 'Aviso!', 'Información agregada.');
+    });
+
+    $("#mostrarH").fadeIn();
+    fila = '';
+    fila += '<tr>';
+    fila +=  '<td><strong>Nombre:</strong> '+nombre+'</p></td>';
+    fila +=  '<td><strong>Precio:</strong> '+"$"+" "+precio+'</p></td>';
+    fila +=  '<td><strong>Descripción:</strong> '+descripcion+'</p></td>';
+    fila += '</tr>';
+
+    fila += '<tr>';
+    fila +=  '<td><input type="hidden" name="nombreHipoteca[]" class="form-control" value="'+nombre+'"></td>';
+    fila +=  '<td><input type="hidden" name="precioHipoteca[]" class="form-control" value="'+precio+'"></td>';
+    fila +=  '<td><input type="hidden" name="descripcionHipoteca[]" class="form-control" value="'+descripcion+'"></td>';
+    fila += '</tr>';
+
+    $("#hipotecas").append(fila);
+
+    $('#nombre_hipoteca').val("");
+    $('#precio_hipoteca').val("");
+    $('#descripcion_hipoteca').val("");
+  }else{
+    $(document).ready(function(){
+    $.Notification.autoHideNotify('error', 'top center', 'Aviso!', 'Todos los campos son requeridos.');
+    });
+  }
+}
+
 
 function limpiar(){
     $('#nombre_fiador').val("");

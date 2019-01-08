@@ -100,6 +100,10 @@
                                             if (sizeof($garantias->result()) == 0) {
                                               echo "<a onclick='agregarPrenda($idSolicitud)' class='btn btn-primary waves-effect waves-light m-b-5' title='Agregar nueva garantia' data-toggle='modal' data-target='#agregarPrenda'><i class='fa fa-plus-circle fa-lg'></i> Agregar Garantia</a>";
                                             }
+                                            if (sizeof($hipotecas->result()) == 0) {
+                                              echo "<a onclick='agregarHipoteca($idSolicitud)' class='btn btn-primary waves-effect waves-light m-b-5' title='Agregar nueva garantia' data-toggle='modal' data-target='#agregarHipoteca'><i class='fa fa-plus-circle fa-lg'></i>Agregar hipoteca</a>";
+                                            }
+
                                           }
                                         ?>
                                         </div>
@@ -282,8 +286,7 @@
                                                       <strong style='color: #424949;'>DATOS DE LA GARANTIA</strong>";
                                                   if ($solicitud->idEstadoSolicitud != 3 && $solicitud->idEstadoSolicitud != 4)
                                                     { 
-                                                      echo "
-                                                            <a onclick='agregarPrenda($idSolicitud)' class='btn btn-primary waves-effect waves-light m-b-5 ocultarImprimir pull-right' title='Agregar nueva garantia' data-toggle='modal' data-target='#agregarPrenda' style='margin-top: -7px;'><i class='fa fa-plus-circle fa-lg'></i></a>";
+                                                      echo "<a onclick='agregarPrenda($idSolicitud)' class='btn btn-primary waves-effect waves-light m-b-5 ocultarImprimir pull-right' title='Agregar nueva garantia' data-toggle='modal' data-target='#agregarPrenda' style='margin-top: -7px;'><i class='fa fa-plus-circle fa-lg'></i></a>";
                                                     }
                                                     else
                                                     {
@@ -321,6 +324,81 @@
                                                 if ($solicitud->idEstadoSolicitud != 3 && $solicitud->idEstadoSolicitud != 4)
                                                   { 
                                                     echo "<td><a onclick='actualizarPrenda($idSolicitud, $idGarantia, $nombre, $valorado, $descripcion)' title='Editar Garantia' data-toggle='modal' data-target='#actualizarPrenda' class='waves-effect waves-light editar ocultarImprimir'><i class='fa fa-pencil-square'></i></a></td>";
+                                                  }
+                                                else
+                                                {
+                                                  echo "<td class='td td1'></td>";
+                                                }
+                                                  ?>
+                                              </tr>
+                                                <?php 
+                                                  if (sizeof($garantias->result()) == 1)
+                                                    {
+                                                      echo "<tr id='' class='tr tr1'><td colspan='4' class='td td1'></td></tr>";
+                                                    }
+                                                    else
+                                                    {
+                                                      echo "<tr class='tr tr1'><td colspan='4' id='LastF' class='td td1'></td></tr>"; //Esta es la fila rosada que aparece en el detalle de la solicitud
+                                                    }
+                                                  }
+                                                ?>
+                                          </tbody>
+                                          </table>
+                                          </div>
+                                        <br>
+                                        <?php } ?>
+
+                                        <?php
+                                              if (sizeof($hipotecas->result())>0)
+                                              {
+                                                echo "<div class='margn'>
+                                                <table class='table'>
+                                                <tbody class='tbody tbody1'>";
+                                                if (sizeof($hipotecas->result()) == 1)
+                                                {
+                                                  //Encabezado de DATOS DE LA GARANTIA
+                                                  echo "<div class=' alert alert-success'>
+                                                      <strong style='color: #424949;'>DATOS DE LA HIPOTECA</strong>";
+                                                  if ($solicitud->idEstadoSolicitud != 3 && $solicitud->idEstadoSolicitud != 4)
+                                                    { 
+                                                      echo "<a onclick='agregarHipoteca($idSolicitud)' class='btn btn-primary waves-effect waves-light m-b-5 ocultarImprimir pull-right' title='Agregar nueva garantia' data-toggle='modal' data-target='#agregarHipoteca' style='margin-top: -7px;'><i class='fa fa-plus-circle fa-lg'></i></a>";
+                                                    }
+                                                    else
+                                                    {
+                                                       echo "<i class='fa fa-check fa-lg pull-right'></i>";
+                                                    }
+                                                    echo "</div>";
+                                                }
+                                                else
+                                                {
+                                                  // Encabezado de DATOS DE LAS GARANTIAS
+                                                  echo "<div class='alert alert-success'>
+                                                      <strong style='color: #424949;'>DATOS DE LAS HIPOTECAS</strong>";
+                                                  if ($solicitud->idEstadoSolicitud != 3 && $solicitud->idEstadoSolicitud != 4)
+                                                    { 
+                                                      echo "<a onclick='agregarHipoteca($idSolicitud)' class='btn btn-primary waves-effect waves-light m-b-5 ocultarImprimir pull-right' title='Agregar nueva hipoteca' data-toggle='modal' data-target='#agregarHipoteca' style='margin-top: -7px;'><i class='fa fa-plus-circle fa-lg'></i></a>";
+                                                    }
+                                                    else
+                                                    {
+                                                      echo "<i class='fa fa-check fa-lg pull-right'></i>";
+                                                    }
+                                                    echo "</div>";
+                                                }
+                                                foreach ($hipotecas->result() as $hipoteca)
+                                                {
+                                                  $idHipoteca = '"'.$hipoteca->idHipoteca.'"';
+                                                  $nombreHipoteca = '"'.$hipoteca->nombre.'"';
+                                                  $valoradoHipoteca = '"'.$hipoteca->valorado.'"';
+                                                  $descripcionHipoteca = '"'.$hipoteca->descripcion.'"';
+                                                ?>
+                                              <tr>  
+                                                <td colspan="" class='td td1'><p><strong>Nombre: </strong><?= $hipoteca->nombre ?></p></td>
+                                                <td colspan="" class='td td1'><p><strong>Precio valorado: </strong>$&nbsp;<?= $hipoteca->valorado ?></p></td>
+                                                <td colspan="" class='td td1'><p><strong>Descripción: </strong><?= $hipoteca->descripcion ?></p></td>
+                                                <?php
+                                                if ($solicitud->idEstadoSolicitud != 3 && $solicitud->idEstadoSolicitud != 4)
+                                                  { 
+                                                    echo "<td><a onclick='actualizarHipoteca($idSolicitud, $idHipoteca, $nombreHipoteca, $valoradoHipoteca, $descripcionHipoteca)' title='Editar Garantia' data-toggle='modal' data-target='#actualizarHipoteca' class='waves-effect waves-light editar ocultarImprimir'><i class='fa fa-pencil-square'></i></a></td>";
                                                   }
                                                 else
                                                 {
@@ -700,6 +778,101 @@
 <!-- ============================================================== -->
 <!-- Fin de ventana modal -->
 <!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- Ventana para agregar garantia-->
+<!-- ============================================================== -->
+<div class="modal fade" id="agregarHipoteca" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" onclick="limpiar()">&times;</button>
+          <h4 class="modal-title">Nueva garantia</h4>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="<?= base_url() ?>Solicitud/AgregarHipoteca" id="FormNuevaSolicitudModalPrenda" autocomplete="off">
+              <input type="hidden" class="form-control" id="id_solicitudH" name="id_solicitud">
+              <div class="margn">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                          <label for="nombre_hipoteca">Nombre de la hipoteca</label>
+                          <input type="text" class="form-control" id="nombre_hipoteca" name="nombre_hipoteca" placeholder="Nombre de la prenda">
+                    </div>
+                    <div class="form-group col-md-6">
+                          <label for="precio_hipoteca">Precio valorado de la hipoteca</label>
+                          <input type="text" class="form-control validaDigit" id="precio_hipoteca" name="precio_hipoteca" placeholder="Precio de la prenda">
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-12">
+                          <label for="descripcion_hipoteca">Descripción</label>
+                          <textarea class="form-control resize" rows="3" id="descripcion_hipoteca" name="descripcion_hipoteca"></textarea>
+                  </div>
+                </div>
+                <div align="center">
+                  <button class="btn btn-success waves-effect waves-light m-b-5"><i class="fa fa-check-square-o fa-lg"></i> Agregar</button>
+                  <button type="reset" class="btn btn-default waves-effect waves-light m-b-5"><i class="fa fa-refresh fa-lg"></i> Limpiar</button>
+                  <button type="button" class="btn btn-default waves-effect waves-light m-b-5" data-dismiss="modal" onclick="limpiar()"><i class="fa fa-close fa-lg"></i> Cerrar</button>
+                </div>
+              </div>
+            </form>    
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- ============================================================== -->
+<!-- Fin de ventana modal -->
+<!-- ============================================================== -->
+
+
+<!-- ============================================================== -->
+<!-- Ventana para actualizar Prenda-->
+<!-- ============================================================== -->
+<div class="modal fade" id="actualizarHipoteca" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Actualizar garantia</h4>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="<?= base_url() ?>Solicitud/ActualizarHipoteca" autocomplete="off" id="FormEditarSolicitudModalPrendaA">
+              <input type="hidden" class="form-control" id="id_solicitudAH" name="id_solicitud">
+              <input type="hidden" class="form-control" id="id_hipotecaA" name="id_hipoteca">
+              <div class="margn">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                          <label for="nombre_hipotecaA">Nombre de la hipoteca</label>
+                          <input type="text" class="form-control" id="nombre_hipotecaA" name="nombre_hipoteca" placeholder="Nombre de la prenda">
+                    </div>
+                    <div class="form-group col-md-6">
+                          <label for="precio_hipotecaA">Precio valorado de la hipoteca</label>
+                          <input type="text" class="form-control validaDigit" id="precio_hipotecaA" name="precio_hipoteca" placeholder="Precio de la prenda">
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-12">
+                          <label for="descripcion_hipotecaA">Descripción</label>
+                          <textarea class="form-control resize" rows="3" id="descripcion_hipotecaA" name="descripcion_hipoteca"></textarea>
+                  </div>
+                </div>
+                <div align="center">
+                  <button class="btn btn-warning waves-effect waves-light m-b-5"><i class="fa fa-save fa-lg"></i> Actualizar</button>
+                  <button type="button" class="btn btn-default waves-effect waves-light m-b-5" data-dismiss="modal"><i class="fa fa-close fa-lg"></i> Cerrar</button>
+                </div>
+              </div>
+            </form>    
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- ============================================================== -->
+<!-- Fin de ventana modal -->
+<!-- ============================================================== -->
+
+
+
+
 <script>
   function Update(id){
       document.getElementById('IdP').value=id;
@@ -747,6 +920,32 @@
       $("#precio_valoradoA").attr('value', valorado);
       $("#descripcion_prendaA").html(descripcion);
     }
+
+
+    function actualizarPrenda(idSolicitud, idGarantia, nombre, valorado, descripcion)
+    {
+      $("#id_solicitudAP").attr('value', idSolicitud);
+      $("#id_prendaA").attr('value', idGarantia);
+      $("#nombre_prendaA").attr('value', nombre);
+      $("#precio_valoradoA").attr('value', valorado);
+      $("#descripcion_prendaA").html(descripcion);
+    }
+
+    function agregarHipoteca(idSolicitud)
+    {
+      $("#id_solicitudH").attr('value', idSolicitud);
+    }
+
+    function actualizarHipoteca(idSolicitud, idHipoteca, nombre, valorado, descripcion)
+    {
+      $("#id_solicitudAH").attr('value', idSolicitud);
+      $("#id_hipotecaA").attr('value', idHipoteca);
+      $("#nombre_hipotecaA").attr('value', nombre);
+      $("#precio_hipotecaA").attr('value', valorado);
+      $("#descripcion_hipotecaA").html(descripcion);
+    }
+
+
     function imprimirTabla()
     {
        $(".ocultarImprimir").hide();
