@@ -360,7 +360,6 @@ $(document).on('ready', function(){
                   arregloNombre = cliente.split(" - ");
                   alert('Pago realizado con exito, se imprimira el comprobante de pago');
                   //swal("Pago registrado con exito!", "A continuacion se imprimio el comprobante de pago");
-
                   var HTML="<img src='<?= base_url()?>plantilla/images/fast_cash.png'  width='100'><div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Comprobante de pago</p></div>";
                     HTML+= '<table  class="table table-bordered">';
                       HTML+= '<tr class="tr tr1">';
@@ -503,12 +502,22 @@ $(document).on('ready', function(){
     //var fechaFin = new Date('2018-11-13').getTime();
     //alert(fechaFin);
     if($('#fechaPago').val()!=""){
-      var fechaIncicio = new Date($('#fechaA').val()).getTime();
-      var fechaFin = new Date($('#fechaPago').val()).getTime();
-      var dias = fechaFin - fechaIncicio;
-      var diasp=Math.round(dias/(1000*60*60*24));
-      $('#diasPagados').val(diasp);
-      $('#spanDiasPagados').text(diasp);
+      if(Date.parse($('#fechaPago').val())<Date.parse($('#fechaA').val())){
+        //alert('fecha selecciona es menor');
+        swal("Error", "Selecciono una fecha menor a la del ultimo pago de este credito por favor corrija la fecha", "error")
+
+      }
+      else{
+
+        var fechaIncicio = new Date($('#fechaA').val()).getTime();
+        var fechaFin = new Date($('#fechaPago').val()).getTime();
+        var dias = fechaFin - fechaIncicio;
+        var diasp=Math.round(dias/(1000*60*60*24));
+        $('#diasPagados').val(diasp);
+        $('#spanDiasPagados').text(diasp);
+
+      }
+
     }
     else{
       //alert('entra al else');
