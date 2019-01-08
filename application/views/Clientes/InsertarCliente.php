@@ -409,6 +409,7 @@ $(document).ready( function() {
             $.ajax({
                 url:"<?= base_url()?>Clientes/InsertarCliente",
                 type:"POST",
+                
                 data:$('#basic-form').serialize(),
                 success:function(respuesta){
                     //alert('hola');

@@ -69,7 +69,7 @@
             </div>
             <div class="panel-body">
               <!-- Formulario del empleado  -->
-              <form method="post" action="<?= base_url()?>Pagos/InsertarPago" autocomplete="off" id="FrmPagos">
+              <form method="post"  autocomplete="off" id="FrmPagos">
                 <div class="margn">
                   <!--CAMPOS OCULTOS-->
                   <?php 
@@ -273,7 +273,7 @@
                       </div>
                       <div align="right" style="margin-top: 10px;">
                         <span class="margBotones">
-                          <button type="submit" class="btn btn-info waves-effect waves-light m-d-5"><i class="fa fa-check fa-lg"></i> Pagar</button>
+                          <a id="btnPagar" class="btn btn-info waves-effect waves-light m-d-5"><i class="fa fa-check fa-lg"></i> Pagar</a>
                           <a href="<?= base_url() ?>Creditos" class="btn btn-danger waves-effect waves-light m-d-5"><i class="fa fa-close fa-lg"></i> Cancelar</a>
                         </span>
                       </div>
@@ -307,12 +307,24 @@ $(document).on('ready', function(){
       }
   );
   //Fin ver mas informacion
-
+/*
   $('#FrmPagos').parsley().on('field:validated', function() {
     var ok = $('.parsley-error').length === 0;
     $('.bs-callout-info').toggleClass('hidden', !ok);
     $('.bs-callout-warning').toggleClass('hidden', ok);
-  });
+  });*/
+  $('#btnPagar').on('click', function(){
+     $.ajax({
+                url:"<?= base_url()?>Pagos/InsertarPago",
+                type:"POST",
+                
+                data:$('#basic-form').serialize(),
+                success:function(respuesta){
+                  alert('Pago insertado');
+
+                }
+              });
+  })
     //FUNCION PARA CALCULAR LOS DIAS------------------------------
   $('#fechaPago').on('change', function(){
     if($('#fechaPago').val()!=""){

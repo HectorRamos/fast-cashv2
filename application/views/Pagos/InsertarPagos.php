@@ -69,7 +69,7 @@
             </div>
             <div class="panel-body">
               <!-- Formulario del empleado  -->
-              <form method="post" action="<?= base_url()?>Pagos/InsertarPago" autocomplete="off" id="FrmPagos">
+              <form method="post"  autocomplete="off" id="FrmPagos">
                 <div style="padding-left: 38px; padding-right: 38px; border: 1px solid #D5DBDB; border-radius: 5px;">
                   <div class="row">
                   <!--CAMPOS OCULTOS-->
@@ -305,7 +305,7 @@
                       </div>
                       <div align="right" style="margin-top: 10px;">
                         <span class="margBotones">
-                          <button type="submit" class="btn btn-info waves-effect waves-light m-d-5"><i class="fa fa-check fa-lg"></i> Pagar</button>
+                           <a id="btnPagar" class="btn btn-info waves-effect waves-light m-d-5"><i class="fa fa-check fa-lg"></i> Pagar</a>
                           <a href="<?= base_url() ?>Creditos" class="btn btn-danger waves-effect waves-light m-d-5"><i class="fa fa-close fa-lg"></i> Cancelar</a>
                         </span>
                       </div>
@@ -348,6 +348,68 @@ $(document).on('ready', function(){
     $('.bs-callout-info').toggleClass('hidden', !ok);
     $('.bs-callout-warning').toggleClass('hidden', ok);
   });
+
+  $('#btnPagar').on('click', function(){
+     $.ajax({
+                url:"<?= base_url()?>Pagos/InsertarPago",
+                type:"POST",
+                
+                data:$('#FrmPagos').serialize(),
+                success:function(respuesta){
+                  var cliente = $('select[name="idCredito"] option:selected').text();
+                  arregloNombre = cliente.split(" - ");
+                  alert('Pago realizado con exito, se imprimira el comprobante de pago');
+                  //swal("Pago registrado con exito!", "A continuacion se imprimio el comprobante de pago");
+
+                  var HTML="<img src='<?= base_url()?>plantilla/images/fast_cash.png'  width='100'><div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Comprobante de pago</p></div>";
+                    HTML+= '<table  class="table table-bordered">';
+                      HTML+= '<tr class="tr tr1">';
+                        HTML+= '<td><strong>Cliente</strong> </td>';
+                       HTML+= ' <td>'+arregloNombre[1]+'</td>';
+                      HTML+= '</tr>';
+                      HTML+= '<tr class="tr tr1">';
+                        HTML+= '<td><strong>Por</strong> </td>';
+                        HTML+= '<td> $'+$('#totalPago').val()+'</td>';
+                      HTML+= '</tr>';
+                      HTML+= '<tr class="tr tr1">';
+                        HTML+= '<td><strong>Abono capital</strong> </td>';
+                        HTML+= '<td> $'+$('#abonoCapital').val();+'</td>';
+                      HTML+= '</tr>';
+                      HTML+= '<tr class="tr tr1">';
+                        HTML+= '<td><strong>Intereses</strong> </td>';
+                       HTML+= '<td> $'+$('#interes').val() +'</td>';
+                      HTML+= '</tr>';
+                      HTML+= '<tr class="tr tr1">';
+                       HTML+= '<td><strong>Iva</strong> </td>';
+                        HTML+= '<td> $'+$('#iva').val() +'</td>';
+                      HTML+= '</tr>';
+                      HTML+= '<tr class="tr tr1">';
+                       HTML+= '<td><strong>Capital pendiente</strong> </td>';
+                        HTML+= '<td> $'+$('#capitalP').val()+'</td>';
+                      HTML+= '</tr>';
+                      HTML+= '<tr class="tr tr1">';
+                       HTML+= '<td colspan="2" style="font-size:12px;" align="center"><strong>CON SU ESFUERZO Y NUESTRO APOYO PROSPERARÁ SU NEGOCIO</strong> </td>';
+                      HTML+= '</tr>';
+                    HTML+= '</table>';
+                    var pantalla=window.open(' ','popimpr');
+                    pantalla.document.write('<link href="<?= base_url() ?>plantilla/css/bootstrap.min.css" rel="stylesheet" />');
+                  pantalla.document.write(HTML+"<p>Contabilidad</p><br>"+HTML+"<p>Cliente</p>");
+                  pantalla.document.close();
+                  self.location ="<?= base_url()?>Pagos";
+                  //pantalla.print();
+                  //pantalla.close();
+
+        //pantalla.document.write(elemento.innerHTML);
+     // pantalla.document.write('</body></html>');
+      //pantalla.document.close();
+      pantalla.focus();
+      pantalla.onload = function() {
+        pantalla.print();
+        pantalla.close();
+      };
+                }
+              });
+  })
   //Fucion Change del select donde estan los datos de los clientes aqui vamos a cargar los datos que necesitemos------------
   $('#idCredito').on('change', function(){
 
