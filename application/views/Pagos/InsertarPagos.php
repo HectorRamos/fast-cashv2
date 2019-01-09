@@ -154,7 +154,7 @@
                             <div class="row">
                                 <div class="col-md-6" style="font-size: 1.4rem;">
                                       <input type="hidden" id="fechaA" name="fechaA">
-                                      <label style="background: #EAEDED; color: #000;  padding: 5px; border-radius: 5px;">Fecha de apertura del crédito: <span id="spanFechaA" style="font-weight: normal;"></span></label>
+                                      <label style="background: #EAEDED; color: #000;  padding: 5px; border-radius: 5px;">Última fecha del crédito: <span id="spanFechaA" style="font-weight: normal;"></span></label>
                                 </div>
                                 <div class="col-md-6" style="font-size: 1.4rem;">
                                         <input type="hidden" id="tasa" name="tasa">
@@ -343,23 +343,36 @@ $(document).on('ready', function(){
   );
   //Fin ver mas informacion
 
+
+  $('#btnPagar').on('click', function(){
+  fechaPago = $("#fechaPago").val();
+  totalPago = $("#totalPago").val();
+
+  if (fechaPago != "" && totalPago != "")
+  {
   $('#FrmPagos').parsley().on('field:validated', function() {
     var ok = $('.parsley-error').length === 0;
     $('.bs-callout-info').toggleClass('hidden', !ok);
     $('.bs-callout-warning').toggleClass('hidden', ok);
   });
-
-  $('#btnPagar').on('click', function(){
      $.ajax({
                 url:"<?= base_url()?>Pagos/InsertarPago",
                 type:"POST",
                 
                 data:$('#FrmPagos').serialize(),
                 success:function(respuesta){
+                  swal({   
+                      title: "Pago realizado con exito!",   
+                      text: "A continuacion se imprimira el comprobante de pago",   
+                      timer: 6099,   
+                      showConfirmButton: false 
+                  });
+                  // alert('Pago realizado con exito, se imprimira el comprobante de pago');
+                  setTimeout(function(){
+
                   var cliente = $('select[name="idCredito"] option:selected').text();
                   arregloNombre = cliente.split(" - ");
-                  alert('Pago realizado con exito, se imprimira el comprobante de pago');
-                  //swal("Pago registrado con exito!", "A continuacion se imprimio el comprobante de pago");
+
                   var HTML="<img src='<?= base_url()?>plantilla/images/fast_cash.png'  width='100'><div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Comprobante de pago</p></div>";
                     HTML+= '<table  class="table table-bordered">';
                       HTML+= '<tr class="tr tr1">';
@@ -406,8 +419,14 @@ $(document).on('ready', function(){
         pantalla.print();
         pantalla.close();
       };
+      }, 6000);
                 }
               });
+   }else{
+    $(document).ready(function(){
+    $.Notification.autoHideNotify('error', 'top center', 'Aviso!', 'Todos los campos son requeridos.');
+    });
+  } 
   })
   //Fucion Change del select donde estan los datos de los clientes aqui vamos a cargar los datos que necesitemos------------
   $('#idCredito').on('change', function(){
@@ -502,22 +521,12 @@ $(document).on('ready', function(){
     //var fechaFin = new Date('2018-11-13').getTime();
     //alert(fechaFin);
     if($('#fechaPago').val()!=""){
-      if(Date.parse($('#fechaPago').val())<Date.parse($('#fechaA').val())){
-        //alert('fecha selecciona es menor');
-        swal("Error", "Selecciono una fecha menor a la del ultimo pago de este credito por favor corrija la fecha", "error")
-
-      }
-      else{
-
-        var fechaIncicio = new Date($('#fechaA').val()).getTime();
-        var fechaFin = new Date($('#fechaPago').val()).getTime();
-        var dias = fechaFin - fechaIncicio;
-        var diasp=Math.round(dias/(1000*60*60*24));
-        $('#diasPagados').val(diasp);
-        $('#spanDiasPagados').text(diasp);
-
-      }
-
+      var fechaIncicio = new Date($('#fechaA').val()).getTime();
+      var fechaFin = new Date($('#fechaPago').val()).getTime();
+      var dias = fechaFin - fechaIncicio;
+      var diasp=Math.round(dias/(1000*60*60*24));
+      $('#diasPagados').val(diasp);
+      $('#spanDiasPagados').text(diasp);
     }
     else{
       //alert('entra al else');
