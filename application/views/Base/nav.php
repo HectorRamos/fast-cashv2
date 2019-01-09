@@ -104,7 +104,7 @@
                                     <a href="<?= base_url() ?>Solicitud/CrearSolicitud/1" title="Nuevo" data-toggle="tooltip" class="btn btn-success btn-block btn-lg waves-effect waves-light m-d-5" style="background-color: #117864; border-color: #117864;"><font style="color: #fff;"><i class="fa fa-file-text-o fa-lg"></i> Crédito Popular</font></a>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <a href="<?= base_url() ?>Solicitud/CrearSolicitud/2" title="Nuevo" data-toggle="tooltip" class="btn btn-success btn-block btn-lg waves-effect waves-light m-d-5" style="background-color: #006064; border-color: #006064;"><font style="color: #fff;"><i class="fa fa-paste fa-lg"></i> Crédito Hipotecario</font></a>
+                                    <a href="<?= base_url() ?>Solicitud/CrearSolicitud/2" title="Nuevo" data-toggle="tooltip" class="btn btn-success btn-block btn-lg waves-effect waves-light m-d-5" style="background-color: #006064; border-color: #006064;"><font style="color: #fff;"><i class="fa fa-paste fa-lg"></i> Crédito Personal</font></a>
                                 </div>
                             </div>
                             <div class="row">
@@ -142,7 +142,7 @@
                                     <a href="<?= base_url() ?>Pagos/" title="Hacer Pago" data-toggle="tooltip" class="btn btn-success btn-block btn-lg waves-effect waves-light m-d-5" style="background-color: #D68910; border-color: #D68910;"><font style="color: #fff;"><i class="fa fa-id-card-o fa-lg"></i> Pago crédito popular</font></a>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <a href="<?= base_url() ?>Pagos/2" title="Hacer Pago" data-toggle="tooltip" class="btn btn-success btn-block btn-lg waves-effect waves-light m-d-5" style="background-color: #0E6251 border-color: #0E6251"><font style="color: #fff;"><i class="fa fa-address-card-o fa-lg"></i> Pago crédito hipotecario</font></a>
+                                    <a href="<?= base_url() ?>Pagos/CreditosPersonales" title="Hacer Pago" data-toggle="tooltip" class="btn btn-success btn-block btn-lg waves-effect waves-light m-d-5" style="background-color: #0E6251 border-color: #0E6251"><font style="color: #fff;"><i class="fa fa-address-card-o fa-lg"></i> Pago crédito personal</font></a>
                                 </div>
                             </div>
                             <div class="row">

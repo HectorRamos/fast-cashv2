@@ -14,7 +14,7 @@ class Pagos extends CI_Controller
 		$this->load->model("CajaChica_Model");		
 	}
 	public function index(){
-		$data = $this->Creditos_Model->ObtenerCreditos();
+		$data = $this->Creditos_Model-> ObtenerCreditosPopulares();
 		$data2 = $this->CajaChica_Model->ObtenerCajaActiva();
 		$datos = array('creditos'=>$data, 'caja'=>$data2);
 		$this->load->view('Base/header');
@@ -63,9 +63,16 @@ class Pagos extends CI_Controller
 		$this->load->view('Base/footer');
 	}
 	public function CreditosPersonales(){
-		$this->load->model('Creditos_Model');
-		$datos = $this->Creditos_Model->ObtenerCreditosPopulares();
-		echo json_encode($datos->result());
+		//$this->load->model('Creditos_Model');
+		$data = $this->Creditos_Model->ObtenerCreditosPersonales();
+		$data2 = $this->CajaChica_Model->ObtenerCajaActiva();
+		$datos = array('creditos'=>$data, 'caja'=>$data2);
+		//echo json_encode($datos->result());
+		$this->load->view('Base/header');
+		$this->load->view('Base/nav');
+		$this->load->view('Pagos/PagosCreditosPersonales', $datos);
+		$this->load->view('Base/footer');
+
 	}
 	
 }
