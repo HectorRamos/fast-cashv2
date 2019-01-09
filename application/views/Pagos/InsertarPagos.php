@@ -62,7 +62,7 @@
               <div class="table-title">
                 <div class="row">
                   <div class="col-md-5">
-                    <h3 class="panel-title">Pago de crédito</h3>                 
+                    <h3 class="panel-title">Pago de créditos populares</h3>                 
                   </div>
                 </div>
               </div>

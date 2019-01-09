@@ -62,7 +62,7 @@
               <div class="table-title">
                 <div class="row">
                   <div class="col-md-5">
-                    <h3 class="panel-title">Pago de crédito</h3>                 
+                    <h3 class="panel-title">Pago de créditos personales</h3>                 
                   </div>
                 </div>
               </div>
@@ -534,8 +534,8 @@ $(document).on('ready', function(){
         var diasp=Math.round(dias/(1000*60*60*24));
         $('#diasPagados').val(diasp);
         $('#spanDiasPagados').text(diasp);
-        $('#diasPagados').val(00);
-        $('#spanDiasPagados').text(00);
+        //$('#diasPagados').val(00);
+        //$('#spanDiasPagados').text(00);
       }
     }
     else{
