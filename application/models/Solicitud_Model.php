@@ -81,8 +81,12 @@ class Solicitud_Model extends CI_Model
 	   $mora = $datos['cobra_mora'];
 	   $idEstadoSolicitud = '1';
 
+	   if ($tipoC == "Crédito popular")
+	   {
+	   	$tasaInteres = $datos['tasa_interes']*12;
+	   }
 	   // Datos Amortizacion
-	   $tasaInteres = $datos['tasa_interes']*12;
+	   $tasaInteres = $datos['tasa_interes'];
 	   $capital = $datos['monto_dinero'];
 	   $totalInteres = $datos['intereses_pagar'];
 	   $totalIva = $datos['iva_pagar'];
