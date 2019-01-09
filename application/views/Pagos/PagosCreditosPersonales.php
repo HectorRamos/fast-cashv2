@@ -408,7 +408,7 @@ $(document).on('ready', function(){
                     pantalla.document.write('<link href="<?= base_url() ?>plantilla/css/bootstrap.min.css" rel="stylesheet" />');
                   pantalla.document.write(HTML+"<p>Contabilidad</p><br>"+HTML+"<p>Cliente</p>");
                   pantalla.document.close();
-                  self.location ="<?= base_url()?>Pagos";
+                  self.location ="<?= base_url()?>Pagos/CreditosPersonales";
                   //pantalla.print();
                   //pantalla.close();
 
@@ -522,12 +522,21 @@ $(document).on('ready', function(){
     //var fechaFin = new Date('2018-11-13').getTime();
     //alert(fechaFin);
     if($('#fechaPago').val()!=""){
-      var fechaIncicio = new Date($('#fechaA').val()).getTime();
-      var fechaFin = new Date($('#fechaPago').val()).getTime();
-      var dias = fechaFin - fechaIncicio;
-      var diasp=Math.round(dias/(1000*60*60*24));
-      $('#diasPagados').val(diasp);
-      $('#spanDiasPagados').text(diasp);
+      if(Date.parse($('#fechaPago').val())<Date.parse($('#fechaA').val())){
+        $(document).ready(function(){
+        $.Notification.autoHideNotify('error', 'top center', 'Aviso!', 'La fecha de pago debe de ser mayor que la ultima fecha de pago.');
+        });
+      }
+      else{
+        var fechaIncicio = new Date($('#fechaA').val()).getTime();
+        var fechaFin = new Date($('#fechaPago').val()).getTime();
+        var dias = fechaFin - fechaIncicio;
+        var diasp=Math.round(dias/(1000*60*60*24));
+        $('#diasPagados').val(diasp);
+        $('#spanDiasPagados').text(diasp);
+        $('#diasPagados').val(00);
+        $('#spanDiasPagados').text(00);
+      }
     }
     else{
       //alert('entra al else');
