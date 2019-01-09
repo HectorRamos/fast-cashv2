@@ -125,7 +125,17 @@
                   										<td class="td td1" data-label="Cliente"><?= $solicitudes->Nombre_Cliente." ".$solicitudes->Apellido_Cliente ?></td>
                   										<td class="td td1" data-label="Monto de dinero">$ <?= $solicitudes->ivaInteresCapital?></td>
                                       <td class="td td1" data-label="Fecha Recibida"><?= $solicitudes->fechaRecibido ?></td>
-                                      <td class="td td1" data-label="Tipo crédito"><?= $solicitudes->tipoCredito ?></td>
+                                      <?php 
+                                        if ($solicitudes->tipoCredito == "Crédito popular")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito">'.$solicitudes->tipoCredito.'</td>'; // Poner icono
+                                        }
+                                        else{
+                                          echo '<td class="td td1" data-label="Tipo crédito">'.$solicitudes->tipoCredito.'</td>'; // Poner icono
+                                          
+                                        }
+                                      ?>
+                                      
                   										<td class="td td1" data-label="Acción">
                                       <?php 
 
