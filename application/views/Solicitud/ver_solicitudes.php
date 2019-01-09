@@ -136,7 +136,7 @@
                                         }
                                       ?>
                                       
-                  										<td class="td td1" data-label="Acción">
+                  										<td class="td td1" data-label="Acción" style="min-width: 120px;">
                                       <?php 
 
                                        echo "<a title='Ver más...' data-toggle='tooltip' href='".base_url()."Solicitud/DetalleSolicitud/".$solicitudes->idSolicitud."' class='waves-effect waves-light ver'><i class='fa fa-folder'></i></a>";
