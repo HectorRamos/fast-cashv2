@@ -790,17 +790,17 @@
           <h4 class="modal-title">Nueva garantia</h4>
         </div>
         <div class="modal-body">
-            <form method="post" action="<?= base_url() ?>Solicitud/AgregarHipoteca" id="FormNuevaSolicitudModalPrenda" autocomplete="off">
+            <form method="post" action="<?= base_url() ?>Solicitud/AgregarHipoteca" id="FormNuevaSolicitudModalHipoteca" autocomplete="off">
               <input type="hidden" class="form-control" id="id_solicitudH" name="id_solicitud">
               <div class="margn">
                 <div class="row">
                     <div class="form-group col-md-6">
                           <label for="nombre_hipoteca">Nombre de la hipoteca</label>
-                          <input type="text" class="form-control" id="nombre_hipoteca" name="nombre_hipoteca" placeholder="Nombre de la prenda">
+                          <input type="text" class="form-control" id="nombre_hipoteca" name="nombre_hipoteca" placeholder="Nombre de la hipoteca">
                     </div>
                     <div class="form-group col-md-6">
                           <label for="precio_hipoteca">Precio valorado de la hipoteca</label>
-                          <input type="text" class="form-control validaDigit" id="precio_hipoteca" name="precio_hipoteca" placeholder="Precio de la prenda">
+                          <input type="text" class="form-control validaDigit" id="precio_hipoteca" name="precio_hipoteca" placeholder="Precio de la hipoteca">
                     </div>
                 </div>
                 <div class="row">
@@ -836,18 +836,18 @@
           <h4 class="modal-title">Actualizar garantia</h4>
         </div>
         <div class="modal-body">
-            <form method="post" action="<?= base_url() ?>Solicitud/ActualizarHipoteca" autocomplete="off" id="FormEditarSolicitudModalPrendaA">
+            <form method="post" action="<?= base_url() ?>Solicitud/ActualizarHipoteca" autocomplete="off" id="FormEditarSolicitudModalHipotecaA">
               <input type="hidden" class="form-control" id="id_solicitudAH" name="id_solicitud">
               <input type="hidden" class="form-control" id="id_hipotecaA" name="id_hipoteca">
               <div class="margn">
                 <div class="row">
                     <div class="form-group col-md-6">
                           <label for="nombre_hipotecaA">Nombre de la hipoteca</label>
-                          <input type="text" class="form-control" id="nombre_hipotecaA" name="nombre_hipoteca" placeholder="Nombre de la prenda">
+                          <input type="text" class="form-control" id="nombre_hipotecaA" name="nombre_hipoteca" placeholder="Nombre de la hipoteca">
                     </div>
                     <div class="form-group col-md-6">
                           <label for="precio_hipotecaA">Precio valorado de la hipoteca</label>
-                          <input type="text" class="form-control validaDigit" id="precio_hipotecaA" name="precio_hipoteca" placeholder="Precio de la prenda">
+                          <input type="text" class="form-control validaDigit" id="precio_hipotecaA" name="precio_hipoteca" placeholder="Precio de la hipoteca">
                     </div>
                 </div>
                 <div class="row">
