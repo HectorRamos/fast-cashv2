@@ -604,9 +604,10 @@ function calculos(){
       }
       else{
          var tasaI = tasa/100;
+         console.log("tasa en decimales"+tasaI);
 
-
-        var Interes=(capitalPendiente*30*tasaI)/(30*plazoMeses);
+        var Interes=(capitalPendiente*30*tasaI)/(365);
+        console.log("INteres"+Interes);
         var iva = Interes*0.13;
 
         var Interesp = parseFloat($('#interesPendiente1').val());
