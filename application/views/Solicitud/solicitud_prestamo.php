@@ -40,7 +40,7 @@
                       }
                       if ($tipoSolicitud == 2)
                       {
-                        $encabezado .= 'crédito hipotecario</h3>';
+                        $encabezado .= 'crédito personal</h3>';
                       }
                         echo $encabezado;
                     ?>                
@@ -58,7 +58,7 @@
                     }
                   if ($tipoSolicitud == 2)
                     {
-                      echo '<input type="hidden" id="tipoCredito" value="Crédito hipotecario" name="tipoCredito">';
+                      echo '<input type="hidden" id="tipoCredito" value="Crédito personal" name="tipoCredito">';
                     }
                 ?>
                 <!-- Primera Linea del formulario-->
@@ -129,12 +129,12 @@
                                     {
                                       if ($plazos->tiempo_plazo ==1)
                                       {
-                                        echo '<option value="'.$plazos->id_plazo.'">Hipotecarios hasta '.$plazos->tiempo_plazo.' año</option>';
+                                        echo '<option value="'.$plazos->id_plazo.'">Personales hasta '.$plazos->tiempo_plazo.' año</option>';
                                       }
                                       else
                                       {
                                 ?>
-                                <option value="<?= $plazos->id_plazo ?>">Hipotecarios hasta <?= $plazos->tiempo_plazo ?> años</option>
+                                <option value="<?= $plazos->id_plazo ?>">Personales hasta <?= $plazos->tiempo_plazo ?> años</option>
                                 <?php }} ?>
                               </select>
                             <?php 

@@ -362,6 +362,7 @@ $(document).on('ready', function(){
                 data:$('#FrmPagos').serialize(),
                 success:function(respuesta){
                   swal({   
+                      imageUrl: "<?= base_url()?>plantilla/images/loading.gif", 
                       title: "Pago realizado con exito!",   
                       text: "A continuacion se imprimira el comprobante de pago",   
                       timer: 6099,   
