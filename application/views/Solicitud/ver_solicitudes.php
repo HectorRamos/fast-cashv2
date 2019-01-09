@@ -68,6 +68,7 @@
                                       <th class="th th1" scope="col">Cliente</th>
                                       <th class="th th1" >Monto de dinero</th>
                                       <th class="th th1" >Fecha Recibida</th>
+                                      <th class="th th1" >Tipo de Crédito</th>
                                       <th class="th th1" >Acción</th>
                                     </tr>
                                   </thead>
@@ -124,6 +125,7 @@
                   										<td class="td td1" data-label="Cliente"><?= $solicitudes->Nombre_Cliente." ".$solicitudes->Apellido_Cliente ?></td>
                   										<td class="td td1" data-label="Monto de dinero">$ <?= $solicitudes->ivaInteresCapital?></td>
                                       <td class="td td1" data-label="Fecha Recibida"><?= $solicitudes->fechaRecibido ?></td>
+                                      <td class="td td1" data-label="Tipo crédito"><?= $solicitudes->tipoCredito ?></td>
                   										<td class="td td1" data-label="Acción">
                                       <?php 
 
