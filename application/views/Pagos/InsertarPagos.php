@@ -62,7 +62,7 @@
               <div class="table-title">
                 <div class="row">
                   <div class="col-md-5">
-                    <h3 class="panel-title">Pago de crédito</h3>                 
+                    <h3 class="panel-title">Pago de créditos populares</h3>                 
                   </div>
                 </div>
               </div>
@@ -522,12 +522,22 @@ $(document).on('ready', function(){
     //var fechaFin = new Date('2018-11-13').getTime();
     //alert(fechaFin);
     if($('#fechaPago').val()!=""){
-      var fechaIncicio = new Date($('#fechaA').val()).getTime();
-      var fechaFin = new Date($('#fechaPago').val()).getTime();
-      var dias = fechaFin - fechaIncicio;
-      var diasp=Math.round(dias/(1000*60*60*24));
-      $('#diasPagados').val(diasp);
-      $('#spanDiasPagados').text(diasp);
+      if(Date.parse($('#fechaPago').val())<Date.parse($('#fechaA').val())){
+        $(document).ready(function(){
+        $.Notification.autoHideNotify('error', 'top center', 'Aviso!', 'La fecha de pago debe de ser mayor que la ultima fecha de pago.');
+        });
+      }
+      else{
+        var fechaIncicio = new Date($('#fechaA').val()).getTime();
+        var fechaFin = new Date($('#fechaPago').val()).getTime();
+        var dias = fechaFin - fechaIncicio;
+        var diasp=Math.round(dias/(1000*60*60*24));
+        $('#diasPagados').val(diasp);
+        $('#spanDiasPagados').text(diasp);
+        $('#diasPagados').val(00);
+        $('#spanDiasPagados').text(00);
+      }
+      
     }
     else{
       //alert('entra al else');
