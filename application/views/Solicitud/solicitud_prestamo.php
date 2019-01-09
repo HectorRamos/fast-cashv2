@@ -40,7 +40,7 @@
                       }
                       if ($tipoSolicitud == 2)
                       {
-                        $encabezado .= 'crédito hipotecario</h3>';
+                        $encabezado .= 'crédito personal</h3>';
                       }
                         echo $encabezado;
                     ?>                
@@ -54,11 +54,11 @@
                 <?php 
                   if ($tipoSolicitud == 1)
                     {
-                      echo '<input type="hidden" value="Crédito popular" name="tipoCredito">';
+                      echo '<input type="hidden" id="tipoCredito" value="Crédito popular" name="tipoCredito">';
                     }
                   if ($tipoSolicitud == 2)
                     {
-                      echo '<input type="hidden" value="Crédito hipotecario" name="tipoCredito">';
+                      echo '<input type="hidden" id="tipoCredito" value="Crédito personal" name="tipoCredito">';
                     }
                 ?>
                 <!-- Primera Linea del formulario-->
@@ -93,6 +93,11 @@
 
                       <div class="form-group col-md-6">
                             <label for="tipo_prestamo">Linea</label>
+                            <!-- Probando linea de tiempo para populares-->
+                            <?php 
+                              if ($tipoSolicitud == 1)
+                               {
+                            ?>
                               <select id="tipo_prestamo" name="tipo_prestamo" class="select" data-placeholder="Seleccione un tipo de prestamo" data-live-search="true">
                                 <option value="">Seleccione un tipo de prestamo</option>
                                 <?php 
@@ -108,6 +113,34 @@
                                 <option value="<?= $plazos->id_plazo ?>">Populares hasta <?= $plazos->tiempo_plazo ?> meses</option>
                                 <?php }} ?>
                               </select>
+                            <?php 
+                               }
+                            ?>
+                            <?php  ?>
+                            <!-- Probando linea de tiempo para hipotecarios-->
+                            <?php 
+                              if ($tipoSolicitud == 2)
+                               {
+                            ?>
+                              <select id="tipo_prestamo" name="tipo_prestamo" class="select" data-placeholder="Seleccione un tipo de prestamo" data-live-search="true">
+                                <option value="">Seleccione un tipo de prestamo</option>
+                                <?php 
+                                    foreach ($plazos->result() as $plazos)
+                                    {
+                                      if ($plazos->tiempo_plazo ==1)
+                                      {
+                                        echo '<option value="'.$plazos->id_plazo.'">Personales hasta '.$plazos->tiempo_plazo.' año</option>';
+                                      }
+                                      else
+                                      {
+                                ?>
+                                <option value="<?= $plazos->id_plazo ?>">Personales hasta <?= $plazos->tiempo_plazo ?> años</option>
+                                <?php }} ?>
+                              </select>
+                            <?php 
+                               }
+                            ?>
+                            <?php  ?>
                             <input type="hidden" class="form-control" id="numero_meses" name="numero_meses">
                       </div>
                     </div>
@@ -121,7 +154,17 @@
                       </div>
                       <div class="form-group col-md-4">
                             <label for="tasa_interes">Tasa de interes</label>
-                            <input type="text" value="10" class="form-control validaDigit" id="tasa_interes" name="tasa_interes" placeholder="Tasa de interes del prestamo">
+                            <?php 
+                              if ($tipoSolicitud == 1)
+                                {
+                                  echo '<input type="text" value="10" class="form-control validaDigit" id="tasa_interes" name="tasa_interes" placeholder="Tasa de interes del prestamo">';
+                                }
+                                else
+                                {
+                                  echo '<input type="text" value="22" class="form-control validaDigit" id="tasa_interes" name="tasa_interes" placeholder="Tasa de interes del prestamo">';
+                                }
+                            ?>
+                            
                       </div>
                       <div class="form-group col-md-4">
                             <label for="monto_dinero">Monto de dinero</label>
@@ -512,7 +555,6 @@ function agregarCliente(id, nombre, apellido, dui)
 // Funcion para desbloquear cajas de text para ingresar interes y monto de dinero
 function activarIP()
 {
-  mora()
   $("#tasa_interes").removeAttr("readonly");
   $("#monto_dinero").removeAttr("readonly");
 
@@ -535,7 +577,7 @@ function activarIP()
 }
 function calcularIntereses()
 {
-  mora()
+  tipoCredito = $("#tipoCredito").val();
   mesesD = $("#numero_meses").val();
   tipoPrestamo = $("#tipo_prestamo").val();
   tasaInteres = (parseFloat($("#tasa_interes").val()) / 100) * mesesD;
@@ -556,15 +598,25 @@ function calcularIntereses()
     meses = "";
   }
 
-  numeroDePagos = (meses*30);
-
-  totalInteresesAPagar = montoDinero * tasaInteres;
-  totalIvaAPagar = totalInteresesAPagar * 0.13;
-  totalAPagar = parseFloat(totalIvaAPagar) + parseFloat(totalInteresesAPagar) + parseFloat(montoDinero);
-  cuotaDiaria = totalAPagar.toFixed(4)/numeroDePagos.toFixed();
+  if (tipoCredito == "Crédito popular")
+  {
+      numeroDePagos = (meses*30);
+      totalInteresesAPagar = montoDinero * tasaInteres;
+      totalIvaAPagar = totalInteresesAPagar * 0.13;
+      totalAPagar = parseFloat(totalIvaAPagar) + parseFloat(totalInteresesAPagar) + parseFloat(montoDinero);
+      cuotaDiaria = totalAPagar.toFixed(4)/numeroDePagos.toFixed();
+  }
+  else
+  {
+      numeroDePagos = (meses*12);
+      totalInteresesAPagar = montoDinero * tasaInteres;
+      totalIvaAPagar = totalInteresesAPagar * 0.13;
+      totalAPagar = parseFloat(totalIvaAPagar) + parseFloat(totalInteresesAPagar) + parseFloat(montoDinero);
+      cuotaDiaria = totalAPagar.toFixed(4)/numeroDePagos.toFixed();
+  }
 
   // Probando calculos
-  totalPagoConCuotas = cuotaDiaria*26;
+  // totalPagoConCuotas = cuotaDiaria*26;
 
   if (isNaN(cuotaDiaria))
   {
