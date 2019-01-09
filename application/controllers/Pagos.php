@@ -62,6 +62,11 @@ class Pagos extends CI_Controller
 		$this->load->view('Pagos/viewPagoDirecto', $datos);
 		$this->load->view('Base/footer');
 	}
+	public function CreditosPersonales(){
+		$this->load->model('Creditos_Model');
+		$datos = $this->Creditos_Model->ObtenerCreditosPopulares();
+		echo json_encode($datos->result());
+	}
 	
 }
 ?>
