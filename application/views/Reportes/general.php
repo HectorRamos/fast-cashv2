@@ -1,3 +1,8 @@
+<style>
+  #tablaImprimir{
+    display: none;
+  }
+</style>
 <div class="content-page">
   <div class="content">
     <div class="container">
@@ -28,9 +33,8 @@
                 <table class="table">
                   <div class="pull-left"></div>
                   <div class="pull-right">
-                    <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ReporteGeneralPDF" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5' data-id='$idSolicitud'><i class='fa fa-file fa-lg'></i> Ver en PDF </a> 
-                    <a title='Revisión Solicitud' onclick='Update($idSolicitud)' type='button' class='btn btn-warning block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Word </a> 
-                    <a title='Aprobar Solicitud' onclick='Approved($idSolicitud, $codigoSolicitud)' type='button' class='btn btn-success block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Excel </a>
+                    <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ReporteGeneralPDF" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a> 
+                    <a title='Aprobar Solicitud'  href="<?= base_url() ?>Reportes/ReporteGeneralEXCEL" target="_blank" type='button' class='btn btn-success block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Excel </a>
                     <a title="Imprimir Solicitud" type="button" onclick="imprimirTabla()" class="btn btn-info block waves-effect waves-light m-b-5" data-toggle="tooltip" data-dismiss="modal"><i class="fa fa-print  fa-lg"></i> Imprimir</a>
                   </div>
                </table>
@@ -74,6 +78,58 @@
                                   <?php }} ?>
                                   </tbody>
                                 </table>
+
+                                <div id="tablaImprimir">
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-4 col-md-push-2 pull-left">
+                                        <img src="<?= base_url() ?>plantilla/images/fc_logoR.png" width="100" height="100">
+                                      </div>
+                                      <div class="col-md-4 col-md-pull-2 text-center">
+                                        <p><strong>GOCAJAA GROUP SA DE CV</strong></p>
+                                        <p><strong>MERCEDES UMAÑA, USULUTAN</strong></p>
+                                        <p><strong>REPORTE GENERAL DE CRÉDITOS</strong></p>
+                                      </div>
+                                      <div class="col-md-4  pull-right"></div>
+                                    </div>
+                                  </div>
+                                  <table class="table">
+                                      <thead class="">
+                                        <tr>
+                                          <th>#</th>
+                                          <th>Código de Cliente</th>
+                                          <th>Cliente</th>
+                                          <th>Tipo de Crédito</th>
+                                          <th>Total a Pagar</th>
+                                          <th>Total Abonado</th>
+                                          <th>Estado</th>
+                                          <!-- <th  class="th th1">Acción</th> -->
+                                        </tr>
+                                      </thead>
+                                      <tbody class="tbody tbody1">
+                                         <?php  
+                                          $i = 0;
+                                          if(!empty($datos))
+                                          {
+                                            foreach ($datos->result() as $creditos)
+                                            {
+                                              $i = $i +1;
+                                              ?>
+                                               <tr>
+                                                <td><b><?= $i;?></b></td>
+                                                <td><?= $creditos->Codigo_Cliente?></td>
+                                                <td><?= $creditos->Nombre_Cliente?>  <?=  $creditos->Apellido_Cliente?></td>
+                                                <td><?= $creditos->tipoCredito?></td>
+                                                <td>$ <?= $creditos->capital?></td>
+                                                <td>$ <?= $creditos->totalAbonado?></td>
+                                                <td><?= $creditos->estadoCredito?></td>
+                                              </tr>
+                                        <?php }} ?>
+                                        </tbody>
+                                  </table>
+                                </div>
+
+
                               </div>
                             </div>
                         </div>
@@ -89,3 +145,26 @@
 <!-- ============================================================== -->
 <!-- End Right content here -->
 <!-- ============================================================== -->
+
+<script>
+    function imprimirTabla()
+    {
+      // $(".ocultarImprimir").hide();
+      var elemento=document.getElementById('tablaImprimir');
+      var pantalla=window.open(' ','popimpr');
+
+      pantalla.document.write('<html><head><title>' + document.title + '</title>');
+      pantalla.document.write('<link href="<?= base_url() ?>plantilla/css/bootstrap.min.css" rel="stylesheet" />');
+      pantalla.document.write('</head><body >');
+
+      pantalla.document.write(elemento.innerHTML);
+      pantalla.document.write('</body></html>');
+      pantalla.document.close();
+      pantalla.focus();
+      pantalla.onload = function() {
+        pantalla.print();
+        pantalla.close();
+      };
+       $(".ocultarImprimir").show();
+    }
+</script>

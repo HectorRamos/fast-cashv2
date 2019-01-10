@@ -22,18 +22,6 @@ class Reportes extends CI_Controller {
 	}
 	public function ReporteGeneralPDF()
 	{
-		// $this->load->model('Reportes_Model');
-		// $fechaI = $_POST['fechaInicialTrabajos'];
-		// $fechaF = $_POST['fechaFinalTrabajos'];
-		// $datos = $this->Reportes_Model->seleccionarTrabajos($fechaI, $fechaF);
-
-		// if (sizeof($datos->result())!=0) 
-		// {
-		// 	$this->load->library('M_pdf');
-
-	 //        $data = [];
-
-	 //        $hoy = date("dmyhis");
 	$datos = $this->Creditos_Model->ObtenerCreditos();
 	$html="
 	<link href='".base_url()."plantilla/css/bootstrap.min.css' rel='stylesheet' />
@@ -115,27 +103,92 @@ class Reportes extends CI_Controller {
 	    </div>
 	</div>";
 
-     $pdfFilePath = "resumen.pdf";
+     $pdfFilePath = "reporte_general_de_creditos.pdf";
      //load mPDF library
     $this->load->library('M_pdf');
-     $mpdf = new mPDF('c', 'A4'); 
-
-     $estilos=file_get_contents(base_url()."plantilla/css/bootstrap.min.css");
-     //echo $estilos;
-     $mpdf->SetDisplayMode('fullpage');
-     $mpdf->WriteHTML($estilos,1);
-
+    $mpdf = new mPDF('c', 'A4-L'); //Orientacion
+    $mpdf->SetDisplayMode('fullpage');
     $mpdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-   // $mpdf->SetFont('','',40); 
-     $mpdf->shrink_tables_to_fit = 1;
-   
+    $mpdf->shrink_tables_to_fit = 1;
     $mpdf->WriteHTML($html);
-
-
     $mpdf->Output($pdfFilePath, "I");
 
 	}
 	
-}
 
+	public function ReporteGeneralEXCEL()
+	{
+    $creditos =  $this->Creditos_Model->ObtenerCreditos()->result();
+    if(count($creditos) > 0){
+        //Cargamos la librería de excel.
+        $this->load->library('excel');
+        $this->excel->setActiveSheetIndex(0);
+        $this->excel->getActiveSheet()->setTitle('Creditos');
+        //Contador de filas
+        $contador = 3;
+
+        //Cabecera
+		$styleArray = array(
+			'alignment' => array(
+		            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		        ),
+		);
+
+		$this->excel->getActiveSheet()->getStyle('B1:E1')->applyFromArray($styleArray);
+		$this->excel->getActiveSheet()->getStyle('B2:E2')->applyFromArray($styleArray);
+        $this->excel->setActiveSheetIndex(0)->mergeCells('B1:E1');
+        $this->excel->setActiveSheetIndex(0)->mergeCells('B2:E2');
+        $this->excel->getActiveSheet()->setCellValue("B1", "GOCAJAA GROUP SA DE CV, MERCEDES UMAÑA, USULUTAN");
+        $this->excel->getActiveSheet()->setCellValue("B2", "REPORTE GENERAL DE CRÉDITOS");
+        // Fin cabecera
+
+        //Le aplicamos ancho las columnas.
+        $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(40);
+        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+        //Le aplicamos negrita a los títulos de la cabecera.
+        $this->excel->getActiveSheet()->getStyle("A{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("B{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("C{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("D{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("E{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("F{$contador}")->getFont()->setBold(true);
+        //Definimos los títulos de la cabecera.
+        $this->excel->getActiveSheet()->setCellValue("A{$contador}", 'Código del cliente');
+        $this->excel->getActiveSheet()->setCellValue("B{$contador}", 'Cliente');
+        $this->excel->getActiveSheet()->setCellValue("C{$contador}", 'Tipo de crédito');
+        $this->excel->getActiveSheet()->setCellValue("D{$contador}", 'Total a pagar');
+        $this->excel->getActiveSheet()->setCellValue("E{$contador}", 'Total abonado');
+        $this->excel->getActiveSheet()->setCellValue("F{$contador}", 'Estado');
+        //Definimos la data del cuerpo.        
+        foreach($creditos as $credito){
+           //Incrementamos una fila más, para ir a la siguiente.
+           $contador++;
+           //Informacion de las filas de la consulta.
+           $this->excel->getActiveSheet()->setCellValue("A{$contador}", $credito->Codigo_Cliente);
+           $this->excel->getActiveSheet()->setCellValue("B{$contador}", $credito->Nombre_Cliente." ".$credito->Apellido_Cliente);
+           $this->excel->getActiveSheet()->setCellValue("C{$contador}", $credito->tipoCredito); 
+           $this->excel->getActiveSheet()->setCellValue("D{$contador}", $credito->capital);
+           $this->excel->getActiveSheet()->setCellValue("E{$contador}", $credito->totalAbonado);
+           $this->excel->getActiveSheet()->setCellValue("F{$contador}", $credito->estadoCredito);
+        }
+        //Le ponemos un nombre al archivo que se va a generar.
+        $archivo = "reporte_general_creditos.xls";
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'.$archivo.'"');
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+        //Hacemos una salida al navegador con el archivo Excel.
+        $objWriter->save('php://output');
+     }
+     else
+     {
+        echo 'No se han encontrado creditos';
+        exit;        
+     }
+	}
+}
 ?>
