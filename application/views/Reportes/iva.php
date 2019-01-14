@@ -3,6 +3,7 @@
     display: none;
   }
 </style>
+
 <div class="content-page">
   <div class="content">
     <div class="container">
@@ -33,49 +34,64 @@
                 <table class="table">
                   <div class="pull-left"></div>
                   <div class="pull-right">
-                    <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ReporteGeneralPDF" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a> 
-                    <a title='Aprobar Solicitud'  href="<?= base_url() ?>Reportes/ReporteGeneralEXCEL" target="_blank" type='button' class='btn btn-success block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Excel </a>
+                    <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ReporteIvaPDF" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a> 
+                    <a title='Aprobar Solicitud'  href="<?= base_url() ?>Reportes/ReporteIvaEXCEL" target="_blank" type='button' class='btn btn-success block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Excel </a>
                     <a title="Imprimir Solicitud" type="button" onclick="imprimirTabla()" class="btn btn-info block waves-effect waves-light m-b-5" data-toggle="tooltip" data-dismiss="modal"><i class="fa fa-print  fa-lg"></i> Imprimir</a>
                   </div>
                </table>
                 <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                               <div class="margn">
-                                <table id="datatable" class="table">
+                                <table id="" class="table">
                                   <thead class="thead-dark thead thead1">
                                     <tr class="tr tr1">
                                       <th class="th th1" scope="col">#</th>
-                                      <th class="th th1" scope="col">Código de Cliente</th>
+                                      <th class="th th1" scope="col">Código crédito</th>
                                       <th class="th th1" scope="col">Cliente</th>
-                                      <th class="th th1" >Tipo de Crédito</th>
-                                      <th class="th th1" >Total a Pagar</th>
-                                      <th class="th th1" >Total Abonado</th>
-                                      <th class="th th1" >Estado</th>
+                                      <th class="th th1" >Neto</th>
+                                      <th class="th th1" >IVA</th>
+                                      <th class="th th1" >Excento</th>
+                                      <th class="th th1" >IVA retenido</th>
+                                      <th class="th th1" >Total</th>
+                                      <th class="th th1" >Observaciones</th>
                                       <!-- <th  class="th th1">Acción</th> -->
                                     </tr>
                                   </thead>
                                   <tbody class="tbody tbody1">
-                                   <?php  
+                                  <?php  
                                     $i = 0;
+                                    $total = 0;
+                                    $totalIVA = 0;
+                                    $totalIntereses = 0;
                                     if(!empty($datos)){
-                                    foreach ($datos->result() as $creditos) {
-                                    $i = $i +1;
+                                    foreach ($datos->result() as $row) {
+                                      $i = $i +1;
+                                      $totalIVA = $totalIVA + $row->iva;
+                                      $totalIntereses = $totalIntereses + $row->interes;
+                                      $total = $total + $row->iva + $row->interes; 
                                     // if($creditos->estadoCredito=="Finalizado"){
                                     ?>
                                      <tr class="tr tr1">
                                       <td class="td td1" data-label="#" style="min-width: 10px; width: auto;"><b><?= $i;?></b></td>
-                                      <td class="td td1" data-label="Código de Cliente"><?= $creditos->Codigo_Cliente?></td>
-                                      <td class="td td1" data-label="Cliente"><?= $creditos->Nombre_Cliente?>  <?=  $creditos->Apellido_Cliente?></td>
-                                      <td class="td td1" data-label="Tipo de Crédito"><?= $creditos->tipoCredito?></td>
-                                      <td class="td td1" data-label="Total a Pagar"><span class="label label-default" style="font-size: 1.2rem; font-family: Arial;">$ <?= $creditos->capital?></span></td>
-                                      <td class="td td1" data-label="Total Abonado"><span class="label label-warning" style="font-size: 1.2rem; font-family: Arial;">$ <?= $creditos->totalAbonado?></span></td>
-                                      <td class="td td1" data-label="Total Abonado"><span class="" style="font-size: 1.2rem; font-family: Arial;"> <?= $creditos->estadoCredito?></span></td>
-                                      <!-- <td class="td td1" data-label="Acción" style="min-width: 90px;">
-                                        <a href="<?= base_url()?>Creditos/DetalleCredito?id=<?= $creditos->idCredito?>&cc=<?= $creditos->codigoCredito?>" title='Ver crédito' data-toggle="tooltip" class='waves-effect waves-light ver'><i class='fa fa-folder'></i></a>
-                                         <a style="display: none;" href="<?= base_url()?>Pagos/PagarCredito?Id=<?= $creditos->idCredito?>" title='Realizar&nbsp;pago' data-toggle="tooltip" class='waves-effect waves-light agregar'><i class='fa fa-money'></i></a>
-                                      </td> -->
+                                      <td class="td td1" data-label="Código del Crédito"><?= $row->codigoCredito?></td>
+                                      <td class="td td1" data-label="Cliente"><?= $row->Nombre_Cliente?>  <?=  $row->Apellido_Cliente?></td>
+                                      <td class="td td1" data-label="Neto"><span class="label label-default" style="font-size: 1.2rem; font-family: Arial;">$<?= $row->interes?></span></td>
+                                      <td class="td td1" data-label="IVA"><span  class="label label-warning" style="font-size: 1.2rem; font-family: Arial;">$<?= $row->iva?></span></td>
+                                      <td class="td td1" data-label="Excento"><span>$0</span></td>
+                                      <td class="td td1" data-label="Iva retenido"><span class="" style="font-size: 1.2rem; font-family: Arial;"> $0</span></td>
+                                      <td class="td td1" data-label="Total"><span class="" style="font-size: 1.2rem; font-family: Arial;">$<?= $row->iva + $row->interes; ?></span></td>
+                                      <td class="td td1" data-label="Observaciones"><span class="" style="font-size: 1.2rem; font-family: Arial;">---</span></td>
                                     </tr>
                                   <?php }} ?>
+                                  <tr>
+                                    <td colspan="3" class="text-center"><strong>Total</strong></td>
+                                    <td>$<?= $totalIntereses ?></td>
+                                    <td>$<?= $totalIVA ?></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>$<?= $total ?></td>
+                                    <td></td>
+                                  </tr>
                                   </tbody>
                                 </table>
 
@@ -88,7 +104,7 @@
                                       <div class="col-md-4 col-md-pull-2 text-center">
                                         <p><strong>GOCAJAA GROUP SA DE CV</strong></p>
                                         <p><strong>MERCEDES UMAÑA, USULUTAN</strong></p>
-                                        <p><strong>REPORTE GENERAL DE CRÉDITOS</strong></p>
+                                        <p><strong>REPORTE DE IVA</strong></p>
                                       </div>
                                       <div class="col-md-4  pull-right"></div>
                                     </div>
@@ -97,34 +113,53 @@
                                       <thead class="">
                                         <tr>
                                           <th>#</th>
-                                          <th>Código de Cliente</th>
+                                          <th>Código crédito</th>
                                           <th>Cliente</th>
-                                          <th>Tipo de Crédito</th>
-                                          <th>Total a Pagar</th>
-                                          <th>Total Abonado</th>
-                                          <th>Estado</th>
-                                          <!-- <th  class="th th1">Acción</th> -->
+                                          <th>Neto</th>
+                                          <th>IVA</th>
+                                          <th>Excento</th>
+                                          <th>IVA retenido</th>
+                                          <th>Total</th>
+                                          <th>Observaciones</th>
                                         </tr>
                                       </thead>
                                       <tbody class="tbody tbody1">
-                                         <?php  
+                                        <?php  
                                           $i = 0;
+                                          $i = 0;
+                                          $total = 0;
+                                          $totalIVA = 0;
+                                          $totalIntereses = 0;
                                           if(!empty($datos))
                                           {
-                                            foreach ($datos->result() as $creditos)
+                                            foreach ($datos->result() as $row)
                                             {
                                               $i = $i +1;
+                                              $totalIVA = $totalIVA + $row->iva;
+                                              $totalIntereses = $totalIntereses + $row->interes;
+                                              $total = $total + $row->iva + $row->interes; 
                                               ?>
                                                <tr>
                                                 <td><b><?= $i;?></b></td>
-                                                <td><?= $creditos->Codigo_Cliente?></td>
-                                                <td><?= $creditos->Nombre_Cliente?>  <?=  $creditos->Apellido_Cliente?></td>
-                                                <td><?= $creditos->tipoCredito?></td>
-                                                <td>$ <?= $creditos->capital?></td>
-                                                <td>$ <?= $creditos->totalAbonado?></td>
-                                                <td><?= $creditos->estadoCredito?></td>
+                                                <td><?= $row->codigoCredito?></td>
+                                                <td><?= $row->Nombre_Cliente?>  <?=  $row->Apellido_Cliente?></td>
+                                                <td>$<?= $row->interes?></td>
+                                                <td>$<?= $row->iva?></td>
+                                                <td><span>$0</span></td>
+                                                <td> $0</td>
+                                                <td>$<?= $row->iva + $row->interes; ?></td>
+                                                <td>---</td>
                                               </tr>
                                         <?php }} ?>
+                                        <tr>
+                                          <td colspan="3" class="text-center"><strong>Total</strong></td>
+                                          <td>$<?= $totalIntereses ?></td>
+                                          <td>$<?= $totalIVA ?></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td>$<?= $total ?></td>
+                                          <td></td>
+                                        </tr>
                                         </tbody>
                                   </table>
                                 </div>
