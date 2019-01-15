@@ -1,3 +1,10 @@
+<?php if($this->session->flashdata("errorr")):?>
+  <script type="text/javascript">
+    $(document).ready(function(){
+    $.Notification.autoHideNotify('error', 'top center', 'Aviso!', '<?php echo $this->session->flashdata("errorr")?>');
+    });
+  </script>
+<?php endif; ?>
 <style>
   #tablaImprimir{
     display: none;
@@ -29,21 +36,70 @@
                 </div>
               </div>
             </div>
+              <div class="">
+                <div class="col-md-12 text-center">
+                    <form class="form-inline" method="post" action="<?= base_url() ?>Reportes/ReporteIva/2">
+                        <div class="form-group">
+                          <label for="fechaInicio"> Inicio </label>
+                          <input type="text" class="form-control DateTime" name="fechaInicial" id="fechaInicio" placeholder="Fecha inicial" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="fechaFinal"> Final </label>
+                          <input type="text" class="form-control DateTime" name="fechaFinal" id="fechaFinal" placeholder="Fecha final" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Buscar</button>
+                      </form>
+                  </div>
+              </div> <br>  
             <div class="panel-body">
               <div class="margn">
-                <table class="table">
+                <div class="">
+
                   <div class="pull-left"></div>
                   <div class="pull-right">
-                    <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ReporteIvaPDF" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a> 
-                    <a title='Aprobar Solicitud'  href="<?= base_url() ?>Reportes/ReporteIvaEXCEL" target="_blank" type='button' class='btn btn-success block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Excel </a>
-                    <a title="Imprimir Solicitud" type="button" onclick="imprimirTabla()" class="btn btn-info block waves-effect waves-light m-b-5" data-toggle="tooltip" data-dismiss="modal"><i class="fa fa-print  fa-lg"></i> Imprimir</a>
+                    <?php
+                    if (sizeof($datos->result()) != 0){
+                      if (isset($i) && isset($f))
+                      {
+                    ?>
+                      <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ReporteIvaPDF/2/?i=<?= $i?>&&f=<?= $f ?>" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a> 
+                      <a title='Aprobar Solicitud'  href="<?= base_url() ?>Reportes/ReporteIvaEXCEL/2/?i=<?= $i?>&&f=<?= $f ?>" target="_blank" type='button' class='btn btn-success block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Excel </a>
+                      <a title="Imprimir Solicitud" type="button" onclick="imprimirTabla()" class="btn btn-info block waves-effect waves-light m-b-5" data-toggle="tooltip" data-dismiss="modal"><i class="fa fa-print  fa-lg"></i> Imprimir</a>
+                    <?php }
+                      else
+                      {
+                    ?>
+                      <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ReporteIvaPDF/1" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a> 
+                      <a title='Aprobar Solicitud'  href="<?= base_url() ?>Reportes/ReporteIvaEXCEL/1" target="_blank" type='button' class='btn btn-success block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Excel </a>
+                      <a title="Imprimir Solicitud" type="button" onclick="imprimirTabla()" class="btn btn-info block waves-effect waves-light m-b-5" data-toggle="tooltip" data-dismiss="modal"><i class="fa fa-print  fa-lg"></i> Imprimir</a>
+                    <?php }} ?>
                   </div>
-               </table>
+               </div>
                 <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                               <div class="margn">
+                              <?php 
+                                if (sizeof($datos->result()) != 0){
+                              ?>
                                 <table id="" class="table">
                                   <thead class="thead-dark thead thead1">
+                                    <tr>
+                                      
+                                      <?php 
+                                        if (isset($i) && isset($f))
+                                        {
+                                          echo '
+                                            <td colspan="9" class="text-center"><strong>PROCESOS EFECTUADOS ENTRE EL '.$i.' Y '.$f.'</strong></td>
+                                          ';
+                                        }
+                                        else
+                                        {
+                                          echo '
+                                            <td colspan="9" class="text-center"><strong>ÚLTIMOS PROCESOS EFECTUADOS</strong></td>
+                                          ';
+                                        }
+                                      ?>
+                                    </tr>
                                     <tr class="tr tr1">
                                       <th class="th th1" scope="col">#</th>
                                       <th class="th th1" scope="col">Código crédito</th>
@@ -59,20 +115,20 @@
                                   </thead>
                                   <tbody class="tbody tbody1">
                                   <?php  
-                                    $i = 0;
+                                    $j = 0;
                                     $total = 0;
                                     $totalIVA = 0;
                                     $totalIntereses = 0;
                                     if(!empty($datos)){
                                     foreach ($datos->result() as $row) {
-                                      $i = $i +1;
+                                      $j = $j +1;
                                       $totalIVA = $totalIVA + $row->iva;
                                       $totalIntereses = $totalIntereses + $row->interes;
                                       $total = $total + $row->iva + $row->interes; 
                                     // if($creditos->estadoCredito=="Finalizado"){
                                     ?>
                                      <tr class="tr tr1">
-                                      <td class="td td1" data-label="#" style="min-width: 10px; width: auto;"><b><?= $i;?></b></td>
+                                      <td class="td td1" data-label="#" style="min-width: 10px; width: auto;"><b><?= $j;?></b></td>
                                       <td class="td td1" data-label="Código del Crédito"><?= $row->codigoCredito?></td>
                                       <td class="td td1" data-label="Cliente"><?= $row->Nombre_Cliente?>  <?=  $row->Apellido_Cliente?></td>
                                       <td class="td td1" data-label="Neto"><span class="label label-default" style="font-size: 1.2rem; font-family: Arial;">$<?= $row->interes?></span></td>
@@ -94,6 +150,13 @@
                                   </tr>
                                   </tbody>
                                 </table>
+                                <?php
+                                    } 
+                                    else
+                                    {
+                                        echo '<p><strong><h4 class="text-danger text-center">No hay datos que mostrar !!!</h4></strong></p>';
+                                    }
+                                  ?>
 
                                 <div id="tablaImprimir">
                                   <div class="row">
@@ -111,6 +174,23 @@
                                   </div>
                                   <table class="table table-bordered">
                                       <thead class="">
+                                      <tr>
+                                      
+                                      <?php 
+                                        if (isset($i) && isset($f))
+                                        {
+                                          echo '
+                                            <td colspan="9" class="text-center"><strong>PROCESOS EFECTUADOS ENTRE EL '.$i.' Y '.$f.'</strong></td>
+                                          ';
+                                        }
+                                        else
+                                        {
+                                          echo '
+                                            <td colspan="9" class="text-center"><strong>ÚLTIMOS PROCESOS EFECTUADOS</strong></td>
+                                          ';
+                                        }
+                                      ?>
+                                    </tr>
                                         <tr>
                                           <th>#</th>
                                           <th>Código crédito</th>
