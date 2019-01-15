@@ -128,15 +128,15 @@
                                       <?php 
                                         if ($solicitudes->tipoCredito == "Crédito popular")
                                         {
-                                          echo '<td class="td td1" data-label="Tipo crédito">'.$solicitudes->tipoCredito.'</td>'; // Poner icono
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #0B5345;"><i class="fa fa-id-card-o fa-lg" ></i>&nbsp;'.$solicitudes->tipoCredito.'<span></td>'; // Poner icono
                                         }
                                         else{
-                                          echo '<td class="td td1" data-label="Tipo crédito">'.$solicitudes->tipoCredito.'</td>'; // Poner icono
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #9C640C;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$solicitudes->tipoCredito.'<span></td>'; // Poner icono
                                           
                                         }
                                       ?>
                                       
-                  										<td class="td td1" data-label="Acción">
+                  										<td class="td td1" data-label="Acción" style="min-width: 120px;">
                                       <?php 
 
                                        echo "<a title='Ver más...' data-toggle='tooltip' href='".base_url()."Solicitud/DetalleSolicitud/".$solicitudes->idSolicitud."' class='waves-effect waves-light ver'><i class='fa fa-folder'></i></a>";

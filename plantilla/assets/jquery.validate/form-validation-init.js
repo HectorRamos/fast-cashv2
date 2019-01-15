@@ -24,6 +24,8 @@
         this.$FormEditarSolicitudModalFiadorA = $("#FormEditarSolicitudModalFiadorA");
         
         this.$FormNuevaSolicitudModalPrenda = $("#FormNuevaSolicitudModalPrenda");
+        this.$FormNuevaSolicitudModalHipoteca = $("#FormNuevaSolicitudModalHipoteca");
+        this.$FormEditarSolicitudModalHipotecaA = $("#FormEditarSolicitudModalHipotecaA");
         this.$FormEditarSolicitudModalPrenda = $("#FormEditarSolicitudModalPrendaA");
         this.$validarFormAprobarCredito = $("#validarFormAprobarCredito");
         //##################### FIN FORMULARIO DE GESTION DE SOLICITUD #####################
@@ -273,6 +275,36 @@
                 nombre_prenda: "Por favor, escriba el nombre de la prenda",
                 precio_valorado: "Por favor, digite el precio de la prenda",
                 descripcion_prenda: "Por favor, escriba una descripción de la prenda",
+            },
+            highlight: function(element) { $(element).closest('.form-group').addClass('has-error'); },
+            unhighlight: function(element) { $(element).closest('.form-group').removeClass('has-error'); }
+        });
+
+        this.$FormNuevaSolicitudModalHipoteca.validate({
+            rules: {
+                nombre_hipoteca: "required",
+                precio_hipoteca: "required",
+                descripcion_hipoteca: "required",
+            },
+            messages: {
+                nombre_hipoteca: "Por favor, escriba el nombre de la hipoteca",
+                precio_hipoteca: "Por favor, digite el precio de la hipoteca",
+                descripcion_hipoteca: "Por favor, escriba una descripción de la hipoteca",
+            },
+            highlight: function(element) { $(element).closest('.form-group').addClass('has-error'); },
+            unhighlight: function(element) { $(element).closest('.form-group').removeClass('has-error'); }
+        });
+
+        this.$FormEditarSolicitudModalHipotecaA.validate({
+            rules: {
+                nombre_hipoteca: "required",
+                precio_hipoteca: "required",
+                descripcion_hipoteca: "required",
+            },
+            messages: {
+                nombre_hipoteca: "Por favor, escriba el nombre de la hipoteca",
+                precio_hipoteca: "Por favor, digite el precio de la hipoteca",
+                descripcion_hipoteca: "Por favor, escriba una descripción de la hipoteca",
             },
             highlight: function(element) { $(element).closest('.form-group').addClass('has-error'); },
             unhighlight: function(element) { $(element).closest('.form-group').removeClass('has-error'); }

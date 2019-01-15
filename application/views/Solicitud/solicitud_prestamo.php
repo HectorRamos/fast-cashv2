@@ -488,12 +488,12 @@
               <div class="margn">
                 <div class="row">
                     <div class="form-group col-md-6">
-                          <label for="">Nombre de la prenda</label>
-                          <input type="text" class="form-control" id="nombre_hipoteca" name="nombre_hipoteca" placeholder="Nombre de la prenda">
+                          <label for="">Nombre de la hipoteca</label>
+                          <input type="text" class="form-control" id="nombre_hipoteca" name="nombre_hipoteca" placeholder="Nombre de la hipoteca">
                     </div>
                     <div class="form-group col-md-6">
-                          <label for="">Precio valorado</label>
-                          <input type="text" class="form-control validaDigit" id="precio_hipoteca" name="precio_hipoteca" placeholder="Precio de la prenda">
+                          <label for="">Precio valorado de la hipoteca</label>
+                          <input type="text" class="form-control validaDigit" id="precio_hipoteca" name="precio_hipoteca" placeholder="Precio de la hipoteca">
                     </div>
                 </div>
                 <div class="row">
