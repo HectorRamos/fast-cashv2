@@ -534,8 +534,8 @@ $(document).on('ready', function(){
         var diasp=Math.round(dias/(1000*60*60*24));
         $('#diasPagados').val(diasp);
         $('#spanDiasPagados').text(diasp);
-        $('#diasPagados').val(00);
-        $('#spanDiasPagados').text(00);
+        //$('#diasPagados').val(00);
+        //$('#spanDiasPagados').text(00);
       }
       
     }
