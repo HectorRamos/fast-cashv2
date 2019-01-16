@@ -56,7 +56,9 @@
 
                   <div class="pull-left"></div>
                   <div class="pull-right">
-                  <?php 
+                  <?php
+              if (sizeof($datos) != 0)
+                  { 
                     if (isset($si) && $si ==true)
                     {
                   ?>
@@ -69,6 +71,8 @@
                   <?php 
                     if (isset($si) && $si ==true)
                     {
+                    
+                      
                       $contador=0;
                       $inicio = "";
                       $final = "";
@@ -198,7 +202,14 @@
                <br><br><br>
               <p class="text-center"><strong>Nombre o firma del contribuyente </strong>________________________________________________</p>
 
-              <?php } ?>
+              <?php
+                }
+              }
+              else
+              {
+                echo "No hay datos";
+              }
+              ?>
             </div>
               </div>
             </div>
