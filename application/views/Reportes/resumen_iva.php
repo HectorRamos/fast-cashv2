@@ -35,30 +35,43 @@
                 </div>
               </div>
             </div>
-              <div class="">
+              <div class="row" style="padding-left: 50px; padding-right: 50px;">
                 <div class="col-md-12 text-center">
-                    <form class="form-inline" method="post" action="<?= base_url() ?>Reportes/ResumenIva/2">
+                    <form class="form-inline" id="buscrPorFecha" method="post" action="<?= base_url() ?>Reportes/ResumenIva/2">
+                      <div class="margn">
                         <div class="form-group">
-                          <label for="fechaInicio"> Inicio </label>
-                          <input type="text" class="form-control DateTime" name="fechaInicial" id="fechaInicio" placeholder="Fecha inicial" required>
+                          <label for="fechaInicio">Inicio </label>
+                          <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            <input type="text" class="form-control DateTime" name="fechaInicial" id="fechaInicio" placeholder="Fecha inicial" required data-parsley-required-message="Por favor, digite fecha de inicio" data-mask="9999/99/99">
+                          </div>
                         </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="form-group">
-                          <label for="fechaFinal"> Final </label>
-                          <input type="text" class="form-control DateTime" name="fechaFinal" id="fechaFinal" placeholder="Fecha final" required>
+                          <label for="fechaFinal">Final </label>
+                          <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            <input type="text" class="form-control DateTime" name="fechaFinal" id="fechaFinal" placeholder="Fecha final" required data-parsley-required-message="Por favor, digite fecha final" data-mask="9999/99/99">
+                          </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Buscar</button>
-                      </form>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                        <a href="<?= base_url();?>Reportes/ResumenIva/1" class="btn btn-warning refres"><i class="fa fa-refresh"></i></a>
+                      </div>
+                    </form>
                   </div>
               </div> <br>  
             <div class="panel-body">
+            <?php
+              if (isset($datos) && sizeof($datos) != 0)
+                  { 
+                  ?>
               <div class="margn">
                 <div class="">
 
                   <div class="pull-left"></div>
                   <div class="pull-right">
                   <?php
-              if (sizeof($datos) != 0)
-                  { 
                     if (isset($si) && $si ==true)
                     {
                   ?>
@@ -204,14 +217,17 @@
 
               <?php
                 }
-              }
-              else
-              {
-                echo "No hay datos";
-              }
               ?>
             </div>
               </div>
+              <?php
+    
+              }
+              else
+              {
+               echo '<div class="alert alert-info"><strong><h4 class="text-center">No hay datos que mostrar !!!</h4></strong><p class="text-center">Por favor, digite un rango de fecha para ver el informe.</p></div>';
+              }
+              ?>
             </div>
             </div>
           </div>
@@ -225,6 +241,15 @@
 <!-- ============================================================== -->
 
 <script>
+
+    $(document).ready(function(){
+      $('#buscrPorFecha').parsley().on('field:validated', function() {
+        var ok = $('.parsley-error').length === 0;
+        $('.bs-callout-info').toggleClass('hidden', !ok);
+        $('.bs-callout-warning').toggleClass('hidden', ok);
+      });
+    });
+    
     function imprimirTabla()
     {
       // $(".ocultarImprimir").hide();

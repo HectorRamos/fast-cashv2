@@ -165,7 +165,7 @@
                                     } 
                                     else
                                     {
-                                        echo '<p><strong><h4 class="text-danger text-center">No hay datos que mostrar !!!</h4></strong></p>';
+                                    echo '<div class="alert alert-danger"><strong><h4 class="text-center">No hay datos que mostrar !!!</h4></strong><p class="text-center">Por favor, digite un rango de fecha valido ver el informe.</p></div>';
                                     }
                                   ?>
 
