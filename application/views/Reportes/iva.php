@@ -36,19 +36,30 @@
                 </div>
               </div>
             </div>
-              <div class="">
+              <div class="row" style="padding-left: 50px; padding-right: 50px;">
                 <div class="col-md-12 text-center">
-                    <form class="form-inline" method="post" action="<?= base_url() ?>Reportes/ReporteIva/2">
+                    <form class="form-inline" id="buscrPorFecha" method="post" action="<?= base_url() ?>Reportes/ReporteIva/2">
+                      <div class="margn">
                         <div class="form-group">
-                          <label for="fechaInicio"> Inicio </label>
-                          <input type="text" class="form-control DateTime" name="fechaInicial" id="fechaInicio" placeholder="Fecha inicial" required>
+                          <label for="fechaInicio">Inicio </label>
+                          <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            <input type="text" class="form-control DateTime" name="fechaInicial" id="fechaInicio" placeholder="Fecha inicial" required data-parsley-required-message="Por favor, digite fecha de inicio" data-mask="9999/99/99">
+                          </div>
                         </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="form-group">
-                          <label for="fechaFinal"> Final </label>
-                          <input type="text" class="form-control DateTime" name="fechaFinal" id="fechaFinal" placeholder="Fecha final" required>
+                          <label for="fechaFinal">Final </label>
+                          <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            <input type="text" class="form-control DateTime" name="fechaFinal" id="fechaFinal" placeholder="Fecha final" required data-parsley-required-message="Por favor, digite fecha final" data-mask="9999/99/99">
+                          </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Buscar</button>
-                      </form>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                        <a href="<?= base_url();?>Reportes/ReporteIva/1" class="btn btn-warning refres"><i class="fa fa-refresh"></i></a>
+                      </div>
+                    </form>
                   </div>
               </div> <br>  
             <div class="panel-body">
@@ -262,6 +273,14 @@
 <!-- ============================================================== -->
 
 <script>
+    $(document).ready(function(){
+      $('#buscrPorFecha').parsley().on('field:validated', function() {
+        var ok = $('.parsley-error').length === 0;
+        $('.bs-callout-info').toggleClass('hidden', !ok);
+        $('.bs-callout-warning').toggleClass('hidden', ok);
+      });
+    });
+
     function imprimirTabla()
     {
       // $(".ocultarImprimir").hide();
