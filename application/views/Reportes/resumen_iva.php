@@ -109,6 +109,9 @@
                       }
                   ?>
             <div id="tablaImprimir">
+              <div class="mos" style="position: absolute; background-size: 100% 100%; filter:alpha(opacity=25); filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0.5); opacity:.25; left:100px; top:220px; display: none;">
+                <img src="<?= base_url() ?>plantilla/images/fc_logoR.png">
+              </div>
               <div class="row" id="encabezado">
                 <div class="col-md-12">
                   <div class="col-md-4 col-md-push-2 pull-left">
@@ -253,6 +256,7 @@
     function imprimirTabla()
     {
       // $(".ocultarImprimir").hide();
+      $(".mos").show();
       var elemento=document.getElementById('tablaImprimir');
       var pantalla=window.open(' ','popimpr');
 
@@ -268,6 +272,7 @@
         pantalla.print();
         pantalla.close();
       };
+      $(".mos").hide();
        $(".ocultarImprimir").show();
     }
 </script>
