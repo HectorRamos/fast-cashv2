@@ -91,9 +91,11 @@
                 <div class="margn">
                 <form id="DProcesoCC2" method="post" action="<?= base_url() ?>CajaChica/GuardarProcesoCC" autocomplete="off">
                     <div class="row">
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-4">
+                        <div class="mar_che_cobrar2" style="padding-bottom: 10px;">
                             <label for="fecha_proceso">Fecha de apertura</label>
                             <input type="text" value="<?= $caja->fechaCajaC ?>" class="form-control" id="" name="" placeholder="Fecha apertura de caja chica" data-mask="9999/99/99">
+                        </div>
                       </div>
                     </div>
                     <div class="row">

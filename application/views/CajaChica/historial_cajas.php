@@ -33,13 +33,17 @@
               </div>
             </div>
             <div class="panel-body">
-            <div class="row text-center">
-               <div class="btn-group">
-                <button type="button" class="btn btn-primary" id="btnCG"><strong>Caja general</strong></button>
-                <button type="button" class="btn btn-default" id="btnCC"><strong>Caja chica</strong></button>
-              </div> 
-            </div>
-
+                <div class="row" align="center">
+                  <div class="col-md-12" align="center">
+                    <div class="margn">
+                     <div class="btn-group">
+                      <button type="button" class="btn btn-primary" id="btnCG"><strong><i class="fa fa-id-card fa-lg"></i> Caja general</strong></button>
+                      <button type="button" class="btn btn-default" id="btnCC"><strong><i class="fa fa-address-card-o fa-lg"></i> Caja chica</strong></button>
+                     </div> 
+                   </div>
+                </div>
+              </div>
+              <br>
             <!-- Inicio caja general -->
       				<div class="row" id="CG">
                 <div class="col-md-12 col-sm-12 col-xs-12">
