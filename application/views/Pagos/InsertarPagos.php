@@ -54,7 +54,6 @@
     }
     else{
       ?>
-
       <div class="row">
         <div class="col-md-12">
           <div class="panel panel-default">
@@ -62,7 +61,7 @@
               <div class="table-title">
                 <div class="row">
                   <div class="col-md-5">
-                    <h3 class="panel-title">Pago de créditos populares</h3>                 
+                    <h3 class="panel-title">Pago de créditos pulares</h3>                 
                   </div>
                 </div>
               </div>
@@ -76,7 +75,7 @@
                   <?php 
                   foreach ($caja->result() as $caja) {
                   }
-                  ?>
+                  ?>                  
                   <input type="hidden" name="idCajaChica" value="<?php echo $caja->idCajaChica?>">
                   <input type="hidden" name="fechaCajaChica" value="<?= $caja->fechaCajaChica?>">
                   <input type="hidden" name="cantidadApertura" value="<?= $caja->cantidadApertura?>">
@@ -165,7 +164,7 @@
                                 <div class="col-md-6" style="font-size: 1.4rem;">
                                         <input type="hidden" id="capitalPendiente1" name="capitalPendiente1">
                                         <label style="background: #F2D7D5; color: #000;  padding: 5px; border-radius: 5px;">Capital pendiente: <span style="font-weight: normal;">$&nbsp;<span id="spanCapitalPendiente1"></span></span></label>
-                                        <input type="hidden" name="pagoReal" id="pagoReal">
+                                        <input type="text" name="pagoReal2" id="pagoReal2">
                                 </div> 
                                 <div class="col-md-6" style="font-size: 1.4rem;">
                                         <input type="hidden" id="interesPendiente1" name="interesPendiente1">
@@ -324,7 +323,8 @@
                             
                             <div class="row" style="margin-top: 50px;">
                               <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
-                                  <input type="hidden" id="totalAbonado" name="totalAbonado" >
+                                  <input type="text" id="totalAbonado" name="totalAbonado" >
+
                                   <label class="mostrLabel">Total abonado:&nbsp;</label>
                                   <label class="label label-success" style="font-weight: normal; font-size: 1.6rem;">$ <span id="spanTotalAbonado">00.00</span></label>
                               </div>
@@ -618,6 +618,7 @@ $(document).on('ready', function(){
         var diasp=Math.round(dias/(1000*60*60*24));
         $('#diasPagados').val(diasp);
         $('#spanDiasPagados').text(diasp);
+        //alert('dias pagados');
         //$('#diasPagados').val(00);
         //$('#spanDiasPagados').text(00);
       } 
@@ -634,7 +635,7 @@ $(document).on('ready', function(){
   //FUNCION PARA HACER LOS DEMAS CALCULOS----------------------
   $('#totalPago').on('keyup', function(){
     calculos();
-    //calcularMora();
+    calcularMora();
     
   })
 });//cierre de la funcion principal
@@ -648,6 +649,7 @@ function calculos(){
     var diaspa = $('#diasPagados').val();
     var tasa = $('#tasa').val();
     var capitalpendiente1 = $('#capitalPendiente1').val();
+    var recargoMora = $('#cobroMora').val();
     if(totalp ==""){
       //alert('campo para pagos vacio')
        $('#iva').val(0);
@@ -699,17 +701,16 @@ function calculos(){
       }
       else{
          var tasaI = tasa/100;
-        //var TasaInteresDiario= tasaI/30;
-        //var totalInteres = TasaInteresDiario*(capitalPendiente)*diaspa;
+         console.log("tasa en decimales"+tasaI);
 
         var Interes=(capitalPendiente*diaspa*tasaI)/(30*plazoMeses);
+        console.log("INteres"+Interes);
         var iva = Interes*0.13;
-        //alert(30*plazoMeses);
-        //alert("Interes:"+Interes+" Iva: "+iva+"tasa: "+tasaI);
+
         var Interesp = parseFloat($('#interesPendiente1').val());
         var totalInteres = Interesp+Interes;
 
-        var abonoCapital = totalp-totalInteres-iva;
+        var abonoCapital = totalp-totalInteres-iva-recargoMora;
 
         if(abonoCapital<0){
           abonoCapital=0;
@@ -721,6 +722,7 @@ function calculos(){
         else{
           $('#interesP').val(0);
           $('#spanInteresP').text(0);
+
         }
         $('#iva').val(iva.toFixed(4));
         $('#spanIva').text(iva.toFixed(4));
@@ -737,33 +739,32 @@ function calculos(){
         var newAbono = abonoCapital+parseFloat(ta);
         $('#totalAbonado').val(newAbono.toFixed(4));
         $('#spanTotalAbonado').text(newAbono.toFixed(4));
-        $('#pagoReal').val(totalp);
+        $('#pagoReal2').val(totalp);
         $('#vuelto').val(0);
         $('#spanVuelto').text(0);
        if(parseFloat($('#totalAbonado').val()) >= parseFloat($('#capital').val())){
           var abono = $('#totalAbonado').val();
           var vuelto;
           var capitalPend = $('#capitalPendiente1').val();
-          vuelto = abonoCapital - capitalPend;
+          vuelto = abonoCapital.toFixed(4) - capitalPend;
           var newAbonoCApital = abonoCapital-vuelto;
           var newCapitalPendiente=capitalPend - newAbonoCApital;
           var ab= $('#totalAb').val();
           var newTotalAbono= newAbonoCApital + parseFloat(ab); 
-          $('#abonoCapital').val(newAbonoCApital);
-          $('#spanAbonoCapital').text(newAbonoCApital);
+          $('#abonoCapital').val(newAbonoCApital.toFixed(4));
+          $('#spanAbonoCapital').text(newAbonoCApital.toFixed(4));
           $('#vuelto').val(vuelto.toFixed(4));
           $('#spanVuelto').text(vuelto.toFixed(4));
-          $('#capitalP').val(newCapitalPendiente);
-          $('#spanCapitalP').text(newCapitalPendiente);
-          $('#totalAbonado').val(newTotalAbono);
-          $('#spanTotalAbonado').text(newTotalAbono);
-          $('#pagoReal').val(parseFloat(newAbonoCApital)+parseFloat(Interes)+parseFloat(iva));
+          $('#capitalP').val(newCapitalPendiente.toFixed(4));
+          $('#spanCapitalP').text(newCapitalPendiente.toFixed(4));
+          $('#totalAbonado').val(newTotalAbono.toFixed(4));
+          $('#spanTotalAbonado').text(newTotalAbono.toFixed(4));
+          $('#pagoReal2').val(parseFloat(newAbonoCApital.toFixed(4))+parseFloat(Interes.toFixed(4))+parseFloat(iva.toFixed(4)));
           swal("Mensaje de notificación!", "El credito seria saldado con este pago");
         }
       } 
       //alert('asas');
     }
-
 }
 
 function calcularMora(){
@@ -774,7 +775,8 @@ function calcularMora(){
   var diaspa = $('#diasPagados').val();
   var diasMora2= $('#diasMora').val();
   var tasa = $('#tasa').val();
-  if(diaspa!=0){
+  if(diaspa!=0 && diasMora2!=0){
+    //alert('cobramos mora');
     var capitalpendiente1 = $('#capitalPendiente1').val();
     var tasaI = tasa/100;
     var dias = diaspa - diasMora2;
@@ -787,18 +789,18 @@ function calcularMora(){
     var mora = sumatoria * 0.05 * diasMora2;
     var moraTotal = parseFloat(sumatoria)+parseFloat(mora);
     //alert('recargo por mora: '+mora+' total a pagar '+moraTotal);
-    $('#cobroMora').val(mora);
-    $('#spanCobroMora').text(mora);
+    $('#cobroMora').val(mora.toFixed(4));
+    $('#spanCobroMora').text(mora.toFixed(4));
     $('#diasPagados').val(dias);
     $('#spanDiasPagados').text(dias);
 
   }
-
-    
-    
+  else{
+    //alert('No cobramos mora');
+  }   
 }
 
-    function limpiar(){
+function limpiar(){
         $('#idCredito').val("");
         $('#fechaPago').val("");
         $('#totalPago').val("");
@@ -810,6 +812,4 @@ function calcularMora(){
         $('#spanVuelto').text("00.00");
         $('#spanTotalAbonado').text("00.00");
     }
-  
 </script>
-

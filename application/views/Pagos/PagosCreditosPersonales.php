@@ -470,7 +470,17 @@ $(document).on('ready', function(){
               $('#DivDatosPagos').show('fast/1000');
               $('#spanInteresPendiente').text(registro[i]['i']);
               $('#interesPendiente1').val(registro[i]['i']);
+              var fechaProximoPago = registro[i]['fechaProximoPago']
               plazoMeses =registro[i]['plazoMeses'];
+ 
+              var dt = new Date(fechaProximoPago); 
+              alert(dt)
+              var dayOfMonth = dt.getMonth();
+              dt.setMonth(dayOfMonth + 1);
+              var month = dt.getMonth()+1;
+              var day = dt.getDate();
+              var year = dt.getFullYear();
+              alert('fecha'+ month+ '-'+day+'-'+year)
               //alert(plazoMeses);
 
           }
@@ -506,6 +516,31 @@ $(document).on('ready', function(){
                     $('#spanInteresPendiente').text(registro[i]['interesPendiente']);
                     $('#interesPendiente1').val(registro[i]['interesPendiente']);
                     plazoMeses =registro[i]['plazoMeses'];
+                    //sacando fechas
+                    var d = new Date();
+                    var month = d.getMonth()+1;
+                    var day = d.getDate();
+                    var output = d.getFullYear() + '-' +
+                    (month<10 ? '0' : '') + month + '-' +
+                    (day<10 ? '0' : '') + day;
+                    alert(output);
+                   var dt = new Date(registro[i]['fechaApertura']); 
+                   alert(dt)
+                    var dayOfMonth = dt.getMonth();
+                    dt.setMonth(dayOfMonth + 1);
+                    var month = dt.getMonth()+1;
+                    var day = dt.getDate();
+                    var year = dt.getFullYear();
+                    var fechaP = year + '-' +
+                    (month<10 ? '0' : '') + month + '-' +
+                    (day<10 ? '0' : '') + day;
+                    alert('fecha'+ fechaP)
+
+
+                    //Calculando si esta en mora 
+
+                    
+
                     //alert(plazoMeses);
                 }//fin del for
             }//fin del if

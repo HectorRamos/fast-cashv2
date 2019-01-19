@@ -8,12 +8,13 @@ class Pagos_Model extends CI_Model{
 	public function InsertarPago($datos=null){
 		if($datos!=null){
 			$data  = array(
-				'totalPago' => $datos['pagoReal'],
+				'totalPago' => $datos['pagoReal2'],
 				'iva'=>$datos['iva'],
 				'interes'=>$datos['interes'],
 				'abonoCapital'=>$datos['abonoCapital'],
 				'capitalPendiente'=>$datos['capitalPendiente'],
 				'diasPagados'=>$datos['diasPagados'],
+				'mora'=>$datos['cobroMora'],
 				'fechaPago'=>$datos['fechaPago'],
 				'estado'=>1,
 				'idCredito'=>$datos['idCredito']
