@@ -33,7 +33,7 @@
 				<div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                       <div class="margn">
-                        <table id="datatable" class="table">
+                        <table id="" class="table">
                           <thead class="thead-dark thead thead1">
                             <tr class="tr tr1">
                               <th class="th th1" scope="col">Detalle</th>
@@ -52,16 +52,16 @@
             									if ($cajaChica->idTipoPago==1)
             									{
             										if ($cajaChica->salida != 0)
-            	                                	{
-            											$efectivo = $efectivo - $cajaChica->salida;
-            	                                	}
-            	                                	else
-            	                                	{
-            	                                		if ($cajaChica->entrada != 0)
-            	                                		{
-            												$efectivo = $efectivo + $cajaChica->entrada;
-            	                                		}
-            	                                	}
+            	                     {
+            											   $efectivo = $efectivo - $cajaChica->salida;
+            	                     }
+                                	else
+                                	{
+                                		if ($cajaChica->entrada != 0)
+                                		{
+											                 $efectivo = $efectivo + $cajaChica->entrada;
+                                		}
+                                	}
             									}
             									else
             									{

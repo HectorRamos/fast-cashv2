@@ -27,7 +27,7 @@
         <div class="col-md-12">
           <ol class="breadcrumb pull-right">
             <li><a href="<?= base_url() ?>Home/Main">Inicio</a></li>
-            <li class="active">Caja chica</li>
+            <li class="active">Caja general</li>
           </ol>
         </div>
       </div>
@@ -39,7 +39,7 @@
               <div class="table-title">
                 <div class="row">
                   <div class="col-md-5">
-                    <h3 class="panel-title">Caja chica</h3>                 
+                    <h3 class="panel-title">Caja general</h3>                 
                   </div>
                 </div>
               </div>
@@ -58,11 +58,11 @@
                     <div class="row">
                       <div class="form-group col-md-6">
                             <label for="fecha_apertura">Fecha</label>
-                            <input type="text" class="form-control DateTime" id="fecha_apertura" name="fecha_apertura" placeholder="Fecha de recibido del prestamo" data-mask="9999/99/99">
+                            <input type="text" class="form-control DateTime" id="fecha_apertura" name="fecha_apertura" placeholder="Fecha apertura de caja general" data-mask="9999/99/99">
                       </div>
                       <div class="form-group col-md-6">
                             <label for="cantidad_apertura">Cantidad de apertura</label>
-                            <input type="text"  class="form-control validaDigit" id="cantidad_apertura" name="cantidad_apertura" placeholder="Tasa de interes del prestamo">
+                            <input type="text"  class="form-control validaDigit" id="cantidad_apertura" name="cantidad_apertura" placeholder="Cantidad con la que se apertura">
                       </div>
                     </div>
                   </div>
@@ -134,11 +134,11 @@
                     <button type="submit" class="btn btn-success waves-effect waves-light m-d-5"><i class="fa fa-save fa-lg"></i> Guardar</button>
               </form>
                  <!-- Inicio cerrar caja -->
-                <form method="post" action="<?= base_url() ?>CajaChica/CerrarCajaChica/">
+                <form method="post" action="<?= base_url() ?>CajaChica/CerrarCajaGeneral/">
                       <input type="hidden" value="<?= $caja->fechaCajaChica ?>" class="form-control" id="fecha_cc" name="fecha_cc" placeholder="Fecha de recibido del prestamo">
                       <input type="hidden" value="<?= $caja->idCajaChica ?>" class="form-control" id="id_cc" name="id_cc" placeholder="Fecha de recibido del prestamo">
                       <input type="hidden" value="<?= $caja->saldo ?>" class="form-control" id="saldo_cc" name="saldo_cc" placeholder="Fecha de recibido del prestamo">
-                      <button href="" class="btn btn-danger waves-effect waves-light m-d-5" style="position: absolute; margin-left: 105px; margin-top: -34px;"><i class=" fa fa-close fa-lg"></i> Cerrar caja chica</button>
+                      <button href="" class="btn btn-danger waves-effect waves-light m-d-5" style="position: absolute; margin-left: 105px; margin-top: -34px;"><i class=" fa fa-close fa-lg"></i> Cerrar caja general</button>
                 </form>
                 <!-- Fin cerrar caja -->
                </div>
