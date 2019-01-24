@@ -80,6 +80,7 @@
                   <input type="hidden" name="idCajaChica" value="<?php echo $caja->idCajaChica?>">
                   <input type="hidden" name="fechaCajaChica" value="<?= $caja->fechaCajaChica?>">
                   <input type="hidden" name="cantidadApertura" value="<?= $caja->cantidadApertura?>">
+                  <input type="hidden" name="saldo" value="<?= $caja->saldo?>">
                   <!--FIN DE LOS CAMPOS OCULTOS-->
                     <div class="form-group col-sm-6">
                       <div style="margin-top: 7px;">
@@ -165,7 +166,7 @@
                                 <div class="col-md-6" style="font-size: 1.4rem;">
                                         <input type="hidden" id="capitalPendiente1" name="capitalPendiente1">
                                         <label style="background: #F2D7D5; color: #000;  padding: 5px; border-radius: 5px;">Capital pendiente: <span style="font-weight: normal;">$&nbsp;<span id="spanCapitalPendiente1"></span></span></label>
-                                        <input type="hidden" name="pagoReal" id="pagoReal">
+                                        <input type="text" name="pagoReal2" id="pagoReal2">
                                 </div> 
                                 <div class="col-md-6" style="font-size: 1.4rem;">
                                         <input type="hidden" id="interesPendiente1" name="interesPendiente1">
@@ -288,6 +289,7 @@
                             <div class="row">
                               <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
                                   <input type="hidden" id="vuelto" name="vuelto" >
+                                  <input type="hidden" id="cobroMora" name="cobroMora" >
                                   <label class="mostrLabel">Vuelto:&nbsp;</label>
                                   <label class="label label-default"style="background: #F0F4C3; color: #000; font-weight: normal;">$ <span id="spanVuelto">00.00</span></label>
                               </div>
@@ -686,7 +688,7 @@ function calculos(){
         var newAbono = abonoCapital+parseFloat(ta);
         $('#totalAbonado').val(newAbono.toFixed(4));
         $('#spanTotalAbonado').text(newAbono.toFixed(4));
-        $('#pagoReal').val(totalp);
+        $('#pagoReal2').val(totalp);
         $('#vuelto').val(0);
         $('#spanVuelto').text(0);
        if(parseFloat($('#totalAbonado').val()) >= parseFloat($('#capital').val())){
@@ -706,7 +708,7 @@ function calculos(){
           $('#spanCapitalP').text(newCapitalPendiente);
           $('#totalAbonado').val(newTotalAbono);
           $('#spanTotalAbonado').text(newTotalAbono);
-          $('#pagoReal').val(parseFloat(newAbonoCApital)+parseFloat(Interes)+parseFloat(iva));
+          $('#pagoReal2').val(parseFloat(newAbonoCApital)+parseFloat(Interes)+parseFloat(iva));
           swal("Mensaje de notificación!", "El credito seria saldado con este pago");
         }
       } 

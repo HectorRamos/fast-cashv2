@@ -38,7 +38,7 @@ class Pagos_Model extends CI_Model{
 				$id = $datos['idCredito'];
 				if($this->db->query($sql)){
 					//return true;
-					$saldo = $datos['cantidadApertura']+$datos['pagoReal'];
+					$saldo = $datos['saldo']+$datos['pagoReal'];
 						$caja  = array(
 							'detalleProceso' =>'Pago de credito del cliente '.$datos['Cliente'],
 							'fechaProceso'=>$datos['fechaCajaChica'],
@@ -47,7 +47,7 @@ class Pagos_Model extends CI_Model{
 							'idCajaChica'=>$datos['idCajaChica'],
 							'idTIpoPago'=>1
 							 );
-						if($this->db->insert('tbl_cajachica_procesos', $caja)){
+						if($this->db->insert('tbl_cajageneral_procesos', $caja)){
 							return true;
 						}
 						else{
