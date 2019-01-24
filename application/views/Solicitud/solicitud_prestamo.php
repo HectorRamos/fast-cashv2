@@ -184,7 +184,16 @@
                             <input type="text" class="form-control validaDigit" id="intereses_pagar" name="intereses_pagar" placeholder="Plazo de tiempo">
                       </div>
                       <div class="form-group col-md-3">
-                            <label for="">Cuota diaria</label>
+                            <?php 
+                              if ($tipoSolicitud == 1)
+                                {
+                                  echo '<label for="">Cuota diaria</label>';
+                                }
+                                else
+                                {
+                                  echo '<label for="">Cuota mensual</label>';
+                                }
+                            ?>
                             <input type="text" class="form-control validaDigit" id="cuota_diaria" name="cuota_diaria" placeholder="Interes diario">
                       </div>
                       <div class="form-group col-md-3">
@@ -609,10 +618,12 @@ function calcularIntereses()
   else
   {
       numeroDePagos = (meses*12);
-      totalInteresesAPagar = montoDinero * tasaInteres;
+      tasaMensual= (tasaInteres)/numeroDePagos;
+      power = Math.pow((1+tasaMensual), numeroDePagos);
+      cuotaDiaria = (montoDinero * tasaMensual * power)/(power - 1);
+      totalInteresesAPagar = (cuotaDiaria*numeroDePagos)-montoDinero;
       totalIvaAPagar = totalInteresesAPagar * 0.13;
       totalAPagar = parseFloat(totalIvaAPagar) + parseFloat(totalInteresesAPagar) + parseFloat(montoDinero);
-      cuotaDiaria = totalAPagar.toFixed(4)/numeroDePagos.toFixed();
   }
 
   // Probando calculos
