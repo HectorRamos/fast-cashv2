@@ -352,6 +352,13 @@ if ($tipoC == "Crédito popular")
 		return $datos;
 	}
 
+	public function actualizarESolicitud($tipo, $id)
+	{
+		$sql = "UPDATE tbl_solicitudes SET tipoCredito='$tipo' WHERE idSolicitud = '$id'";
+		$datos = $this->db->query($sql);
+		return $datos;
+	}
+
 	public function actualizarSolicitud($datos)
 	{
 		// Datos para la solicitud
@@ -637,6 +644,7 @@ if ($tipoC == "Crédito popular")
 			return false;
 		}
 	}
+
 
 }
 
