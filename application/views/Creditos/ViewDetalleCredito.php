@@ -150,6 +150,7 @@
                                         <th class="th th1" scope="col">Total Pago</th>
                                         <th class="th th1" scope="col">IVA</th>
                                         <th class="th th1" scope="col">Interes</th>
+                                        <th class="th th1" scope="col">Recargo por mora</th>
                                         <th class="th th1" scope="col">Abono a capital</th>
                                         <th class="th th1" scope="col">Capital pendiente</th>
                                         <th class="th th1" scope="col">Días pagados</th>
@@ -169,6 +170,7 @@
                                       <td class="td td1" data-label="Total Pago">$ <?= $listPagos->totalPago?></td>
                                       <td class="td td1" data-label="IVA">$ <?= $listPagos->iva?></td>
                                       <td class="td td1" data-label="Interes">$ <?= $listPagos->interes?></td>
+                                      <td class="td td1" data-label="Recargo por mora">$ <?= $listPagos->mora?></td>
                                       <td class="td td1" data-label="Abono a capital">$ <?= $listPagos->abonoCapital?></td>
                                       <td class="td td1" data-label="Capital pendiente">$ <?= $listPagos->capitalPendiente?></td>
                                       <td class="td td1" data-label="Dias pagados"><?= $listPagos->diasPagados?></td>

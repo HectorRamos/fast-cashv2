@@ -8,13 +8,15 @@ class Pagos_Model extends CI_Model{
 	public function InsertarPago($datos=null){
 		if($datos!=null){
 			$data  = array(
-				'totalPago' => $datos['pagoReal'],
+				'totalPago' => $datos['pagoReal2'],
 				'iva'=>$datos['iva'],
 				'interes'=>$datos['interes'],
 				'abonoCapital'=>$datos['abonoCapital'],
 				'capitalPendiente'=>$datos['capitalPendiente'],
 				'diasPagados'=>$datos['diasPagados'],
+				'mora'=>$datos['cobroMora'],
 				'fechaPago'=>$datos['fechaPago'],
+				'fechaProximoPago'=>$datos['fechaProximoPago'],
 				'estado'=>1,
 				'idCredito'=>$datos['idCredito']
 			 );
@@ -37,7 +39,7 @@ class Pagos_Model extends CI_Model{
 				$id = $datos['idCredito'];
 				if($this->db->query($sql)){
 					//return true;
-					$saldo = $datos['cantidadApertura']+$datos['pagoReal'];
+					$saldo = $datos['saldo']+$datos['pagoReal'];
 						$caja  = array(
 							'detalleProceso' =>'Pago de credito del cliente '.$datos['Cliente'],
 							'fechaProceso'=>$datos['fechaCajaChica'],
@@ -46,7 +48,7 @@ class Pagos_Model extends CI_Model{
 							'idCajaChica'=>$datos['idCajaChica'],
 							'idTIpoPago'=>1
 							 );
-						if($this->db->insert('tbl_cajachica_procesos', $caja)){
+						if($this->db->insert('tbl_cajageneral_procesos', $caja)){
 							return true;
 						}
 						else{

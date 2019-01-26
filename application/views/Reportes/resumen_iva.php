@@ -204,7 +204,7 @@
                     </tr>
                     <tr class="text-center">
                       <td colspan="3"><strong>(-) Iva retenido</strong></td>
-                      <td colspan="2">$000</td>
+                      <td colspan="2">$ 0.00</td>
                       <td colspan="4"></td>
                     </tr>
                     <tr class="text-center">

@@ -21,6 +21,7 @@ class Reportes extends CI_Controller {
 		$this->load->view('Reportes/general', $data);
 		$this->load->view('Base/footer');
 	}
+	
 	public function ReporteGeneralPDF()
 	{
 	$datos = $this->Creditos_Model->ObtenerCreditos();
