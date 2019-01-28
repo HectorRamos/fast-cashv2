@@ -549,10 +549,12 @@
                     <div class="form-group col-md-4">
                           <label for="nombre_fiador">Nombre</label>
                           <input type="text" class="form-control" id="nombre_fiador" name="nombre_fiador" placeholder="Nombre del fiador">
+                          <input type="hidden" class="form-control" value="<?= $solicitud->tipoCredito ?>" id="tipoPInicial">
                     </div>
                     <div class="form-group col-md-4">
                           <label for="apellido_fiador">Apellido</label>
                           <input type="text" class="form-control" id="apellido_fiador" name="apellido_fiador" placeholder="Apellido del fiador">
+                          <input type="hidden" class="form-control tipoPFinal" name="tipoPrestamo" placeholder="">
                     </div>
                     <div class="form-group col-md-4">
                           <label for="dui_fiador">DUI</label>
@@ -706,6 +708,7 @@
                     <div class="form-group col-md-6">
                           <label for="nombre_prenda">Nombre de la prenda</label>
                           <input type="text" class="form-control" id="nombre_prenda" name="nombre_prenda" placeholder="Nombre de la prenda">
+                          <input type="hidden" class="form-control tipoPFinal" name="tipoPrestamo" placeholder="">
                     </div>
                     <div class="form-group col-md-6">
                           <label for="precio_valorado">Precio valorado</label>
@@ -797,6 +800,7 @@
                     <div class="form-group col-md-6">
                           <label for="nombre_hipoteca">Nombre de la hipoteca</label>
                           <input type="text" class="form-control" id="nombre_hipoteca" name="nombre_hipoteca" placeholder="Nombre de la hipoteca">
+                          <input type="hidden" class="form-control tipoPFinal" name="tipoPrestamo" placeholder="">
                     </div>
                     <div class="form-group col-md-6">
                           <label for="precio_hipoteca">Precio valorado de la hipoteca</label>
@@ -874,6 +878,18 @@
 
 
 <script>
+  $(document).on("ready", main);
+  function main()
+  {
+    prestamo = $("#tipoPInicial").val();
+
+    separador = " ";
+    datos = prestamo.split(separador);
+    dato = datos[1];
+    $(".tipoPFinal").attr("value", dato);
+  }
+
+
   function Update(id){
       document.getElementById('IdP').value=id;
     }

@@ -228,8 +228,43 @@ class Solicitud extends CI_Controller {
 	{
 		$datos = $this->input->post();
 		$id = $datos["id_solicitud"];
+		$tipo = $datos["tipoPrestamo"];
+
 		$bool = $this->Solicitud_Model->AgregarFiador($datos);
+		
+		$tipoPrestamo = "";
+		$F = $this->Solicitud_Model->ObtenerFiadores($id)->result(); // Obtener fiadores de esta solicitud
+		$P = $this->Solicitud_Model->ObtenerGarantias($id)->result();; // Obtener prendas de esta solicitud
+		$H = $this->Solicitud_Model->ObtenerHipoteca($id)->result();; // Obtener hipocas de esta solicitud
+
+		if ($tipo == "popular")
+		{
+			if (sizeof($F) >= 0 && sizeof($P) == 0 && sizeof($H) == 0)
+			{
+				$tipoPrestamo = "Credito popular";
+			}
+			else
+			{
+				$tipoPrestamo = "Credito popular mixto";
+			}
+		}
+		else
+		{
+			if ($tipo == "personal")
+			{
+				if (sizeof($F) >= 0 && sizeof($P) == 0 && sizeof($H) == 0)
+				{
+					$tipoPrestamo = "Credito personal";
+				}
+				else
+				{
+					$tipoPrestamo = "Credito personal mixto";
+				}
+			}	
+		}
+
 		if($bool){
+				$this->Solicitud_Model->actualizarESolicitud($tipoPrestamo, $id); //actualizando estado
 				$this->session->set_flashdata("guardar","El fiador a sido <b>agregado</b> con éxito.");
 				redirect(base_url()."Solicitud/DetalleSolicitud/".$id); 
 		}
@@ -261,7 +296,40 @@ class Solicitud extends CI_Controller {
 		$datos = $this->input->post();
 		$id = $datos["id_solicitud"];
 		$bool = $this->Solicitud_Model->AgregarPrenda($datos);
+		$tipo = $datos["tipoPrestamo"];
+		$tipoPrestamo = "";
+		$F = $this->Solicitud_Model->ObtenerFiadores($id)->result(); // Obtener fiadores de esta solicitud
+		$P = $this->Solicitud_Model->ObtenerGarantias($id)->result();; // Obtener prendas de esta solicitud
+		$H = $this->Solicitud_Model->ObtenerHipoteca($id)->result();; // Obtener hipocas de esta solicitud
+
+		if ($tipo == "popular")
+		{
+			if (sizeof($F) == 0 && sizeof($P) >= 0 && sizeof($H) == 0)
+			{
+				$tipoPrestamo = "Credito popular prendario";
+			}
+			else
+			{
+				$tipoPrestamo = "Credito popular mixto";
+			}
+		}
+		else
+		{
+			if ($tipo == "personal")
+			{
+				if (sizeof($F) == 0 && sizeof($P) >= 0 && sizeof($H) == 0)
+				{
+					$tipoPrestamo = "Credito personal prendario";
+				}
+				else
+				{
+					$tipoPrestamo = "Credito personal mixto";
+				}
+			}	
+		}
+
 		if($bool){
+				$this->Solicitud_Model->actualizarESolicitud($tipoPrestamo, $id); //actualizando estado
 				$this->session->set_flashdata("guardar","La garantia prendaria a sido <b>agregada</b> con éxito.");
 				redirect(base_url()."Solicitud/DetalleSolicitud/".$id); 
 		}
@@ -293,7 +361,42 @@ class Solicitud extends CI_Controller {
 		$datos = $this->input->post();
 		$id = $datos["id_solicitud"];
 		$bool = $this->Solicitud_Model->AgregarHipoteca($datos);
+
+		$tipo = $datos["tipoPrestamo"];
+		$tipoPrestamo = "";
+		$F = $this->Solicitud_Model->ObtenerFiadores($id)->result(); // Obtener fiadores de esta solicitud
+		$P = $this->Solicitud_Model->ObtenerGarantias($id)->result();; // Obtener prendas de esta solicitud
+		$H = $this->Solicitud_Model->ObtenerHipoteca($id)->result();; // Obtener hipocas de esta solicitud
+
+		if ($tipo == "popular")
+		{
+			if (sizeof($F) == 0 && sizeof($P) == 0 && sizeof($H) >= 0)
+			{
+				$tipoPrestamo = "Credito popular hipotecario";
+			}
+			else
+			{
+				$tipoPrestamo = "Credito popular mixto";
+			}
+		}
+		else
+		{
+			if ($tipo == "personal")
+			{
+				if (sizeof($F) == 0 && sizeof($P) == 0 && sizeof($H) >= 0)
+				{
+					$tipoPrestamo = "Credito personal hipotecario";
+				}
+				else
+				{
+					$tipoPrestamo = "Credito personal mixto";
+				}
+			}	
+		}
+
+
 		if($bool){
+				$this->Solicitud_Model->actualizarESolicitud($tipoPrestamo, $id); //actualizando estado
 				$this->session->set_flashdata("guardar","La hipoteca a sido <b>agregada</b> con éxito.");
 				redirect(base_url()."Solicitud/DetalleSolicitud/".$id); 
 		}
