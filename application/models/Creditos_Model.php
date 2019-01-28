@@ -27,5 +27,6 @@ class Creditos_Model extends CI_Model{
 		$datos = $this->db->query($sql);
 		return $datos;
 	}
+	
 }
 ?>
