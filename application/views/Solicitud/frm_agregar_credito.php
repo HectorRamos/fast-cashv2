@@ -260,8 +260,11 @@
 
       // Display the month, day, and year. getMonth() returns a 0-based number.
       // var myDate = new Date("1/1/1990");
+      separador = " ";
+      datos = tipoCre.split(separador);
+      TP = datos[1]; // tipo de credito
 
-      if (tipoCre=="Crédito popular")
+      if (TP=="popular")
       {
         var dayOfMonth = dt.getMonth();
         dt.setMonth(dayOfMonth + meses);
