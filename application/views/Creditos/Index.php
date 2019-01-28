@@ -84,7 +84,46 @@
                                       <td class="td td1" data-label="#" style="min-width: 10px; width: auto;"><b><?= $i;?></b></td>
                                       <td class="td td1" data-label="Código de Cliente"><?= $creditos->Codigo_Cliente?></td>
                                       <td class="td td1" data-label="Cliente"><?= $creditos->Nombre_Cliente?>  <?=  $creditos->Apellido_Cliente?></td>
-                                      <td class="td td1" data-label="Tipo de Crédito"><?= $creditos->tipoCredito?></td>
+
+                                      <?php 
+                                        if ($creditos->tipoCredito == "Crédito popular")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #626567;"><i class="fa fa-id-card-o fa-lg" ></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                        }
+                                        if ($creditos->tipoCredito == "Crédito popular mixto")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #DC7633;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                        }
+                                        if ($creditos->tipoCredito == "Crédito popular prendario")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #0B5345;"><i class="fa fa-id-card-o fa-lg" ></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                        }
+                                        if ($creditos->tipoCredito == "Crédito popular hipotecario")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #2980B9;"><i class="fa fa-id-card-o fa-lg" ></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                        }
+                                        if ($creditos->tipoCredito == "Crédito personal")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #666699;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                          
+                                        }                                        
+                                        if ($creditos->tipoCredito == "Crédito personal hipotecario")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #3F51B5;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                          
+                                        }
+                                        if ($creditos->tipoCredito == "Crédito personal prendario")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #AFB42B;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                          
+                                        }
+                                        if ($creditos->tipoCredito == "Crédito personal mixto")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #9C640C;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                          
+                                        }
+                                      ?>
+
                                       <td class="td td1" data-label="Total a Pagar"><span class="label label-success" style="font-size: 1.2rem; font-family: Arial;">$ <?= $creditos->capital?></span></td>
                                       <td class="td td1" data-label="Total Abonado"><span class="label label-success" style="font-size: 1.2rem; font-family: Arial;">$ <?= $creditos->totalAbonado?></span></td>
                                       <td class="td td1" data-label="Acción" style="min-width: 90px;">
@@ -100,7 +139,45 @@
                                       <td class="td td1" data-label="Código de Cliente"><?= $creditos->Codigo_Cliente?></td>
                                       <td class="td td1" data-label="Cliente"><?= $creditos->Nombre_Cliente?>  <?=  $creditos->Apellido_Cliente?></td>
                                       
-                                      <td class="td td1" data-label="Tipo de Crédito"><?= $creditos->tipoCredito?></td>
+                                      <?php 
+                                        if ($creditos->tipoCredito == "Crédito popular")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #626567;"><i class="fa fa-id-card-o fa-lg" ></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                        }
+                                        if ($creditos->tipoCredito == "Crédito popular mixto")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #DC7633;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                        }
+                                        if ($creditos->tipoCredito == "Crédito popular prendario")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #0B5345;"><i class="fa fa-id-card-o fa-lg" ></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                        }
+                                        if ($creditos->tipoCredito == "Crédito popular hipotecario")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #2980B9;"><i class="fa fa-id-card-o fa-lg" ></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                        }
+                                        if ($creditos->tipoCredito == "Crédito personal")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #666699;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                          
+                                        }                                        
+                                        if ($creditos->tipoCredito == "Crédito personal hipotecario")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #3F51B5;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                          
+                                        }
+                                        if ($creditos->tipoCredito == "Crédito personal prendario")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #AFB42B;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                          
+                                        }
+                                        if ($creditos->tipoCredito == "Crédito personal mixto")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #9C640C;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$creditos->tipoCredito.'<span></td>'; // Poner icono
+                                          
+                                        }
+                                      ?>
+
                                       <td class="td td1" data-label="Total a Pagar"><span class="label label-default" style="font-size: 1.2rem; font-family: Arial;">$ <?= $creditos->capital?></span></td>
                                       <td class="td td1" data-label="Total Abonado"><span class="label label-warning" style="font-size: 1.2rem; font-family: Arial;">$ <?= $creditos->totalAbonado?></span></td>
                                       <td class="td td1" data-label="Acción" style="min-width: 90px;">

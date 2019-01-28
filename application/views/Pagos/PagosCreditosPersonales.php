@@ -107,6 +107,9 @@
                   </div>
                 </div>
                 <br>
+                <div id="alertaSiEnMora" class="alert alert-danger" style="display: none;">
+                  <b>AVISO: </b>El crédito de <span id="spanCliente1" style="text-transform: lowercase; font-weight: bold;"></span> esta en mora y los días a pagar son: <label class="label label-default"><span id="spanDiasMora1">00.00</span></label>
+                </div>
                 <div class="margn">
                   <div id="AlertNada" class="alert alert-info" role="alert">
                     <div class="row">
@@ -171,14 +174,14 @@
                                 </div> 
                                 <div class="col-md-6" style="font-size: 1.4rem;">
                                         <input type="hidden" id="interesPendiente1" name="interesPendiente1">
-                                        <label style="background: #F2D7D5; color: #000;  padding: 5px; border-radius: 5px;">Interes pendiente: <span style="font-weight: normal;">$&nbsp;<span id="spanInteresPendiente"></span></span></label>
+                                        <label style="background: #FFCCBC; color: #000;  padding: 5px; border-radius: 5px;">Interes pendiente: <span style="font-weight: normal;">$&nbsp;<span id="spanInteresPendiente"></span></span></label>
                                         
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6" style="font-size: 1.4rem;">
+                                <div class="col-md-12" style="font-size: 1.4rem;">
                                     <input type="hidden" id="fechaProximoPago" name="fechaProximoPago">
-                                    <label style="background: #F2D7D5; color: #000;  padding: 5px; border-radius: 5px;">Fecha de vencimiento de la cuota: <span style="font-weight: normal;">&nbsp;<span id="spanfechaProximoPago"></span></span></label>
+                                    <label style="background: #C5E1A5; color: #000;  padding: 5px; border-radius: 5px;">Fecha de vencimiento de la cuota: <span style="font-weight: normal;">&nbsp;<span id="spanfechaProximoPago"></span></span></label>
                                 </div> 
                             </div>
                           </div>
@@ -197,7 +200,7 @@
                             <div class="col-md-6">
                               <div class="form-group">
                                 <label for="Codigo_Cliente">Total pago</label>
-                                <input type="text" class="form-control" id="totalPago" name="totalPago" placeholder="Digitar pago" required data-parsley-required-message="Por favor, inserte el monto de dinero">
+                                <input type="text" class="form-control validaDigit" id="totalPago" name="totalPago" placeholder="Digitar pago" required data-parsley-required-message="Por favor, inserte el monto de dinero">
                               </div>
                             </div>
                           </div>
@@ -213,43 +216,42 @@
                             </div>
                             <div class="row" style="margin-top: 15px;">
                               <div class="col-md-12" align="right">
-                                <b style="font-size: 1.5rem; color: #990000;">IVA: </b></label>
+                                <b style="font-size: 1.5rem; color: #660000;">IVA: </b></label>
                               </div>
                             </div>
                             <div class="row" style="margin-top: 13px;">
                               <div class="col-md-12" align="right">
-                                <b style="font-size: 1.5rem; color: #990000;">Interes: </b>
+                                <b style="font-size: 1.5rem; color: #660000;">Interes: </b>
                               </div>
                             </div>
                             <div class="row" style="margin-top: 14px;">
                               <div class="col-md-12" align="right">
-                                <b style="font-size: 1.5rem; color: #990000;">Abono a capital: </b>
+                                <b style="font-size: 1.5rem; color: #660000;">Abono a capital: </b>
                               </div>
                             </div>
                             <div class="row" style="margin-top: 14px;">
                               <div class="col-md-12" align="right">
-                                <b style="font-size: 1.5rem; color: #990000;">Capital pendiente: </b>
+                                <b style="font-size: 1.5rem; color: #660000;">Capital pendiente: </b>
                               </div>
                             </div>
                             <div class="row" style="margin-top: 14px;">
                               <div class="col-md-12" align="right">
-                                <b style="font-size: 1.5rem;">Dias en mora: </b>
+                                <b style="font-size: 1.5rem;">Nuevo interes pendiente: </b>
+                              </div>
+                            </div>
+                            <div class="row" style="margin-top: 14px;">
+                              <div class="col-md-12" align="right">
+                                <b style="font-size: 1.5rem;">Vuelto: </b>
+                              </div>
+                            </div>
+                            <div class="row" style="margin-top: 14px;">
+                              <div class="col-md-12" align="right">
+                                <b style="font-size: 1.5rem; color: #660000;">Días en mora: </b>
                               </div>
                             </div>
                             <div class="row" style="margin-top: 14px;">
                               <div class="col-md-12" align="right">
                                 <b style="font-size: 1.5rem;">Cobro por mora al 5%: </b>
-                              </div>
-                            </div>
-                             <div class="row" style="margin-top: 14px;">
-                              <div class="col-md-12" align="right">
-                                <b style="font-size: 1.5rem;">Nuevo interes pendiente: </b>
-                              </div>
-                            </div>
-
-                            <div class="row" style="margin-top: 14px;">
-                              <div class="col-md-12" align="right">
-                                <b style="font-size: 1.5rem;">Vuelto: </b>
                               </div>
                             </div>
                            
@@ -299,26 +301,11 @@
                             </div>
                             <div class="row">
                               <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
-                                  <input type="hidden" id="diasMora" name="diasMora" >
-                                  <label class="mostrLabel">Dias en mora:&nbsp;</label>
-                                  <label class="label label-default"style="background: #F0F4C3; color: #000; font-weight: normal;"> <span id="spanDiasMora">00.00</span></label>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
-                                  <input type="hidden" id="cobroMora" name="cobroMora" >
-                                  <label class="mostrLabel">Cobro por mora al 5%:&nbsp;</label>
-                                  <label class="label label-default"style="background: #F0F4C3; color: #000; font-weight: normal;">$ <span id="spanCobroMora">00.00</span></label>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
                                   <input type="hidden" id="interesP" name="interesPendiente" >
                                   <label class="mostrLabel" style="color: #990000;">Nuevo interes pendiente:&nbsp;</label>
-                                  <label class="label label-default"style="background: #F2D7D5; color: #000; font-weight: normal;">$ <span id="spanInteresP">00.00</span></label>
+                                  <label class="label label-default"style="background: #FFFF99; color: #000; font-weight: normal;">$ <span id="spanInteresP">00.00</span></label>
                               </div>
                             </div>
-                            
                             <div class="row">
                               <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
                                   <input type="hidden" id="vuelto" name="vuelto" >
@@ -326,6 +313,21 @@
                                   <label class="label label-default"style="background: #F0F4C3; color: #000; font-weight: normal;">$ <span id="spanVuelto">00.00</span></label>
                               </div>
                             </div>
+                            <div class="row">
+                              <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
+                                  <input type="hidden" id="diasMora" name="diasMora" >
+                                  <label class="mostrLabel">Dias en mora:&nbsp;</label>
+                                  <label class="label label-default"style="background: #FFCCBC; color: #000; font-weight: normal;">$ <span id="spanDiasMora">00.00</span></label>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
+                                  <input type="hidden" id="cobroMora" name="cobroMora" >
+                                  <label class="mostrLabel">Cobro por mora al 5%:&nbsp;</label>
+                                  <label class="label label-default"style="background: #CCFFCC; color: #000; font-weight: normal;">$ <span id="spanCobroMora">00.00</span></label>
+                              </div>
+                            </div>
+                            
                             <div class="row" style="margin-top: 50px;">
                               <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
                                   <input type="hidden" id="totalAbonado" name="totalAbonado" >
@@ -487,6 +489,7 @@ $(document).on('ready', function(){
           for (var i =0 ; i<registro.length ; i++){
              $('#cliente').val(registro[i]['Nombre_Cliente']+" "+registro[i]['Apellido_Cliente']);
              $('#spanCliente').text(registro[i]['Nombre_Cliente']+" "+registro[i]['Apellido_Cliente']);
+             $('#spanCliente1').text(registro[i]['Nombre_Cliente']+" "+registro[i]['Apellido_Cliente']);
              $('#capital').val(registro[i]['capital']);
              $('#spanCapital').text(registro[i]['capital']);
              $('#tasa').val(registro[i]['tasaInteres']);
@@ -518,12 +521,14 @@ $(document).on('ready', function(){
                   (day<10 ? '0' : '') + day;
               //COMPROBANDO SI HAY MORA
               if(Date.parse(output)<Date.parse(fechaProximoPago)){
-                      alert('el credito no esta en mora');
+                      // alert('el credito no esta en mora');
                     //alert('fecha proximo pago'+ fechaP);
                     //Calculando si esta en mora 
+                    $('#alertaSiEnMora').hide('fast/1000');
                     }
               else{
-                alert('El credito esta en mora');
+                // alert('El credito esta en mora');
+                $('#alertaSiEnMora').show('fast/1000');
                 //sacando los dias que hay en mora
                 var fechaIncicio = new Date(fechaProximoPago).getTime();
                 var fechaFin = new Date(output).getTime();
@@ -532,6 +537,7 @@ $(document).on('ready', function(){
                 
                 $('#diasMora').val(diasMora);
                 $('#spanDiasMora').text(diasMora);
+                $('#spanDiasMora1').text(diasMora);
                 calcularMora();
                 }
               //SACANDO LA PROXIMA FECHA DE PAGO
@@ -562,6 +568,7 @@ $(document).on('ready', function(){
                 for (var i =0 ; i<registro.length ; i++){
                   $('#cliente').val(registro[i]['Nombre_Cliente']+" "+registro[i]['Apellido_Cliente']);
                   $('#spanCliente').text(registro[i]['Nombre_Cliente']+" "+registro[i]['Apellido_Cliente']);
+                  $('#spanCliente1').text(registro[i]['Nombre_Cliente']+" "+registro[i]['Apellido_Cliente']);
                   $('#capital').val(registro[i]['capital']);
                   $('#spanCapital').text(registro[i]['capital']);
                   $('#tasa').val(registro[i]['tasaInteres']);
@@ -600,20 +607,23 @@ $(document).on('ready', function(){
                     (day<10 ? '0' : '') + day;
                     //VALIDANDO SI EL CREDITO ESTA EN MORA O NO;
                     if(Date.parse(output)<Date.parse(fechaP)){
-                      alert('el credito no esta en mora');
+                      // alert('el credito no esta en mora');
                     //alert('fecha proximo pago'+ fechaP);
-                    //Calculando si esta en mora 
+                    //Calculando si esta en mora
+                    $('#alertaSiEnMora').hide('fast/1000'); 
                     }
                     else{
-                      alert('El credito esta en mora');
+                      // alert('El credito esta en mora');
+                      $('#alertaSiEnMora').show('fast/1000');
                       //sacando los dias que hay en mora
                       var fechaIncicio = new Date(fechaP).getTime();
                       var fechaFin = new Date(output).getTime();
                       var dias = fechaFin - fechaIncicio;
                       var diasMora=Math.round(dias/(1000*60*60*24));
-                      alert('dias a pagar de mora'+diasMora);
+                      // alert('dias a pagar de mora'+diasMora);
                       $('#diasMora').val(diasMora);
                       $('#spanDiasMora').text(diasMora);
+                      $('#spanDiasMora1').text(diasMora);
                       calcularMora();
                     }
                     //SACANDO LA FECHA DEL PROXIMO PAGO
@@ -845,7 +855,9 @@ function calcularMora(){
         $('#spanInteres').text("00.00");
         $('#spanAbonoCapital').text("00.00");
         $('#spanCapitalP').text("00.00");
+        $('#spanInteresP').text("00.00");
         $('#spanVuelto').text("00.00");
+        $('#spanCobroMora').text("00.00");
         $('#spanTotalAbonado').text("00.00");
     }
   

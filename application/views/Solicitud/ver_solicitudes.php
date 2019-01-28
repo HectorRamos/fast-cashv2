@@ -128,9 +128,37 @@
                                       <?php 
                                         if ($solicitudes->tipoCredito == "Crédito popular")
                                         {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #626567;"><i class="fa fa-id-card-o fa-lg" ></i>&nbsp;'.$solicitudes->tipoCredito.'<span></td>'; // Poner icono
+                                        }
+                                        if ($solicitudes->tipoCredito == "Crédito popular mixto")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #DC7633;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$solicitudes->tipoCredito.'<span></td>'; // Poner icono
+                                        }
+                                        if ($solicitudes->tipoCredito == "Crédito popular prendario")
+                                        {
                                           echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #0B5345;"><i class="fa fa-id-card-o fa-lg" ></i>&nbsp;'.$solicitudes->tipoCredito.'<span></td>'; // Poner icono
                                         }
-                                        else{
+                                        if ($solicitudes->tipoCredito == "Crédito popular hipotecario")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #2980B9;"><i class="fa fa-id-card-o fa-lg" ></i>&nbsp;'.$solicitudes->tipoCredito.'<span></td>'; // Poner icono
+                                        }
+                                        if ($solicitudes->tipoCredito == "Crédito personal")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #666699;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$solicitudes->tipoCredito.'<span></td>'; // Poner icono
+                                          
+                                        }                                        
+                                        if ($solicitudes->tipoCredito == "Crédito personal hipotecario")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #3F51B5;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$solicitudes->tipoCredito.'<span></td>'; // Poner icono
+                                          
+                                        }
+                                        if ($solicitudes->tipoCredito == "Crédito personal prendario")
+                                        {
+                                          echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #AFB42B;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$solicitudes->tipoCredito.'<span></td>'; // Poner icono
+                                          
+                                        }
+                                        if ($solicitudes->tipoCredito == "Crédito personal mixto")
+                                        {
                                           echo '<td class="td td1" data-label="Tipo crédito"><span class="label label-success" style="background-color: #9C640C;"><i class="fa fa-id-card-o fa-lg"></i>&nbsp;'.$solicitudes->tipoCredito.'<span></td>'; // Poner icono
                                           
                                         }
