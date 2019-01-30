@@ -1660,6 +1660,21 @@ public function ReportePendientesEXCEL()
         exit;        
      }
 	}
+
+
+	public function Infored()
+	{
+		$datos = $this->Reportes_Model->ReporteInfored();
+		$data = array('datos' => $datos );
+		$this->load->view('Base/header');
+		$this->load->view('Base/nav');
+		$this->load->view("Reportes/infored", $data);
+		$this->load->view('Base/footer');
+	}
+	public function ReporteInfored()
+	{
+
+	}
 	
 }
 ?>

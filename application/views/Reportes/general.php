@@ -93,13 +93,13 @@
                                         if (isset($i) && isset($f))
                                         {
                                           echo '
-                                            <td colspan="9" class="text-center"><strong>PROCESOS EFECTUADOS ENTRE EL '.$i.' Y '.$f.'</strong></td>
+                                            <td colspan="9" class="text-center"><strong>REPORTE GENERAL DE CRÉDITOS ENTRE EL '.$i.' Y '.$f.'</strong></td>
                                           ';
                                         }
                                         else
                                         {
                                           echo '
-                                            <td colspan="9" class="text-center"><strong>ÚLTIMOS PROCESOS EFECTUADOS</strong></td>
+                                            <td colspan="9" class="text-center"><strong>REPORTE GENERAL DE CRÉDITOS HASTA EL '.date('d-m-Y').'</strong></td>
                                           ';
                                         }
                                       ?>
@@ -162,6 +162,23 @@
                                   </div>
                                   <table class="table table-bordered">
                                       <thead class="">
+                                        <tr>
+                                      
+                                      <?php 
+                                        if (isset($i) && isset($f))
+                                        {
+                                          echo '
+                                            <td colspan="9" class="text-center"><strong>REPORTE GENERAL DE CRÉDITOS ENTRE EL '.$i.' Y '.$f.'</strong></td>
+                                          ';
+                                        }
+                                        else
+                                        {
+                                          echo '
+                                            <td colspan="9" class="text-center"><strong>REPORTE GENERAL DE CRÉDITOS HASTA EL '.date('d-m-Y').'</strong></td>
+                                          ';
+                                        }
+                                      ?>
+                                    </tr>
                                         <tr>
                                           <th>#</th>
                                           <th>Código de Cliente</th>
