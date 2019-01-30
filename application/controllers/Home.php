@@ -7,6 +7,7 @@ class Home extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model("LoginModel");
+		$this->load->model('Creditos_Model'); 
 		$this->load->library('session'); 
 	}
 
@@ -22,9 +23,16 @@ class Home extends CI_Controller
 	    if (!$this->session->userdata("login")) {
 			redirect(base_url());
 		}else{
+			$datos = array(
+				'cantidadCreditosAsignadosPopular' => $this->Creditos_Model->contadorCreditosAsignadosPopular(),
+				'cantidadCreditosEnMoraPopular' => $this->Creditos_Model->contadorCreditosEnMoraPopular(),
+
+				'cantidadCreditosAsignadosPersonal' => $this->Creditos_Model->contadorCreditosAsignadosPersonal(),
+				'cantidadCreditosEnMoraPersonal' => $this->Creditos_Model->contadorCreditosEnMoraPersonal()
+			);
 			$this->load->view('Base/header');
 			$this->load->view('Base/nav');
-			$this->load->view('Base/content');
+			$this->load->view('Base/content',$datos);
 			$this->load->view('Base/footer');
 		}
 	}

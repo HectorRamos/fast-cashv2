@@ -27,6 +27,35 @@ class Creditos_Model extends CI_Model{
 		$datos = $this->db->query($sql);
 		return $datos;
 	}
-	
+
+	public function contadorCreditosAsignadosPopular(){
+		$sql = "SELECT * FROM tbl_creditos WHERE (tipoCredito='Crédito popular' OR tipoCredito='Crédito popular mixto' OR tipoCredito='Crédito popular prendario' OR tipoCredito='Crédito popular hipotecario' AND estado='1' AND estadoCredito = 'Proceso')";
+		$datos = $this->db->query($sql);
+		return $datos->num_rows();
+	}
+
+	public function contadorCreditosEnMoraPopular(){
+		date_default_timezone_set('America/El_Salvador');
+		$fecha = date("Y-m-d");
+		$querysql = "SELECT * FROM tbl_creditos
+						WHERE (tipoCredito = 'Crédito popular' OR tipoCredito = 'Crédito popular mixto' OR tipoCredito = 'Crédito popular prendario' OR tipoCredito = 'Crédito popular hipotecario') AND estado='1' AND estadoCredito = 'Proceso' AND fechaVencimiento < '$fecha' AND totalAbonado < montoTotal"; 
+		$datos = $this->db->query($querysql);
+		return $datos->num_rows();
+	}
+
+	public function contadorCreditosAsignadosPersonal(){
+		$sql = "SELECT * FROM tbl_creditos WHERE (tipoCredito='Crédito personal' OR tipoCredito='Crédito personal hipotecario' OR tipoCredito='Crédito personal prendario' OR tipoCredito='Crédito personal mixto' AND estado='1' AND estadoCredito = 'Proceso')";
+		$datos = $this->db->query($sql);
+		return $datos->num_rows();
+	}
+
+	public function contadorCreditosEnMoraPersonal(){
+		date_default_timezone_set('America/El_Salvador');
+		$fecha1 = date("Y-m-d");
+		$querysql = "SELECT * FROM tbl_creditos
+						WHERE (tipoCredito='Crédito personal' OR tipoCredito='Crédito personal hipotecario' OR tipoCredito='Crédito personal prendario' OR tipoCredito='Crédito personal mixto') AND estado='1' AND estadoCredito = 'Proceso' AND fechaVencimiento < '$fecha1' AND totalAbonado < montoTotal"; 
+		$datos = $this->db->query($querysql);
+		return $datos->num_rows();
+	}
 }
 ?>
