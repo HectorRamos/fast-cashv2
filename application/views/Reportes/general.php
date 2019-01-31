@@ -28,21 +28,82 @@
                 </div>
               </div>
             </div>
+            <div class="row" style="padding-left: 50px; padding-right: 50px;">
+                <div class="col-md-12 text-center">
+                    <form class="form-inline" id="buscrPorFecha" method="post" action="<?= base_url() ?>Reportes/General/2">
+                      <div class="margn">
+                        <div class="form-group">
+                          <label for="fechaInicio">Inicio </label>
+                          <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            <input type="text" class="form-control DateTime" name="fechaInicial" id="fechaInicio" placeholder="Fecha inicial" required data-parsley-required-message="Por favor, digite fecha de inicio" data-mask="9999/99/99">
+                          </div>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="form-group">
+                          <label for="fechaFinal">Final </label>
+                          <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            <input type="text" class="form-control DateTime" name="fechaFinal" id="fechaFinal" placeholder="Fecha final" required data-parsley-required-message="Por favor, digite fecha final" data-mask="9999/99/99">
+                          </div>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                        <a href="<?= base_url();?>Reportes/General/1" class="btn btn-warning refres"><i class="fa fa-refresh"></i></a>
+                      </div>
+                    </form>
+                  </div>
+              </div>
             <div class="panel-body">
               <div class="margn">
                 <table class="table">
                   <div class="pull-left"></div>
                   <div class="pull-right">
-                    <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ReporteGeneralPDF" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a> 
-                    <a title='Aprobar Solicitud'  href="<?= base_url() ?>Reportes/ReporteGeneralEXCEL" target="_blank" type='button' class='btn btn-success block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Excel </a>
-                    <a title="Imprimir Solicitud" type="button" onclick="imprimirTabla()" class="btn btn-info block waves-effect waves-light m-b-5" data-toggle="tooltip" data-dismiss="modal"><i class="fa fa-print  fa-lg"></i> Imprimir</a>
+
+                    <?php
+                    if (sizeof($datos->result()) != 0){
+                      if (isset($i) && isset($f))
+                      {
+                    ?>
+                      <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ReporteGeneralPDF/2/?i=<?= $i?>&&f=<?= $f ?>" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a> 
+                      <a title='Aprobar Solicitud'  href="<?= base_url() ?>Reportes/ReporteGeneralEXCEL/2/?i=<?= $i?>&&f=<?= $f ?>" target="_blank" type='button' class='btn btn-success block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Excel </a>
+                      <a title="Imprimir Solicitud" type="button" onclick="imprimirTabla()" class="btn btn-info block waves-effect waves-light m-b-5" data-toggle="tooltip" data-dismiss="modal"><i class="fa fa-print  fa-lg"></i> Imprimir</a>
+                    <?php }
+                      else
+                      {
+                    ?>
+                      <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ReporteGeneralPDF/1" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a> 
+                      <a title='Aprobar Solicitud'  href="<?= base_url() ?>Reportes/ReporteGeneralEXCEL/1" target="_blank" type='button' class='btn btn-success block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Excel </a>
+                      <a title="Imprimir Solicitud" type="button" onclick="imprimirTabla()" class="btn btn-info block waves-effect waves-light m-b-5" data-toggle="tooltip" data-dismiss="modal"><i class="fa fa-print  fa-lg"></i> Imprimir</a>
+                    <?php }} ?>
+                    
                   </div>
                </table>
                 <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                               <div class="margn">
+                              <?php 
+                                if (sizeof($datos->result()) != 0){
+                              ?>
                                 <table id="datatable" class="table">
                                   <thead class="thead-dark thead thead1">
+                                  <tr>
+                                      
+                                      <?php 
+                                        if (isset($i) && isset($f))
+                                        {
+                                          echo '
+                                            <td colspan="9" class="text-center"><strong>REPORTE GENERAL DE CRÉDITOS ENTRE EL '.$i.' Y '.$f.'</strong></td>
+                                          ';
+                                        }
+                                        else
+                                        {
+                                          echo '
+                                            <td colspan="9" class="text-center"><strong>REPORTE GENERAL DE CRÉDITOS HASTA EL '.date('d-m-Y').'</strong></td>
+                                          ';
+                                        }
+                                      ?>
+                                    </tr>
                                     <tr class="tr tr1">
                                       <th class="th th1" scope="col">#</th>
                                       <th class="th th1" scope="col">Código de Cliente</th>
@@ -78,7 +139,13 @@
                                   <?php }} ?>
                                   </tbody>
                                 </table>
-
+                                <?php
+                                    } 
+                                    else
+                                    {
+                                    echo '<div class="alert alert-danger"><strong><h4 class="text-center">No hay datos que mostrar !!!</h4></strong><p class="text-center">Por favor, digite un rango de fecha valido ver el informe.</p></div>';
+                                    }
+                                  ?>
                                 <div id="tablaImprimir">
                                   <div class="row">
                                     <div class="col-md-12">
@@ -95,6 +162,23 @@
                                   </div>
                                   <table class="table table-bordered">
                                       <thead class="">
+                                        <tr>
+                                      
+                                      <?php 
+                                        if (isset($i) && isset($f))
+                                        {
+                                          echo '
+                                            <td colspan="9" class="text-center"><strong>REPORTE GENERAL DE CRÉDITOS ENTRE EL '.$i.' Y '.$f.'</strong></td>
+                                          ';
+                                        }
+                                        else
+                                        {
+                                          echo '
+                                            <td colspan="9" class="text-center"><strong>REPORTE GENERAL DE CRÉDITOS HASTA EL '.date('d-m-Y').'</strong></td>
+                                          ';
+                                        }
+                                      ?>
+                                    </tr>
                                         <tr>
                                           <th>#</th>
                                           <th>Código de Cliente</th>

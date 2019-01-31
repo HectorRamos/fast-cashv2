@@ -49,17 +49,15 @@
                                     <a href="">
                                         <span class="mini-stat-icon bg-info" style="background: #8D6E63;"><i class="ion-clipboard"></i></span>
                                         <div class="mini-stat-info text-right text-muted">
-                                            <span class="counter">1,000,000</span>
+                                            <span class="counter"><?= $cantidadCreditosAsignadosPopular;?></span>
                                             Créditos Asignados
                                         </div>
                                         <div class="tiles-progress">
                                             <div class="m-t-20">
-                                                <h5 class="text-uppercase">Créditos Asignados <span class="pull-right">60%</span></h5>
-                                                <div class="progress progress-sm m-0">
-                                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;background: #8D6E63;">
-                                                        <span class="sr-only">60% Completo</span>
+                                                <h5 class="text-uppercase">Créditos Asignados <span class="pull-right"><?= $cantidadCreditosAsignadosPopular;?>%</span></h5>
+                                                    <div class="progress m-0">
+                                                      <div class="progress-bar" role="progressbar" aria-valuenow="<?= $cantidadCreditosAsignadosPopular;?>" aria-valuemin="0" aria-valuemax="100"style="background: #8D6E63;"><?= $cantidadCreditosAsignadosPopular;?></div>
                                                     </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </a>
@@ -69,16 +67,14 @@
                                     <a href="">
                                         <span class="mini-stat-icon bg-info" style="background: #FFC107;"><i class="md md-description"></i></span>
                                         <div class="mini-stat-info text-right text-muted">
-                                            <span class="counter">15852</span>
+                                            <span class="counter"><?= $cantidadCreditosEnMoraPopular;?></span>
                                             Créditos en Mora
                                         </div>
                                         <div class="tiles-progress">
                                             <div class="m-t-20">
-                                                <h5 class="text-uppercase">Créditos en Mora <span class="pull-right">60%</span></h5>
-                                                <div class="progress progress-sm m-0">
-                                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%; background: #FFC107;">
-                                                        <span class="sr-only">60% Complete</span>
-                                                    </div>
+                                                <h5 class="text-uppercase">Créditos en Mora <span class="pull-right"><?= $cantidadCreditosEnMoraPopular;?>%</span></h5>
+                                                <div class="progress m-0">
+                                                      <div class="progress-bar" role="progressbar" aria-valuenow="<?= $cantidadCreditosEnMoraPopular;?>" aria-valuemin="0" aria-valuemax="100"style="background: #FFC107;"><?= $cantidadCreditosEnMoraPopular;?></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -89,16 +85,14 @@
                                     <a href="">
                                         <span class="mini-stat-icon bg-info"><i class="ion-folder"></i></span>
                                         <div class="mini-stat-info text-right text-muted">
-                                            <span class="counter">15852</span>
+                                            <span class="counter"><?= $cantidadCreditosAsignadosPopular - $cantidadCreditosEnMoraPopular;?></span>
                                             Créditos Solventes
                                         </div>
                                         <div class="tiles-progress">
                                             <div class="m-t-20">
-                                                <h5 class="text-uppercase">Créditos Solventes <span class="pull-right">60%</span></h5>
-                                                <div class="progress progress-sm m-0">
-                                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                                                        <span class="sr-only">60% Complete</span>
-                                                    </div>
+                                                <h5 class="text-uppercase">Créditos Solventes <span class="pull-right"><?= $cantidadCreditosAsignadosPopular - $cantidadCreditosEnMoraPopular;?>%</span></h5>
+                                                <div class="progress m-0">
+                                                      <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?= $cantidadCreditosAsignadosPopular - $cantidadCreditosEnMoraPopular;?>" aria-valuemin="0" aria-valuemax="100"><?= $cantidadCreditosAsignadosPopular - $cantidadCreditosEnMoraPopular;?></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -108,24 +102,22 @@
 
                             <div class="col-md-6 col-sm-6 col-lg-3">
                                 <div class="bx-shadow" style="background: #FFF; padding: 2px; border-top-left-radius: 3px;border-top-right-radius: 3px; border-bottom: 1px solid #eee;">
-                                    <center><p style="font-size: 17px; font-weight: bold; margin-top: 10px;">Crédito Hipotecario</p></center>
+                                    <center><p style="font-size: 17px; font-weight: bold; margin-top: 10px;">Crédito Personal</p></center>
                                 </div>
                                 <div class="mini-stat clearfix bx-shadow"style="border-top-left-radius: 0px;border-top-right-radius: 0px;">
                                     <br>
                                     <a href="">
                                         <span class="mini-stat-icon bg-purple" style="background: #CCCC33;"><i class="ion-ios7-paper"></i></span>
                                         <div class="mini-stat-info text-right text-muted">
-                                            <span class="counter">956</span>
+                                            <span class="counter"><?= $cantidadCreditosAsignadosPersonal;?></span>
                                             Créditos Asignados
                                         </div>
                                         <div class="tiles-progress">
                                             <div class="m-t-20">
-                                                <h5 class="text-uppercase">Créditos Asignados <span class="pull-right">90%</span></h5>
-                                                <div class="progress progress-sm m-0">
-                                                    <div class="progress-bar progress-bar-purple" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%; background: #CCCC33;">
-                                                        <span class="sr-only">90% Complete</span>
+                                                <h5 class="text-uppercase">Créditos Asignados <span class="pull-right"><?= $cantidadCreditosAsignadosPersonal;?>%</span></h5>
+                                                    <div class="progress m-0">
+                                                      <div class="progress-bar" role="progressbar" aria-valuenow="<?= $cantidadCreditosAsignadosPersonal;?>" aria-valuemin="0" aria-valuemax="100"style="background: #CCCC33;"><?= $cantidadCreditosAsignadosPersonal;?></div>
                                                     </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </a>
@@ -135,16 +127,14 @@
                                     <a href="">
                                         <span class="mini-stat-icon bg-purple" style="background: #CC6600;"><i class="md md-assignment"></i></span>
                                         <div class="mini-stat-info text-right text-muted">
-                                            <span class="counter">956</span>
+                                            <span class="counter"><?= $cantidadCreditosEnMoraPersonal;?></span>
                                             Créditos en Mora
                                         </div>
                                         <div class="tiles-progress">
                                             <div class="m-t-20">
-                                                <h5 class="text-uppercase">Créditos en Mora <span class="pull-right">90%</span></h5>
-                                                <div class="progress progress-sm m-0">
-                                                    <div class="progress-bar progress-bar-purple" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%; background: #CC6600;">
-                                                        <span class="sr-only">90% Complete</span>
-                                                    </div>
+                                                <h5 class="text-uppercase">Créditos en Mora <span class="pull-right"><?= $cantidadCreditosEnMoraPersonal;?>%</span></h5>
+                                                <div class="progress m-0">
+                                                      <div class="progress-bar" role="progressbar" aria-valuenow="<?= $cantidadCreditosEnMoraPersonal;?>" aria-valuemin="0" aria-valuemax="100"style="background: #CC6600;"><?= $cantidadCreditosEnMoraPersonal;?></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -155,16 +145,14 @@
                                     <a href="">
                                         <span class="mini-stat-icon bg-success"><i class="fa fa-folder-open"></i></span>
                                         <div class="mini-stat-info text-right text-muted">
-                                            <span class="counter">956</span>
+                                            <span class="counter"><?= $cantidadCreditosAsignadosPersonal - $cantidadCreditosEnMoraPersonal;?></span>
                                             Créditos Solventes
                                         </div>
                                         <div class="tiles-progress">
                                             <div class="m-t-20">
-                                                <h5 class="text-uppercase">Créditos Solventes <span class="pull-right">90%</span></h5>
-                                                <div class="progress progress-sm m-0">
-                                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%;">
-                                                        <span class="sr-only">90% Complete</span>
-                                                    </div>
+                                                <h5 class="text-uppercase">Créditos Solventes <span class="pull-right"><?= $cantidadCreditosAsignadosPersonal - $cantidadCreditosEnMoraPersonal;?>%</span></h5>
+                                                <div class="progress m-0">
+                                                      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?= $cantidadCreditosAsignadosPersonal - $cantidadCreditosEnMoraPersonal;?>" aria-valuemin="0" aria-valuemax="100"><?= $cantidadCreditosAsignadosPersonal - $cantidadCreditosEnMoraPersonal;?></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -330,7 +318,22 @@
     width: 100%;
 }
 </style>
+<script type="text/javascript">
+    var delay = 500;
+        $(".progress-bar").each(function(i){
+            $(this).delay( delay*i ).animate( { width: $(this).attr('aria-valuenow') + '%' }, delay );
 
+            $(this).prop('Counter',0).animate({
+                Counter: $(this).text()
+            }, {
+                duration: delay,
+                easing: 'swing',
+                step: function (now) {
+                    $(this).text(Math.ceil(now)+'%');
+                }
+            });
+        });
+</script>
 
 
 

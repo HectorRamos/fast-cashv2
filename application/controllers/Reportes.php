@@ -11,16 +11,50 @@ class Reportes extends CI_Controller {
 	}
 	public function index()
 	{
-		$datos = $this->Creditos_Model->ObtenerCreditos();
-		$data = array('datos' => $datos );
+		// $datos = $this->Creditos_Model->ObtenerCreditos();
+		// $data = array('datos' => $datos );
+		// $this->load->view('Base/header');
+		// $this->load->view('Base/nav');
+		// $this->load->view('Reportes/general', $data);
+		// $this->load->view('Base/footer');
+	}
+
+	public function General($val)
+	{
 		$this->load->view('Base/header');
 		$this->load->view('Base/nav');
+		if ($val==1) 
+		{
+			$datos = $this->Creditos_Model->ObtenerCreditos();
+			$data = array('datos' => $datos );
+		}
+		else{
+			$datos = $this->input->post();
+			$i = $datos['fechaInicial'];
+			$f = $datos['fechaFinal'];
+			$datos = $this->Reportes_Model->ObtenerCreditosFecha($i, $f);
+			$data = array('datos' => $datos, 'i' => $i, 'f' => $f);
+		}
+
 		$this->load->view('Reportes/general', $data);
 		$this->load->view('Base/footer');
 	}
-	public function ReporteGeneralPDF()
+
+
+	public function ReporteGeneralPDF($val)
 	{
-	$datos = $this->Creditos_Model->ObtenerCreditos();
+	if ($val==1) 
+	{
+		$datos = $this->Creditos_Model->ObtenerCreditos();
+	}
+	else{
+		$i = $_GET['i'];
+		$f = $_GET['f'];
+		$datos = $this->Reportes_Model->ObtenerCreditosFecha($i, $f);
+	}
+	if (sizeof($datos) != 0)
+	{
+	
 	$html="
 	<link href='".base_url()."plantilla/css/bootstrap.min.css' rel='stylesheet' />
 	<script src='".base_url()."plantilla/js/jquery.min.js'></script>
@@ -73,7 +107,17 @@ class Reportes extends CI_Controller {
 	    <div>
 	        <table class='table table-bordered' id='creditos'>
 	            <thead class=''>
-	                <tr>
+	            	<tr>";
+	         if (isset($i) && isset($f))
+	            {
+	                $html.="<td colspan='9' class='text-center'><strong>PROCESOS EFECTUADOS ENTRE EL ".$i." Y ".$f."</strong></td>";
+	            }
+	            else
+	            {
+					$html.= "<td colspan='9' class='text-center'><strong>REPORTE GENERAL DE CRÉDITOS HASTA EL ".date('d-m-Y')."</strong></td>";
+	            }   			
+	       $html .= "</tr>
+	       			<tr>
 	                  <th class='text-center'>Código de Cliente</th>
 	                  <th class='text-center'>Cliente</th>
 	                  <th class='text-center'>Tipo de Crédito</th>
@@ -111,19 +155,37 @@ class Reportes extends CI_Controller {
     $mpdf->WriteHTML($html);
     $mpdf->Output($pdfFilePath, "I");
 
+    }
+    else
+    {
+    	echo '<script type="text/javascript">
+			alert("No hay datos que mostrar !!!");
+			window.close();
+			self.location ="'.base_url().'Reportes/General/1"
+			</script>';
+    }
+
 	}
 	
 
-	public function ReporteGeneralEXCEL()
+	public function ReporteGeneralEXCEL($val)
 	{
-    $creditos =  $this->Creditos_Model->ObtenerCreditos()->result();
+		if ($val==1) 
+	{
+		$creditos = $this->Creditos_Model->ObtenerCreditos()->result();
+	}
+	else{
+		$i = $_GET['i'];
+		$f = $_GET['f'];
+		$creditos = $this->Reportes_Model->ObtenerCreditosFecha($i, $f)->result();
+	}
     if(count($creditos) > 0){
         //Cargamos la librería de excel.
         $this->load->library('excel');
         $this->excel->setActiveSheetIndex(0);
         $this->excel->getActiveSheet()->setTitle('Creditos');
         //Contador de filas
-        $contador = 3;
+        $contador = 4;
 
         //Cabecera
 		$styleArray = array(
@@ -134,10 +196,20 @@ class Reportes extends CI_Controller {
 
 		$this->excel->getActiveSheet()->getStyle('B1:E1')->applyFromArray($styleArray);
 		$this->excel->getActiveSheet()->getStyle('B2:E2')->applyFromArray($styleArray);
+		$this->excel->getActiveSheet()->getStyle('B3:E3')->applyFromArray($styleArray);
         $this->excel->setActiveSheetIndex(0)->mergeCells('B1:E1');
         $this->excel->setActiveSheetIndex(0)->mergeCells('B2:E2');
+        $this->excel->setActiveSheetIndex(0)->mergeCells('B3:E3');
         $this->excel->getActiveSheet()->setCellValue("B1", "GOCAJAA GROUP SA DE CV, MERCEDES UMAÑA, USULUTAN");
         $this->excel->getActiveSheet()->setCellValue("B2", "REPORTE GENERAL DE CRÉDITOS");
+        if (isset($i) && isset($f))
+        {
+    		$this->excel->getActiveSheet()->setCellValue("B3", "REPORTE GENERAL DE CREDITOS ENTRE LAS FECHAS ".$i." Y ".$f);
+        }
+        else
+        {
+    		$this->excel->getActiveSheet()->setCellValue("B3", "REPORTE GENERAL DE CREDITOS HASTA EL ". date('d-m-Y'));
+        }
         // Fin cabecera
 
         //Le aplicamos ancho las columnas.
@@ -285,7 +357,7 @@ class Reportes extends CI_Controller {
 				            }
 				            else
 				            {
-								$html.= "<td colspan='9' class='text-center'><strong>ÚLTIMOS PROCESOS EFECTUADOS</strong></td>";
+								$html.= "<td colspan='9' class='text-center'><strong>ÚLTIMOS PROCESOS EFECTUADOS HASTA EL ".date('d-m-Y')."</strong></td>";
 				            }
 			      $html .= "</tr>
 			      			<tr>
@@ -1587,6 +1659,21 @@ public function ReportePendientesEXCEL()
         echo 'No se han encontrado creditos saldados';
         exit;        
      }
+	}
+
+
+	public function Infored()
+	{
+		$datos = $this->Reportes_Model->ReporteInfored();
+		$data = array('datos' => $datos );
+		$this->load->view('Base/header');
+		$this->load->view('Base/nav');
+		$this->load->view("Reportes/infored", $data);
+		$this->load->view('Base/footer');
+	}
+	public function ReporteInfored()
+	{
+
 	}
 	
 }
