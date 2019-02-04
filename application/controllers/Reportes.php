@@ -1946,7 +1946,7 @@ public function ReportePendientesEXCEL()
 	       	$this->excel->getActiveSheet()->setCellValue("AD{$contador}", $eCredito);
     	}	
         //Le ponemos un nombre al archivo que se va a generar.
-        $archivo = "reporte_creditos_morosos.xls";
+        $archivo = "reporte_infored.xls";
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="'.$archivo.'"');
         header('Cache-Control: max-age=0');
