@@ -52,9 +52,9 @@ class Reportes_Model extends CI_Model
 		return $datos;
 	}
 
-	public function ReporteInfored()
+	public function ReporteInfored($inicio, $fin)
 	{
-		$sql = "SELECT c.Codigo_Cliente, c.Nombre_Cliente, c.Apellido_Cliente, c.Tipo_Cliente, c.DUI_Cliente, c.NIT_Cliente,c.Fecha_Nacimiento_Cliente, c.Genero_Cliente, a.capital, a.ivaInteresCapital, a.plazoMeses,a.pagoCuota, a.cantidadCuota , cr.idCredito,cr.codigoCredito,cr.estadoCredito, cr.tipoCredito, cr.totalAbonado, cr.montoTotal, cr.fechaApertura, cr.fechaVencimiento FROM tbl_creditos as cr INNER JOIN tbl_amortizaciones as a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes as s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON s.idCliente = c.Id_Cliente ORDER BY cr.idCredito DESC";
+		$sql = "SELECT dt.fechaPago, c.Codigo_Cliente, c.Nombre_Cliente, c.Apellido_Cliente, c.Tipo_Cliente, c.DUI_Cliente, c.NIT_Cliente,c.Fecha_Nacimiento_Cliente, c.Genero_Cliente, a.capital, a.ivaInteresCapital, a.plazoMeses,a.pagoCuota, a.cantidadCuota , cr.idCredito,cr.codigoCredito,cr.estadoCredito, cr.tipoCredito, cr.totalAbonado, cr.montoTotal, cr.fechaApertura, cr.fechaVencimiento FROM tbl_creditos as cr INNER JOIN tbl_amortizaciones as a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes as s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON s.idCliente = c.Id_Cliente INNER JOIN tbl_detallepagos as dt ON(cr.idCredito = dt.idCredito) WHERE dt.fechaPago BETWEEN '$inicio' AND '$fin' ORDER BY cr.idCredito DESC";
 		$datos = $this->db->query($sql);
 		return $datos;
 	}

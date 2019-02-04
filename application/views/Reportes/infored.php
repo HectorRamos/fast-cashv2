@@ -54,7 +54,7 @@
                   </div>
               </div> <br>  
             <div class="panel-body">
-              <div class="">
+              <!-- <div class="">
                   <div class="pull-left"></div>
                   <div class="pull-right"></div>
 
@@ -327,7 +327,7 @@
                       ?>
                     </table>
                   </div>
-               </div>
+               </div> -->
               </div>
             </div>
             </div>
