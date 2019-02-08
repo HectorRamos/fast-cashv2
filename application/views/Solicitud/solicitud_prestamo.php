@@ -91,7 +91,7 @@
 <!--                     </div>                    
                     <div class="row"> -->
 
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-3">
                             <label for="tipo_prestamo">Linea</label>
                             <!-- Probando linea de tiempo para populares-->
                             <?php 
@@ -142,7 +142,18 @@
                             ?>
                             <?php  ?>
                             <input type="hidden" class="form-control" id="numero_meses" name="numero_meses">
-                      </div>
+                      </div> <!-- Fin linea de tiempo -->
+
+                      <div class="form-group col-md-3">
+                      <label for="">Destino del prestamo</label>
+                        <select id="destino_prestamo" name="destino_prestamo" class="select" data-placeholder="Seleccione un tipo de prestamo" data-live-search="true">
+                          <option value="1">Créditos para empresas</option>
+                          <option value="2">Créditos para vivienda</option>
+                          <option value="3">Créditos para consumo</option>
+                        </select>
+                      </div> <!-- Destino del prestamo -->
+
+
                     </div>
                     <!-- Fin de la primera Linea del formulario-->
 
