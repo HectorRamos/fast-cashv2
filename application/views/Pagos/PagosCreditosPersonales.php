@@ -81,6 +81,8 @@
                   <input type="hidden" name="fechaCajaChica" value="<?= $caja->fechaCajaChica?>">
                   <input type="hidden" name="cantidadApertura" value="<?= $caja->cantidadApertura?>">
                   <input type="hidden" name="saldo" value="<?= $caja->saldo?>">
+                  <input type="hidden" name="numPagos" id="numPagos">
+                  <input type ="hidden" name="pagoTeorico" id="pagoTeorico">
                   <!--FIN DE LOS CAMPOS OCULTOS-->
                     <div class="form-group col-sm-6">
                       <div style="margin-top: 7px;">
@@ -182,6 +184,12 @@
                                 <div class="col-md-12" style="font-size: 1.4rem;">
                                     <input type="hidden" id="fechaProximoPago" name="fechaProximoPago">
                                     <label style="background: #C5E1A5; color: #000;  padding: 5px; border-radius: 5px;">Fecha de vencimiento de la cuota: <span style="font-weight: normal;">&nbsp;<span id="spanfechaProximoPago"></span></span></label>
+                                </div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="font-size: 1.4rem;">
+                                    <input type="hidden" id="txtCuota" name="txtCuota">
+                                    <label style="background: #C5E1A5; color: #000;  padding: 5px; border-radius: 5px;">Cuota <span style="font-weight: normal;"> $&nbsp;<span id="spanCuota"></span></span></label>
                                 </div> 
                             </div>
                           </div>
@@ -317,14 +325,14 @@
                               <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
                                   <input type="hidden" id="diasMora" name="diasMora" >
                                   <label class="mostrLabel">Dias en mora:&nbsp;</label>
-                                  <label class="label label-default"style="background: #FFCCBC; color: #000; font-weight: normal;">$ <span id="spanDiasMora">00.00</span></label>
+                                  <label class="label label-default" style="background: #FFCCBC; color: #000; font-weight: normal;"> <span id="spanDiasMora">00.00</span></label>
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
                                   <input type="hidden" id="cobroMora" name="cobroMora" >
                                   <label class="mostrLabel">Cobro por mora al 5%:&nbsp;</label>
-                                  <label class="label label-default"style="background: #CCFFCC; color: #000; font-weight: normal;">$ <span id="spanCobroMora">00.00</span></label>
+                                  <label class="label label-default" style="background: #CCFFCC; color: #000; font-weight: normal;">$ <span id="spanCobroMora">00.00</span></label>
                               </div>
                             </div>
                             
@@ -348,9 +356,14 @@
                 </div>
               </form>
               <!-- Fin formulario Empleado -->
+              <div id="DivTablaTeorico">
+          
             </div>
+            </div>
+            
           </div>
         </div>
+        
       </div> <!-- End Row -->
     </div>
   </div>
@@ -466,7 +479,6 @@ $(document).on('ready', function(){
   })
   //Fucion Change del select donde estan los datos de los clientes aqui vamos a cargar los datos que necesitemos------------
   $('#idCredito').on('change', function(){
-
     //alert('id'+$('#idCredito').val());
     ide = $('#idCredito').val();
     if(ide == ""){
@@ -487,6 +499,7 @@ $(document).on('ready', function(){
         {
           //alert('funciona');
           for (var i =0 ; i<registro.length ; i++){
+
              $('#cliente').val(registro[i]['Nombre_Cliente']+" "+registro[i]['Apellido_Cliente']);
              $('#spanCliente').text(registro[i]['Nombre_Cliente']+" "+registro[i]['Apellido_Cliente']);
              $('#spanCliente1').text(registro[i]['Nombre_Cliente']+" "+registro[i]['Apellido_Cliente']);
@@ -505,6 +518,9 @@ $(document).on('ready', function(){
               $('#infor').show('fast/1000');
               $('#DivDatosPagos').show('fast/1000');
               $('#spanInteresPendiente').text(registro[i]['i']);
+              $('#txtCuota').val(registro[i]['pagoCuota']);
+              $('#numPagos').val(registro[i]['nPagos']);
+              $('#spanCuota').text(registro[i]['pagoCuota']);
               $('#interesPendiente1').val(registro[i]['i']);
               var fechaProximoPago = registro[i]['fechaProximoPago'];
               plazoMeses =registro[i]['plazoMeses'];
@@ -520,7 +536,7 @@ $(document).on('ready', function(){
                   (month<10 ? '0' : '') + month + '-' +
                   (day<10 ? '0' : '') + day;
               //COMPROBANDO SI HAY MORA
-              if(Date.parse(output)<Date.parse(fechaProximoPago)){
+              if(Date.parse(output)>=Date.parse(fechaProximoPago)){
                       // alert('el credito no esta en mora');
                     //alert('fecha proximo pago'+ fechaP);
                     //Calculando si esta en mora 
@@ -538,6 +554,8 @@ $(document).on('ready', function(){
                 $('#diasMora').val(diasMora);
                 $('#spanDiasMora').text(diasMora);
                 $('#spanDiasMora1').text(diasMora);
+                
+                generarTabla($('#idCredito').val());
                 calcularMora();
                 }
               //SACANDO LA PROXIMA FECHA DE PAGO
@@ -580,14 +598,16 @@ $(document).on('ready', function(){
                   var cpendiente = registro[i]['capital']-registro[i]['totalAbonado'];
                   $('#capitalPendiente1').val(cpendiente);
                   $('#spanCapitalPendiente1').text(cpendiente);
-                    $('#AlertNada').hide('fast/1000');
-                    $('#infor').show('fast/1000');
-                    $('#DivDatosPagos').show('fast/1000');
-                    $('#spanInteresPendiente').text(registro[i]['interesPendiente']);
-                    $('#interesPendiente1').val(registro[i]['interesPendiente']);
+                  $('#AlertNada').hide('fast/1000');
+                  $('#infor').show('fast/1000');
+                  $('#DivDatosPagos').show('fast/1000');
+                  $('#spanInteresPendiente').text(registro[i]['interesPendiente']);
+                  $('#interesPendiente1').val(registro[i]['interesPendiente']);
+                  $('#txtCuota').val(registro[i]['pagoCuota']);
+                  $('#spanCuota').text(registro[i]['pagoCuota']);
+                  $('#numPagos').val(registro[i]['nPagos']);
                     plazoMeses =registro[i]['plazoMeses'];
                     //sacando fechas
-
                     //FECHA ACTUAL SE ALMACENA EN LA VARIABLE output
                     var d1 = new Date();
                     var month = d1.getMonth()+1;
@@ -606,7 +626,7 @@ $(document).on('ready', function(){
                     (month<10 ? '0' : '') + month + '-' +
                     (day<10 ? '0' : '') + day;
                     //VALIDANDO SI EL CREDITO ESTA EN MORA O NO;
-                    if(Date.parse(output)<Date.parse(fechaP)){
+                    if(Date.parse(output)>=Date.parse(fechaP)){
                       // alert('el credito no esta en mora');
                     //alert('fecha proximo pago'+ fechaP);
                     //Calculando si esta en mora
@@ -624,6 +644,8 @@ $(document).on('ready', function(){
                       $('#diasMora').val(diasMora);
                       $('#spanDiasMora').text(diasMora);
                       $('#spanDiasMora1').text(diasMora);
+                      
+                      generarTabla($('#idCredito').val());
                       calcularMora();
                     }
                     //SACANDO LA FECHA DEL PROXIMO PAGO
@@ -638,7 +660,6 @@ $(document).on('ready', function(){
                     (day<10 ? '0' : '') + day;
                     $('#fechaProximoPago').val(NewFechaPago);
                     $('#spanfechaProximoPago').text(fechaP);
-
                     //alert(plazoMeses);
                 }//fin del for
             }//fin del if
@@ -683,11 +704,10 @@ $(document).on('ready', function(){
   //FUNCION PARA HACER LOS DEMAS CALCULOS----------------------
   $('#totalPago').on('keyup', function(){
     calculos();
+    calcularMora();
   })
 });//cierre de la funcion principal
-
 //funcion general para realizar todos los calculos
-
 function calculos(){
     var capitalPendiente = $('#capitalPendiente1').val();
     //alert(capitalPendiente);
@@ -710,7 +730,6 @@ function calculos(){
         $('#spanIva').text(0.00);
         $('#spanAbonoCapital').text(0.00);
         $('#spanCapitalP').text(0.00);
-
     }
     else{
       if(diaspa==""){
@@ -748,22 +767,17 @@ function calculos(){
       else{
          var tasaI = tasa/100;
          console.log("tasa en decimales"+tasaI);
-
-        var Interes=(capitalPendiente*diaspa*tasaI)/(365);
+        var Interes=(capitalPendiente*diaspa*tasaI)/(360);
         console.log("INteres"+Interes);
         var iva = Interes*0.13;
-
         var Interesp = parseFloat($('#interesPendiente1').val());
         var totalInteres = Interesp+Interes;
-
-        var abonoCapital = totalp-totalInteres-iva- recargoMora;
-
+        var abonoCapital = totalp-totalInteres- iva - recargoMora;
         if(abonoCapital<0){
           abonoCapital=0;
           var newInteresPendiente = (Interesp+Interes+iva)-totalp;
           $('#spanInteresP').text(newInteresPendiente.toFixed(4));
           $('#interesP').val(newInteresPendiente.toFixed(4));
-
         }
         else{
           $('#interesP').val(0);
@@ -811,42 +825,27 @@ function calculos(){
       } 
       //alert('asas');
     }
-
 }
 function calcularMora(){
 
-  var capitalPendiente = $('#capitalPendiente1').val();
+  var capitalPendiente = $('#capitalP').val();
   //alert(capitalPendiente);
   var totalp = $('#totalPago').val();
   var diaspa = $('#diasPagados').val();
   var diasMora2= $('#diasMora').val();
   var tasa = $('#tasa').val();
-  if(diaspa!=0 && diasMora2!=0){
-    //alert('cobramos mora');
-    var capitalpendiente1 = $('#capitalPendiente1').val();
+  if(diaspa!=0 && diasMora2!=0 && totalPago != 0){
+    var capitalMora =capitalPendiente - $('#pagoTeorico').val();
     var tasaI = tasa/100;
-    var dias = diaspa - diasMora2;
-    //alert('los dias de intereses son> '+dias);
-    var Interes=(capitalPendiente*dias*tasaI)/(30*plazoMeses);
-    var iva = Interes*0.13;
-    //alert('INtereses: '+Interes);
-    var sumatoria = parseFloat(capitalPendiente)+parseFloat(Interes)+parseFloat(iva);
-    //alert('sumatoria'+sumatoria);
-    var mora = (sumatoria * 0.05 * diasMora2)/365;
-    var moraTotal = parseFloat(sumatoria)+parseFloat(mora);
-    //alert('recargo por mora: '+mora+' total a pagar '+moraTotal);
+    var mora = (capitalMora * 0.05 * diasMora2)/30;
     $('#cobroMora').val(mora.toFixed(4));
     $('#spanCobroMora').text(mora.toFixed(4));
-    $('#diasPagados').val(dias);
-    $('#spanDiasPagados').text(dias);
-
   }
   else{
     //alert('No cobramos mora');
   }   
 }
-
-    function limpiar(){
+function limpiar(){
         $('#idCredito').val("");
         $('#fechaPago').val("");
         $('#totalPago').val("");
@@ -860,6 +859,114 @@ function calcularMora(){
         $('#spanCobroMora').text("00.00");
         $('#spanTotalAbonado').text("00.00");
     }
-  
+function generarTabla(id){
+  Ide=id;
+  var capital = $('#capital').val();
+  var cuota= $('#txtCuota').val();
+  var tasa = $('#tasa').val();
+  var tasaI = tasa/100;
+  //alert(Ide)
+   $.ajax({
+            url:"<?= base_url()?>Pagos/CargarNumPago?Ide="+Ide,
+            type:"GET",
+            success:function(respuesta){
+              //alert('estamos en el succes');
+              var registro = eval(respuesta);
+              if (registro.length > 0)
+              {
+               //alert('funciona');
+                for (var i =0 ; i<registro.length ; i++){
+                  $('#numPagos').val(registro[i]['nPagos']);
+                  //alert(registro[i]['nPagos']);
+                  p=$('#numPagos').val();
+                  if(p>0){
+                    var HTML="<div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Teorico de pagos</p></div>";
+                    HTML+= '<table  class="table table-bordered">';
+                      HTML+= '<tr class="tr tr1">';
+                      HTML+= '<td><strong>N Pago</strong> </td>';
+                      HTML+= '<td><strong>Saldo Inicial</strong> </td>';
+                      HTML+= '<td><strong>Pago programado</strong> </td>';
+                      HTML+= '<td><strong>Pago Total</strong> </td>';
+                      HTML+= '<td><strong>Abono Capital</strong> </td>';
+                      HTML+= '<td><strong>Interes</strong> </td>';
+                      HTML+= '<td><strong>Saldo Final</strong> </td>';
+                      HTML+= '</tr>';
+                    for(var i=0; i<=p; i++){ 
+                      console.log("tasa en decimales"+tasaI);
+                      var Interes=(capital*30*tasaI)/(360);
+                      console.log("INteres"+Interes);
+                      var iva = Interes*0.13;
+                      //var Interesp = parseFloat($('#interesPendiente1').val());
+                      //var totalInteres = Interesp+Interes;
+                      var abonoCapital = cuota - Interes;
+                      var capitals = capital;
+                      capital = capital- abonoCapital;
+                      console.log('CapitalPendiente= '+capital);
+                      if(i < p){
+                        HTML+= '<tr class="tr tr1">';
+                        HTML+= ' <td>'+(i+1)+'</td>';
+                        HTML+= '<td> $'+capitals+'</td>';
+                        HTML+= '<td> $'+cuota+'</td>';
+                        HTML+= '<td> $'+cuota +'</td>';
+                        HTML+= '<td> $'+ abonoCapital +'</td>';
+                        HTML+= '<td> $'+Interes+'</td>';
+                        HTML+= '<td> $'+capital+'</td>';
+                        HTML+= '</tr>';
+                      }
+                      else if(i=p){
+                        HTML+= '<tr class="tr tr1" style="background-color:#70BFE8; color:white">';
+                        HTML+= ' <td>'+(parseFloat(i)+1)+'</td>';
+                        HTML+= '<td> $'+capitals+'</td>';
+                        HTML+= '<td> $'+cuota+'</td>';
+                        HTML+= '<td> $'+cuota +'</td>';
+                        HTML+= '<td> $'+ abonoCapital +'</td>';
+                        HTML+= '<td> $'+Interes+'</td>';
+                        HTML+= '<td> $'+capital+'</td>';
+                        HTML+= '</tr>';
+                      }
+                    }
+                    HTML+= '</table>';
+                    document.getElementById('DivTablaTeorico').innerHTML = HTML;
+                    $('#pagoTeorico').val(capital.toFixed(2));
+                  }
+                  else{
+                    console.log("tasa en decimales"+tasaI);
+                    var Interes=(capital*30*tasaI)/(360);
+                    console.log("INteres"+Interes);
+                    var iva = Interes*0.13;
+                    var abonoCapital = cuota - Interes;
+                    var capitals = capital;
+                    capital = capital- abonoCapital;
+                    var HTML="<div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Teorico de pagos</p></div>";
+                    HTML+= '<table  class="table table-bordered">';
+                      HTML+= '<tr class="tr tr1">';
+                      HTML+= '<td><strong>N Pago</strong> </td>';
+                      HTML+= '<td><strong>Saldo Inicial</strong> </td>';
+                      HTML+= '<td><strong>Pago programado</strong> </td>';
+                      HTML+= '<td><strong>Pago Total</strong> </td>';
+                      HTML+= '<td><strong>Abono Capital</strong> </td>';
+                      HTML+= '<td><strong>Interes</strong> </td>';
+                      HTML+= '<td><strong>Saldo Final</strong> </td>';
+                      HTML+= '</tr>';
+                      HTML+= '<tr class="tr tr1" style="background-color:#70BFE8; color:white">';
+                        HTML+= ' <td>'+(parseFloat(i)+1)+'</td>';
+                        HTML+= '<td> $'+capitals+'</td>';
+                        HTML+= '<td> $'+cuota+'</td>';
+                        HTML+= '<td> $'+cuota +'</td>';
+                        HTML+= '<td> $'+ abonoCapital +'</td>';
+                        HTML+= '<td> $'+Interes+'</td>';
+                        HTML+= '<td> $'+capital+'</td>';
+                      HTML+= '</tr>';
+                      HTML+= '</table>';
+                      document.getElementById('DivTablaTeorico').innerHTML = HTML;
+                      $('#pagoTeorico').val(capital.toFixed(2));
+                  }
+                }
+              }
+            }
+          });
+  //alert(p);
+}
+
 </script>
 

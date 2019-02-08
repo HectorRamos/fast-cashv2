@@ -1,7 +1,7 @@
 <?php 
 class Pagos_Model extends CI_Model{
 	public function ObtenerUltimoPago($id){
-		$sql="SELECT c.Nombre_Cliente, c.Apellido_Cliente, a.capital, a.tasaInteres,a.plazoMeses, cr.fechaApertura, cr.fechaVencimiento,cr.totalAbonado, cr.estadoCredito,cr.interesPendiente as i, p.* FROM tbl_detallepagos AS p INNER JOIN tbl_creditos as cr on p.idCredito= cr.idCredito INNER JOIN tbl_amortizaciones AS a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes AS s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON s.idCliente = c.Id_Cliente WHERE p.idCredito = $id ORDER BY p.idDetallePago DESC LIMIT 1 ";
+		$sql="SELECT  c.Nombre_Cliente, c.Apellido_Cliente, a.capital, a.tasaInteres,a.plazoMeses,a.pagoCuota, cr.fechaApertura, cr.fechaVencimiento,cr.totalAbonado, cr.estadoCredito,cr.interesPendiente as i, p.* FROM tbl_detallepagos AS p INNER JOIN tbl_creditos as cr on p.idCredito= cr.idCredito INNER JOIN tbl_amortizaciones AS a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes AS s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON s.idCliente = c.Id_Cliente WHERE p.idCredito = $id ORDER BY p.idDetallePago DESC LIMIT 1 ";
 		$data = $this->db->query($sql);
 		return $data;
 	}
@@ -68,6 +68,12 @@ class Pagos_Model extends CI_Model{
 		$sql="SELECT * FROM tbl_detallepagos WHERE idCredito=$id ORDER BY idDetallePago ASC";
 		$data = $this->db->query($sql);
 		return $data;
+	}
+	public function obtenerNumPago($id){
+		$sql = "SELECT count(*) AS nPagos FROM tbl_detallepagos AS p INNER JOIN tbl_creditos as cr on p.idCredito= cr.idCredito INNER JOIN tbl_amortizaciones AS a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes AS s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON s.idCliente = c.Id_Cliente WHERE p.idCredito = $id ORDER BY p.idDetallePago";
+		$result= $this->db->query($sql);
+		return $result;
+
 	}
 }
 ?>

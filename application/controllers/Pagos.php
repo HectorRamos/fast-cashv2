@@ -74,6 +74,12 @@ class Pagos extends CI_Controller
 		$this->load->view('Base/footer');
 
 	}
+	public function CargarNumPago(){
+		$id = $this->input->GET('Ide');
+		$data = $this->Pagos_Model->obtenerNumPago($id);
+		echo json_encode($data->result());
+
+	}
 	
 }
 ?>

@@ -313,14 +313,14 @@
                               <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
                                   <input type="hidden" id="diasMora" name="diasMora" >
                                   <label class="mostrLabel">Dias en mora:&nbsp;</label>
-                                  <label class="label label-default"style="background: #FFCCBC; color: #000; font-weight: normal;">$ <span id="spanDiasMora">00.00</span></label>
+                                  <label class="label label-default" style="background: #FFCCBC; color: #000; font-weight: normal;"> <span id="spanDiasMora">00.00</span></label>
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
                                   <input type="hidden" id="cobroMora" name="cobroMora" >
                                   <label class="mostrLabel">Cobro por mora al 5%:&nbsp;</label>
-                                  <label class="label label-default"style="background: #CCFFCC; color: #000; font-weight: normal;">$ <span id="spanCobroMora">00.00</span></label>
+                                  <label class="label label-default" style="background: #CCFFCC; color: #000; font-weight: normal;">$ <span id="spanCobroMora">00.00</span></label>
                               </div>
                             </div>
                             
