@@ -59,7 +59,7 @@
                                                             <select id="select" name="Tipo_Cliente" class="form-control">
                                                                 <option value="Otro">Otro</option>
                                                                 <option value="Empleado">Empleado</option>
-                                                                <option value="Empresario">Empresario</option>
+                                                                <option value="Comerciante">Comerciante</option>
                                                             </select>
                                                     </div>
                                                     <div class="form-group col-md-6"></div>
@@ -437,7 +437,7 @@ $(document).ready( function() {
                             $("#cliente1").hide();
                             $(".empleado").show();
                         } 
-                        if ($r === "Empresario") {
+                        if ($r === "Comerciante") {
                             $("#cliente1").hide();
                             $(".empresario").show();
                         }
@@ -584,7 +584,7 @@ $("#select").change( function() {
                     $(".siguiente1").show();
                     $(".guardar1").hide();
                 } 
-                if ($(this).val() === "Empresario") {
+                if ($(this).val() === "Comerciante") {
                     $(".siguiente1").show();
                     $(".guardar1").hide();
                 }
