@@ -241,11 +241,11 @@ class Solicitud extends CI_Controller {
 		{
 			if (sizeof($F) >= 0 && sizeof($P) == 0 && sizeof($H) == 0)
 			{
-				$tipoPrestamo = "Credito popular";
+				$tipoPrestamo = "Crédito popular";
 			}
 			else
 			{
-				$tipoPrestamo = "Credito popular mixto";
+				$tipoPrestamo = "Crédito popular mixto";
 			}
 		}
 		else
@@ -254,11 +254,11 @@ class Solicitud extends CI_Controller {
 			{
 				if (sizeof($F) >= 0 && sizeof($P) == 0 && sizeof($H) == 0)
 				{
-					$tipoPrestamo = "Credito personal";
+					$tipoPrestamo = "Crédito personal";
 				}
 				else
 				{
-					$tipoPrestamo = "Credito personal mixto";
+					$tipoPrestamo = "Crédito personal mixto";
 				}
 			}	
 		}
@@ -306,11 +306,11 @@ class Solicitud extends CI_Controller {
 		{
 			if (sizeof($F) == 0 && sizeof($P) >= 0 && sizeof($H) == 0)
 			{
-				$tipoPrestamo = "Credito popular prendario";
+				$tipoPrestamo = "Crédito popular prendario";
 			}
 			else
 			{
-				$tipoPrestamo = "Credito popular mixto";
+				$tipoPrestamo = "Crédito popular mixto";
 			}
 		}
 		else
@@ -319,11 +319,11 @@ class Solicitud extends CI_Controller {
 			{
 				if (sizeof($F) == 0 && sizeof($P) >= 0 && sizeof($H) == 0)
 				{
-					$tipoPrestamo = "Credito personal prendario";
+					$tipoPrestamo = "Crédito personal prendario";
 				}
 				else
 				{
-					$tipoPrestamo = "Credito personal mixto";
+					$tipoPrestamo = "Crédito personal mixto";
 				}
 			}	
 		}
@@ -372,11 +372,11 @@ class Solicitud extends CI_Controller {
 		{
 			if (sizeof($F) == 0 && sizeof($P) == 0 && sizeof($H) >= 0)
 			{
-				$tipoPrestamo = "Credito popular hipotecario";
+				$tipoPrestamo = "Crédito popular hipotecario";
 			}
 			else
 			{
-				$tipoPrestamo = "Credito popular mixto";
+				$tipoPrestamo = "Crédito popular mixto";
 			}
 		}
 		else
@@ -385,11 +385,11 @@ class Solicitud extends CI_Controller {
 			{
 				if (sizeof($F) == 0 && sizeof($P) == 0 && sizeof($H) >= 0)
 				{
-					$tipoPrestamo = "Credito personal hipotecario";
+					$tipoPrestamo = "Crédito personal hipotecario";
 				}
 				else
 				{
-					$tipoPrestamo = "Credito personal mixto";
+					$tipoPrestamo = "Crédito personal mixto";
 				}
 			}	
 		}
