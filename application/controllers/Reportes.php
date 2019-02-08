@@ -1623,7 +1623,7 @@ public function ReportePendientesEXCEL()
 			$fechaActual = date("Y-m-d");
 		if($tipoCredito =="Crédito popular mixto" || $tipoCredito =="Crédito popular prendario" ||  $tipoCredito =="Crédito popular hipotecario" || $tipoCredito =="Crédito popular"){
 			$fechaComparacion = $creditos->fechaVencimiento;
-			if($fechaActual<$fechaComparacion){
+			if($fechaActual>$fechaComparacion){
 				$this->excel->getActiveSheet()->setCellValue("A{$contador}", $credito->Codigo_Cliente);
 	           	$this->excel->getActiveSheet()->setCellValue("B{$contador}", $credito->Nombre_Cliente." ".$credito->Apellido_Cliente);
 	           	$this->excel->getActiveSheet()->setCellValue("C{$contador}", $credito->tipoCredito); 
@@ -1635,7 +1635,7 @@ public function ReportePendientesEXCEL()
 		}
 		else if($tipoCredito =="Crédito personal mixto" || $tipoCredito =="Crédito personal prendario" ||  $tipoCredito =="Crédito personal hipotecario" || $tipoCredito =="Crédito personal"){
 				$fechaComparacion = $credito->fechaProximoPago;
-			if($fechaActual<$fechaComparacion){
+			if($fechaActual>$fechaComparacion){
 				$this->excel->getActiveSheet()->setCellValue("A{$contador}", $credito->Codigo_Cliente);
 	           	$this->excel->getActiveSheet()->setCellValue("B{$contador}", $credito->Nombre_Cliente." ".$credito->Apellido_Cliente);
 	           	$this->excel->getActiveSheet()->setCellValue("C{$contador}", $credito->tipoCredito); 
@@ -1675,6 +1675,172 @@ public function ReportePendientesEXCEL()
 	{
 
 	}
-	
+	public function ReporteCalificacion($val){
+
+		$p = $val;
+		if($p ==1){
+			$datos = $this->Reportes_Model->Calificacion();
+			$data = array('datos' => $datos );
+			$this->load->view('Base/header');
+			$this->load->view('Base/nav');
+			$this->load->view('Reportes/viewCalificacion', $data);
+			$this->load->view('Base/footer');
+		}
+		else if($p == 2){
+			$fechaInicial = $this->input->GET('fechaInicial');
+			$fechaFinal = $this->input->GET('fechaFinal');
+			$datos = $this->Reportes_Model->CalificacionFecha($fechaInicial, $fechaFinal);
+			$data = array('datos' => $datos );
+			$this->load->view('Base/header');
+			$this->load->view('Base/nav');
+			$this->load->view('Reportes/viewCalificacion', $data);
+			$this->load->view('Base/footer');	
+	}
+	}
+	public function CalificacionEXCEL($val)
+	{
+    $p = $val;
+
+		if($p ==1){
+			$creditos = $this->Reportes_Model->Calificacion()->result();
+			$descripcion = "REPORTE DE CREDITOS FINALIZADOS";
+		}
+		else if($p == 2){
+			$fechaInicial = $this->input->GET('fechaInicial');
+			$fechaFinal = $this->input->GET('fechaFinal');
+			$creditos = $this->Reportes_Model->CalificacionFecha($fechaInicial, $fechaFinal)->result();
+			$descripcion = "REPORTE DE CALIFICACION DE CREDITOS OTORGADOS DESDE LA FECHA: ".$fechaInicial." HASTA LA FECHA: ".$fechaFinal;
+		};
+    if(count($creditos) > 0){
+        //Cargamos la librería de excel.
+        $this->load->library('excel');
+        $this->excel->setActiveSheetIndex(0);
+        $this->excel->getActiveSheet()->setTitle('Creditos');
+        //Contador de filas
+        $contador = 3;
+        //Cabecera
+		$styleArray = array(
+			'alignment' => array(
+		            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		        ),
+		);
+		$this->excel->getActiveSheet()->getStyle('B1:E1')->applyFromArray($styleArray);
+		$this->excel->getActiveSheet()->getStyle('B2:E2')->applyFromArray($styleArray);
+        $this->excel->setActiveSheetIndex(0)->mergeCells('B1:E1');
+        $this->excel->setActiveSheetIndex(0)->mergeCells('B2:E2');
+        $this->excel->getActiveSheet()->setCellValue("B1", "GOCAJAA GROUP SA DE CV, MERCEDES UMAÑA, USULUTAN");
+        $this->excel->getActiveSheet()->setCellValue("B2", $descripcion);
+        // Fin cabecera
+
+        //Le aplicamos ancho las columnas.
+        $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(40);
+        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
+
+        //Le aplicamos negrita a los títulos de la cabecera.
+        $this->excel->getActiveSheet()->getStyle("A{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("B{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("C{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("D{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("E{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("F{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("G{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("H{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("I{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("J{$contador}")->getFont()->setBold(true);
+
+        //Definimos los títulos de la cabecera.
+        $this->excel->getActiveSheet()->setCellValue("A{$contador}", 'codigo');
+        $this->excel->getActiveSheet()->setCellValue("B{$contador}", 'nombre');
+        $this->excel->getActiveSheet()->setCellValue("C{$contador}", 'cuenta');
+        $this->excel->getActiveSheet()->setCellValue("D{$contador}", 'fechaap');
+        $this->excel->getActiveSheet()->setCellValue("E{$contador}", 'fechault');
+        $this->excel->getActiveSheet()->setCellValue("F{$contador}", 'vence');
+        $this->excel->getActiveSheet()->setCellValue("G{$contador}", 'monto');
+        $this->excel->getActiveSheet()->setCellValue("H{$contador}", 'saldo');
+        $this->excel->getActiveSheet()->setCellValue("I{$contador}", 'calif');
+        $this->excel->getActiveSheet()->setCellValue("J{$contador}", 'intcte');
+
+        //Definimos la data del cuerpo.        
+        foreach($creditos as $credito){
+           //Incrementamos una fila más, para ir a la siguiente.
+           $contador++;
+           //Informacion de las filas de la consulta.
+           $this->excel->getActiveSheet()->setCellValue("A{$contador}", $credito->Codigo_Cliente);
+           $this->excel->getActiveSheet()->setCellValue("B{$contador}", $credito->Nombre_Cliente." ".$credito->Apellido_Cliente);
+           $this->excel->getActiveSheet()->setCellValue("C{$contador}", $credito->codigoCredito); 
+           $this->excel->getActiveSheet()->setCellValue("D{$contador}", $credito->fechaApertura);
+           $this->excel->getActiveSheet()->setCellValue("E{$contador}", $credito->fechaPago);
+           $this->excel->getActiveSheet()->setCellValue("F{$contador}", $credito->fechaVencimiento);
+           $this->excel->getActiveSheet()->setCellValue("G{$contador}", $credito->capital);
+
+           $tipoCredito=$credito->tipoCredito;
+           $pendiente = $credito->capital - $credito->totalAbonado;
+           $diasFalt=0;
+           if($tipoCredito =="Crédito popular mixto" || $tipoCredito =="Crédito popular prendario" ||  $tipoCredito =="Crédito popular hipotecario" || $tipoCredito =="Crédito popular"){
+			$fechaComparacion = $credito->fechaVencimiento;
+			if($val==2){
+				$fechaActual=$this->input->GET('fechaFinal');
+			}
+			else{
+				$fechaActual = date("Y-m-d");
+			}
+			
+			if($fechaActual>$fechaComparacion){
+				$inicio = strtotime($fechaActual);
+                $fin = strtotime($fechaComparacion);
+                $dif = $inicio - $fin;
+                $diasFalt = (( ( $dif / 60 ) / 60 ) / 24);
+			}
+			else{
+				$diasFalt =1;
+			}
+			}
+			else if($tipoCredito =="Crédito personal mixto" || $tipoCredito =="Crédito personal prendario" ||  $tipoCredito =="Crédito personal hipotecario" || $tipoCredito =="Crédito personal"){
+			$fechaComparacion = $credito->fechaProximoPago;
+			if($val==2){
+				$fechaActual=$this->input->GET('fechaFinal');
+			}
+			else{
+				$fechaActual = date("Y-m-d");
+			}
+			
+			if($fechaActual>$fechaComparacion){
+				$inicio = strtotime($fechaActual);
+                $fin = strtotime($fechaComparacion);
+                $dif = $fin- $inicio;
+                $diasFalt = (( ( $dif / 60 ) / 60 ) / 24);
+			}
+			else{
+				$diasFalt =1;
+			}
+			}
+           $this->excel->getActiveSheet()->setCellValue("H{$contador}", $pendiente);
+           $this->excel->getActiveSheet()->setCellValue("I{$contador}",$diasFalt);
+           $this->excel->getActiveSheet()->setCellValue("J{$contador}", "aa");
+        }
+        //Le ponemos un nombre al archivo que se va a generar.
+        $archivo = "reporte_general_creditos.xls";
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'.$archivo.'"');
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+        //Hacemos una salida al navegador con el archivo Excel.
+        $objWriter->save('php://output');
+     }
+     else
+     {
+        echo 'No se han encontrado creditos saldados';
+        exit;        
+     }
+	}
+
 }
 ?>
