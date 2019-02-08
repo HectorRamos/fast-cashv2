@@ -91,7 +91,7 @@
 <!--                     </div>                    
                     <div class="row"> -->
 
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-3">
                             <label for="tipo_prestamo">Linea</label>
                             <!-- Probando linea de tiempo para populares-->
                             <?php 
@@ -142,7 +142,18 @@
                             ?>
                             <?php  ?>
                             <input type="hidden" class="form-control" id="numero_meses" name="numero_meses">
-                      </div>
+                      </div> <!-- Fin linea de tiempo -->
+
+                      <div class="form-group col-md-3">
+                      <label for="">Destino del prestamo</label>
+                        <select id="destino_prestamo" name="destino_prestamo" class="select" data-placeholder="Seleccione un tipo de prestamo" data-live-search="true">
+                          <option value="1">Créditos para empresas</option>
+                          <option value="2">Créditos para vivienda</option>
+                          <option value="3">Créditos para consumo</option>
+                        </select>
+                      </div> <!-- Destino del prestamo -->
+
+
                     </div>
                     <!-- Fin de la primera Linea del formulario-->
 
@@ -620,9 +631,12 @@ function calcularIntereses()
       numeroDePagos = (meses*12);
       tasaMensual= (tasaInteres)/numeroDePagos;
       power = Math.pow((1+tasaMensual), numeroDePagos);
-      cuotaDiaria = (montoDinero * tasaMensual * power)/(power - 1);
-      totalInteresesAPagar = (cuotaDiaria*numeroDePagos)-montoDinero;
+      cuotaDiariaAux = (montoDinero * tasaMensual * power)/(power - 1);
+      totalInteresesAPagar = (cuotaDiariaAux*numeroDePagos)-montoDinero;
       totalIvaAPagar = totalInteresesAPagar * 0.13;
+
+      cuotaDiaria = (montoDinero * tasaMensual * power)/(power - 1) + (totalIvaAPagar/(meses*12));
+
       totalAPagar = parseFloat(totalIvaAPagar) + parseFloat(totalInteresesAPagar) + parseFloat(montoDinero);
   }
 

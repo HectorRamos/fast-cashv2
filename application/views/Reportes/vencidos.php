@@ -30,7 +30,7 @@
             </div>
             <div class="row" style="padding-left: 50px; padding-right: 50px;">
                 <div class="col-md-12 text-center">
-                    <form class="form-inline" id="buscrPorFecha" method="post" action="<?= base_url() ?>Reportes/General/2">
+                    <form class="form-inline" id="buscrPorFecha" method="post" action="<?= base_url() ?>Reportes/CreditosVencidos/2">
                       <div class="margn">
                         <div class="form-group">
                           <label for="fechaInicio">Inicio </label>
@@ -49,7 +49,7 @@
                         </div>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
-                        <a href="<?= base_url();?>Reportes/General/1" class="btn btn-warning refres"><i class="fa fa-refresh"></i></a>
+                        <a href="<?= base_url();?>Reportes/CreditosVencidos/1" class="btn btn-warning refres"><i class="fa fa-refresh"></i></a>
                       </div>
                     </form>
                   </div>
@@ -61,7 +61,16 @@
                   <div class="pull-right">
 
                     <?php
-                    if (sizeof($datos->result()) != 0){
+                    $hoy = date('Y-m-d');
+                    $cont = 0;
+                    foreach ($datos->result() as $creditos)
+                      {
+                        if ($creditos->fechaVencimiento < $hoy) {
+                          $cont++;
+                        }
+                      }
+
+                    if ($cont != 0){
                       if (isset($i) && isset($f))
                       {
                     ?>
@@ -83,7 +92,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                               <div class="margn">
                               <?php 
-                                if (sizeof($datos->result()) != 0){
+                                if ( $cont != 0){
                               ?>
                                 <table id="datatable" class="table">
                                   <thead class="thead-dark thead thead1">
@@ -123,7 +132,7 @@
                                     if(!empty($datos)){
                                     foreach ($datos->result() as $creditos) {
                                     $i = $i +1;
-                                    if ($creditos->estadoCredito != "Finalizado") {
+                                    if ($creditos->fechaVencimiento < $hoy && $creditos->estadoCredito != "Finalizado") {
                                     // if($creditos->estadoCredito=="Finalizado"){
                                       $datosExtras = $this->Reportes_Model->DatosAdicionalesRG($creditos->idCredito );
 

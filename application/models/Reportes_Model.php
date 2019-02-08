@@ -47,14 +47,14 @@ class Reportes_Model extends CI_Model
 
 	public function ObtenerCreditosFecha($i, $f)
 	{
-		$sql = "SELECT c.Codigo_Cliente, c.Nombre_Cliente, c.Apellido_Cliente,a.capital, a.ivaInteresCapital, cr.idCredito,cr.codigoCredito,cr.estadoCredito, cr.tipoCredito, cr.totalAbonado FROM tbl_creditos as cr INNER JOIN tbl_amortizaciones as a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes as s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON s.idCliente = c.Id_Cliente WHERE DATE(cr.fechaApertura) BETWEEN '$i' AND '$f' ORDER BY cr.idCredito DESC";
+		$sql = "SELECT c.Codigo_Cliente, c.Nombre_Cliente, c.Apellido_Cliente,a.capital, a.ivaInteresCapital, cr.idCredito,cr.codigoCredito,cr.estadoCredito, cr.tipoCredito, cr.totalAbonado, cr.interesPendiente, cr.fechaVencimiento FROM tbl_creditos as cr INNER JOIN tbl_amortizaciones as a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes as s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON s.idCliente = c.Id_Cliente WHERE DATE(cr.fechaApertura) BETWEEN '$i' AND '$f' ORDER BY cr.idCredito DESC";
 		$datos = $this->db->query($sql);
 		return $datos;
 	}
 
 	public function ReporteInfored($inicio, $fin)
 	{
-		$sql = "SELECT dt.fechaPago, c.Codigo_Cliente, c.Nombre_Cliente, c.Apellido_Cliente, c.Tipo_Cliente, c.DUI_Cliente, c.NIT_Cliente,c.Fecha_Nacimiento_Cliente, c.Genero_Cliente, a.capital, a.ivaInteresCapital, a.plazoMeses,a.pagoCuota, a.cantidadCuota , cr.idCredito,cr.codigoCredito,cr.estadoCredito, cr.tipoCredito, cr.totalAbonado, cr.montoTotal, cr.fechaApertura, cr.fechaVencimiento FROM tbl_creditos as cr INNER JOIN tbl_amortizaciones as a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes as s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON s.idCliente = c.Id_Cliente INNER JOIN tbl_detallepagos as dt ON(cr.idCredito = dt.idCredito) WHERE dt.fechaPago BETWEEN '$inicio' AND '$fin' ORDER BY cr.idCredito DESC";
+		$sql = "SELECT dt.fechaPago, c.Codigo_Cliente, c.Nombre_Cliente, c.Apellido_Cliente, c.Tipo_Cliente, c.DUI_Cliente, c.NIT_Cliente,c.Fecha_Nacimiento_Cliente, c.Genero_Cliente, a.capital, a.ivaInteresCapital, a.plazoMeses,a.pagoCuota, a.cantidadCuota , cr.idCredito,cr.codigoCredito,cr.estadoCredito, cr.tipoCredito, cr.totalAbonado, cr.montoTotal, cr.fechaApertura, cr.fechaVencimiento, s.destinoCredito  FROM tbl_creditos as cr INNER JOIN tbl_amortizaciones as a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes as s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON s.idCliente = c.Id_Cliente INNER JOIN tbl_detallepagos as dt ON(cr.idCredito = dt.idCredito) WHERE dt.fechaPago BETWEEN '$inicio' AND '$fin' GROUP BY cr.idCredito ORDER BY cr.idCredito DESC";
 		$datos = $this->db->query($sql);
 		return $datos;
 	}
@@ -71,6 +71,7 @@ class Reportes_Model extends CI_Model
 		
 	}
 
+
 	public function Calificacion(){
 		$sql= "SELECT dp.*, dp.fechaProximoPago, c.idCredito, c.codigoCredito, c.tipoCredito,c.totalAbonado, c.fechaVencimiento,a.capital, c.fechaApertura, cl.Codigo_Cliente, cl.Nombre_Cliente, cl.Apellido_Cliente FROM tbl_detallepagos as dp INNER JOIN tbl_creditos as c ON(dp.idCredito = c.idCredito) INNER JOIN tbl_amortizaciones as a ON(c.idAmortizacion = a.idAmortizacion) INNER JOIN tbl_solicitudes as s ON(a.idSolicitud = s.idSolicitud) INNER JOIN tbl_clientes as cl ON(s.idCliente = cl.Id_Cliente) WHERE dp.idDetallePago IN (SELECT MAX(idDetallePago) FROM tbl_detallepagos) GROUP BY dp.idCredito";
 		$result = $this->db->query($sql);
@@ -81,5 +82,19 @@ class Reportes_Model extends CI_Model
 		$result = $this->db->query($sql);
 		return $result;
 	}
+
+	public function DatosAdicionalesRG($id)
+	{
+		$sql = "SELECT a.totalInteres, SUM(dt.interes) as interesesPagados FROM tbl_amortizaciones as a INNER JOIN tbl_creditos as cr ON(a.idAmortizacion = cr.idAmortizacion) INNER JOIN tbl_detallepagos as dt ON(cr.idCredito = dt.idCredito) WHERE cr.idCredito='$id'  LIMIT 1";
+		$result= $this->db->query($sql);
+		if ($result->num_rows() > 0)
+		 {
+			return $result->row();
+		 }
+		return null;
+		
+	}
+	
+
 }
 ?>

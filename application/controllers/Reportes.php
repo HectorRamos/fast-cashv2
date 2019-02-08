@@ -123,6 +123,8 @@ class Reportes extends CI_Controller {
 	                  <th class='text-center'>Tipo de Crédito</th>
 	                  <th class='text-center'>Total a Pagar</th>
 	                  <th class='text-center'>Total Abonado</th>
+	                  <th class='text-center' >Intereses pagados</th>
+                      <th class='text-center' >Intereses pendientes</th>
 	                  <th class='text-center'>Estado</th>
 	                </tr>
 	              </thead>
@@ -130,14 +132,26 @@ class Reportes extends CI_Controller {
 	            ";
 	foreach ($datos->result() as $creditos) {
 		$i = $i +1;
+		if ($creditos->estadoCredito != "Finalizado") {
+        // if($creditos->estadoCredito=="Finalizado"){
+          $datosExtras = $this->Reportes_Model->DatosAdicionalesRG($creditos->idCredito );
+
+          $IP = 0;
+          if ($datosExtras->interesesPagados != null)
+          {
+            $IP = $datosExtras->interesesPagados;
+          }
 		$html .= "	<tr>";
         $html .= "      <td class='text-center'> $creditos->Codigo_Cliente</td>";
         $html .= "      <td class='text-center'> $creditos->Nombre_Cliente    $creditos->Apellido_Cliente</td>";
         $html .= "      <td class='text-center'> $creditos->tipoCredito</td>";
         $html .= "      <td class='text-center'> $  $creditos->capital</td>";
         $html .= "      <td class='text-center'> $  $creditos->totalAbonado</td>";
+        $html .= "      <td class='text-center'> $  $IP </td>";
+        $html .= "      <td class='text-center'> $  $creditos->interesPendiente</td>";
         $html .= "      <td class='text-center'> $creditos->estadoCredito</td>";
         $html .= "  </tr>";
+	}
 	}
 	    
 	$html .= "</tbody>
@@ -194,12 +208,12 @@ class Reportes extends CI_Controller {
 		        ),
 		);
 
-		$this->excel->getActiveSheet()->getStyle('B1:E1')->applyFromArray($styleArray);
-		$this->excel->getActiveSheet()->getStyle('B2:E2')->applyFromArray($styleArray);
-		$this->excel->getActiveSheet()->getStyle('B3:E3')->applyFromArray($styleArray);
-        $this->excel->setActiveSheetIndex(0)->mergeCells('B1:E1');
-        $this->excel->setActiveSheetIndex(0)->mergeCells('B2:E2');
-        $this->excel->setActiveSheetIndex(0)->mergeCells('B3:E3');
+		$this->excel->getActiveSheet()->getStyle('B1:G1')->applyFromArray($styleArray);
+		$this->excel->getActiveSheet()->getStyle('B2:G2')->applyFromArray($styleArray);
+		$this->excel->getActiveSheet()->getStyle('B3:G3')->applyFromArray($styleArray);
+        $this->excel->setActiveSheetIndex(0)->mergeCells('B1:G1');
+        $this->excel->setActiveSheetIndex(0)->mergeCells('B2:G2');
+        $this->excel->setActiveSheetIndex(0)->mergeCells('B3:G3');
         $this->excel->getActiveSheet()->setCellValue("B1", "GOCAJAA GROUP SA DE CV, MERCEDES UMAÑA, USULUTAN");
         $this->excel->getActiveSheet()->setCellValue("B2", "REPORTE GENERAL DE CRÉDITOS");
         if (isset($i) && isset($f))
@@ -219,6 +233,8 @@ class Reportes extends CI_Controller {
         $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
         $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
         $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
         //Le aplicamos negrita a los títulos de la cabecera.
         $this->excel->getActiveSheet()->getStyle("A{$contador}")->getFont()->setBold(true);
         $this->excel->getActiveSheet()->getStyle("B{$contador}")->getFont()->setBold(true);
@@ -226,24 +242,40 @@ class Reportes extends CI_Controller {
         $this->excel->getActiveSheet()->getStyle("D{$contador}")->getFont()->setBold(true);
         $this->excel->getActiveSheet()->getStyle("E{$contador}")->getFont()->setBold(true);
         $this->excel->getActiveSheet()->getStyle("F{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("G{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("H{$contador}")->getFont()->setBold(true);
         //Definimos los títulos de la cabecera.
         $this->excel->getActiveSheet()->setCellValue("A{$contador}", 'Código del cliente');
         $this->excel->getActiveSheet()->setCellValue("B{$contador}", 'Cliente');
         $this->excel->getActiveSheet()->setCellValue("C{$contador}", 'Tipo de crédito');
         $this->excel->getActiveSheet()->setCellValue("D{$contador}", 'Total a pagar');
         $this->excel->getActiveSheet()->setCellValue("E{$contador}", 'Total abonado');
-        $this->excel->getActiveSheet()->setCellValue("F{$contador}", 'Estado');
+        $this->excel->getActiveSheet()->setCellValue("F{$contador}", 'Intereses pagados');
+        $this->excel->getActiveSheet()->setCellValue("G{$contador}", 'Intereses pendientes');
+        $this->excel->getActiveSheet()->setCellValue("H{$contador}", 'Estado');
         //Definimos la data del cuerpo.        
         foreach($creditos as $credito){
            //Incrementamos una fila más, para ir a la siguiente.
            $contador++;
+           if ($credito->estadoCredito != "Finalizado") {
+        // if($creditos->estadoCredito=="Finalizado"){
+          $datosExtras = $this->Reportes_Model->DatosAdicionalesRG($credito->idCredito );
+
+          $IP = 0;
+          if ($datosExtras->interesesPagados != null)
+          {
+            $IP = $datosExtras->interesesPagados;
+          }
            //Informacion de las filas de la consulta.
            $this->excel->getActiveSheet()->setCellValue("A{$contador}", $credito->Codigo_Cliente);
            $this->excel->getActiveSheet()->setCellValue("B{$contador}", $credito->Nombre_Cliente." ".$credito->Apellido_Cliente);
            $this->excel->getActiveSheet()->setCellValue("C{$contador}", $credito->tipoCredito); 
            $this->excel->getActiveSheet()->setCellValue("D{$contador}", $credito->capital);
            $this->excel->getActiveSheet()->setCellValue("E{$contador}", $credito->totalAbonado);
-           $this->excel->getActiveSheet()->setCellValue("F{$contador}", $credito->estadoCredito);
+           $this->excel->getActiveSheet()->setCellValue("F{$contador}", $IP);
+           $this->excel->getActiveSheet()->setCellValue("G{$contador}", $credito->interesPendiente);
+           $this->excel->getActiveSheet()->setCellValue("H{$contador}", $credito->estadoCredito);
+        }
         }
         //Le ponemos un nombre al archivo que se va a generar.
         $archivo = "reporte_general_creditos.xls";
@@ -1867,42 +1899,123 @@ public function ReportePendientesEXCEL()
 	       	$hoy = date('Y-m-d');
 	       	$cadena = "";
             $vencimiento = date($fila->fechaVencimiento);
-            if ($vencimiento > $hoy)
+            if ($vencimiento >= $hoy)
               {
-                $cadena = "--";
+                $cadena = "A1";
               }
             else
               {
                 $numero =  $this->dias_transcurridos($vencimiento, $hoy);
-                switch ($numero) {
-                  case $numero <= 7:
-                      $cadena = "A1";
-                    break;
-                  case $numero > 7 && $numero <= 14:
-                      $cadena = "A2";
-                    break;
-                  case $numero > 14 && $numero <= 30:
-                      $cadena = "B";
-                    break;
-                  case $numero > 30 && $numero <= 90:
-                      $cadena = "C1";
-                    break;
-                  case $numero > 90 && $numero <= 120:
-                      $cadena = "C2";
-                    break;
-                  case $numero > 120 && $numero <= 150:
-                      $cadena = "D1";
-                    break;
-                  case $numero > 150 && $numero <= 180:
-                      $cadena = "D2";
-                    break;
-                  case $numero > 180:
-                      $cadena = "E";
-                    break;
-                  
-                  default:
-                    # code...
-                    break;
+                if ($fila->destinoCredito==1)
+                {
+                	
+	                switch ($numero)
+	                {
+	                  case $numero > 0 && $numero <= 7:
+	                      $cadena = "A1";
+	                    break;
+	                  case $numero > 7 && $numero <= 14:
+	                      $cadena = "A2";
+	                    break;
+	                  case $numero > 14 && $numero <= 30:
+	                      $cadena = "B";
+	                    break;
+	                  case $numero > 30 && $numero <= 90:
+	                      $cadena = "C1";
+	                    break;
+	                  case $numero > 90 && $numero <= 120:
+	                      $cadena = "C2";
+	                    break;
+	                  case $numero > 120 && $numero <= 150:
+	                      $cadena = "D1";
+	                    break;
+	                  case $numero > 150 && $numero <= 180:
+	                      $cadena = "D2";
+	                    break;
+	                  case $numero > 180:
+	                      $cadena = "E";
+	                    break;
+	                  
+	                  default:
+	                    # code...
+	                    break;
+	                }
+                }
+                else
+                {
+                	if ($fila->destinoCredito==2)
+	                {
+	                	
+		                switch ($numero)
+		                {
+		                  case $numero > 0 && $numero <= 7:
+		                      $cadena = "A1";
+		                    break;
+		                  case $numero > 7 && $numero <= 30:
+		                      $cadena = "A2";
+		                    break;
+		                  case $numero > 30 && $numero <= 90:
+		                      $cadena = "B";
+		                    break;
+		                  case $numero > 90 && $numero <= 120:
+		                      $cadena = "C1";
+		                    break;
+		                  case $numero > 120 && $numero <= 180:
+		                      $cadena = "C2";
+		                    break;
+		                  case $numero > 180 && $numero <= 270:
+		                      $cadena = "D1";
+		                    break;
+		                  case $numero > 270 && $numero <= 360:
+		                      $cadena = "D2";
+		                    break;
+		                  case $numero > 360:
+		                      $cadena = "E";
+		                    break;
+		                  
+		                  default:
+		                    # code...
+		                    break;
+		                }
+	                }
+	                else
+	                {
+	                	if ($fila->destinoCredito==3)
+		                {
+		                	
+			                switch ($numero)
+			                {
+			                  case $numero > 0 && $numero <= 7:
+			                      $cadena = "A1";
+			                    break;
+			                  case $numero > 7 && $numero <= 30:
+			                      $cadena = "A2";
+			                    break;
+			                  case $numero > 30 && $numero <= 60:
+			                      $cadena = "B";
+			                    break;
+			                  case $numero > 60 && $numero <= 90:
+			                      $cadena = "C1";
+			                    break;
+			                  case $numero > 90 && $numero <= 120:
+			                      $cadena = "C2";
+			                    break;
+			                  case $numero > 120 && $numero <= 150:
+			                      $cadena = "D1";
+			                    break;
+			                  case $numero > 150 && $numero <= 180:
+			                      $cadena = "D2";
+			                    break;
+			                  case $numero > 180:
+			                      $cadena = "E";
+			                    break;
+			                  
+			                  default:
+			                    # code...
+			                    break;
+			                }
+		                }
+	                }
                 }
               }
 	       	$this->excel->getActiveSheet()->setCellValue("AA{$contador}", $cadena);
@@ -2140,6 +2253,27 @@ public function ReportePendientesEXCEL()
         $dias = (strtotime($fecha_i)-strtotime($fecha_f))/86400;
         $dias   = abs($dias); $dias = floor($dias);   
         return $dias;
+      }
+
+      public function CreditosVencidos($val)
+      {
+      	$this->load->view('Base/header');
+		$this->load->view('Base/nav');
+		if ($val==1) 
+		{
+			$datos = $this->Creditos_Model->ObtenerCreditos();
+			$data = array('datos' => $datos );
+		}
+		else{
+			$datos = $this->input->post();
+			$i = $datos['fechaInicial'];
+			$f = $datos['fechaFinal'];
+			$datos = $this->Reportes_Model->ObtenerCreditosFecha($i, $f);
+			$data = array('datos' => $datos, 'i' => $i, 'f' => $f);
+		}
+
+		$this->load->view('Reportes/vencidos', $data);
+		$this->load->view('Base/footer');
       }
 	
 

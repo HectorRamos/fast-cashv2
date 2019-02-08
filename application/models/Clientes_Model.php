@@ -107,7 +107,7 @@ class Clientes_Model extends CI_Model{
 						$info = $this->db->query($sql);
 						return $info->result();
 				}
-				else if($datos['Tipo_Cliente']=="Empresario")
+				else if($datos['Tipo_Cliente']=="Comerciante")
 				{
 					$sql = "SELECT c.Id_Cliente, c.Codigo_Cliente, c.Tipo_Cliente, l.* FROM tbl_datos_negocio as l INNER JOIN  tbl_clientes AS c ON l.Fk_Id_Cliente = c.Id_Cliente WHERE l.Fk_Id_Cliente=$id";
 						$info = $this->db->query($sql);
@@ -174,7 +174,7 @@ public function EditarDatosNegocio($datos= null){
 	}
 }
 public function obtenerInfoCliente($id, $tipo){
-	if($tipo=="Empresario"){
+	if($tipo=="Comerciante"){
 		$sql="SELECT n.*,c.*, d.*, m.* FROM tbl_datos_negocio AS n INNER JOIN tbl_clientes AS c ON n.Fk_Id_Cliente=c.Id_Cliente INNER JOIN tbl_departamentos AS d ON c.Fk_Id_Departamento= d.Id_Departamento INNER JOIN tbl_municipios AS m ON c.Fk_Id_Municipio = m.Id_Municipio WHERE n.Fk_Id_Cliente=$id";
 		$info = $this->db->query($sql);
 		return $info->result();

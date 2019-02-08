@@ -76,19 +76,19 @@
                                                                             echo "
                                                                             <option value='Otro' style='background-color:green; color:white;'>Otro</option>
                                                                             <option value='Empleado'>Empleado</option>
-                                                                            <option value='Empresario'>Empresario</option>
+                                                                            <option value='Comerciante'>Comerciante</option>
                                                                             ";
                                                                             }
                                                                         if($datos_cliente->Tipo_Cliente == "Empleado"){ 
                                                                             echo "
                                                                             <option value='Empleado' style='background-color:green; color:white;'>Empleado</option>
                                                                             <option value='Otro'>Otro</option>
-                                                                            <option value='Empresario'>Empresario</option>
+                                                                            <option value='Comerciante'>Comerciante</option>
                                                                             ";
                                                                             } 
-                                                                         if($datos_cliente->Tipo_Cliente == "Empresario"){ 
+                                                                         if($datos_cliente->Tipo_Cliente == "Comerciante"){ 
                                                                             echo "
-                                                                            <option value='Empresario' style='background-color:green; color:white;'>Empresario</option>
+                                                                            <option value='Comerciante' style='background-color:green; color:white;'>Comerciante</option>
                                                                             <option value='Otro'>Otro</option>
                                                                             <option value='Empleado'>Empleado</option>
                                                                             ";
@@ -415,7 +415,7 @@ $(document).ready(function(){
                                 }
                             });
                         }
-                        if(tipo=="Empresario"){
+                        if(tipo=="Comerciante"){
                             $.ajax({
                                 url:"<?= base_url()?>Clientes/EliminarDatosNegocio",
                                 type:"GET",
@@ -457,7 +457,7 @@ $(document).ready(function(){
                  if(regi[0]['Tipo_Cliente']=="Otro"){
                     window.location.href="<?= base_url()?>Clientes/gestionarCliente";
                  }
-                if(regi[0]['Tipo_Cliente']=="Empresario"){
+                if(regi[0]['Tipo_Cliente']=="Comerciante"){
                     $("#Id_Cliente2").val($('#id_cliente').val());
                     var $n1 = $("#Nombre_Cliente").val();
                     var $n2 = $("#Apellido_Cliente").val();
@@ -517,7 +517,7 @@ $(document).ready(function(){
                         $(elem).next().find('a[data-toggle="tab"]').click();
                         }
                     }
-                    if ($r3 === "Empresario") {
+                    if ($r3 === "Comerciante") {
                         $.ajax({
                             url:"<?= base_url()?>Clientes/EliminarDatosLaborales",
                             type:"GET",
