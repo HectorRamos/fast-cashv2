@@ -78,6 +78,7 @@ class Solicitud_Model extends CI_Model
 	   $estado = 1;
 	   $idCliente = $datos['id_cliente'];
 	   $idLineaPlazo = $datos['tipo_prestamo'];
+	   $destinoCredito = $datos['destino_prestamo'];
 	   $mora = $datos['cobra_mora'];
 	   $idEstadoSolicitud = '1';
 
@@ -228,8 +229,8 @@ if ($tipoC == "Crédito popular")
 			// fin	   	   
 	   }
 	   // Guardando la solicitud
-	   $sql = "INSERT INTO tbl_solicitudes(codigoSolicitud, fechaRecibido, observaciones, estadoSolicitud, cobraMora, tipoCredito, idCliente, idLineaPlazo, idEstadoSolicitud)
-	   		   VALUES('$codigoSolicitud', '$fechaRecibido', '$observaciones', '$estado', '$mora', '$nombreCredito' ,'$idCliente', '$idLineaPlazo', '$idEstadoSolicitud')";
+	   $sql = "INSERT INTO tbl_solicitudes(codigoSolicitud, fechaRecibido, observaciones, estadoSolicitud, cobraMora, tipoCredito, destinoCredito, idCliente, idLineaPlazo, idEstadoSolicitud)
+	   		   VALUES('$codigoSolicitud', '$fechaRecibido', '$observaciones', '$estado', '$mora', '$nombreCredito', $destinoCredito ,'$idCliente', '$idLineaPlazo', '$idEstadoSolicitud')";
 	    if ($this->db->query($sql))
 		{
 			//Buscando el ultimo Id

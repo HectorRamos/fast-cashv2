@@ -631,9 +631,12 @@ function calcularIntereses()
       numeroDePagos = (meses*12);
       tasaMensual= (tasaInteres)/numeroDePagos;
       power = Math.pow((1+tasaMensual), numeroDePagos);
-      cuotaDiaria = (montoDinero * tasaMensual * power)/(power - 1);
-      totalInteresesAPagar = (cuotaDiaria*numeroDePagos)-montoDinero;
+      cuotaDiariaAux = (montoDinero * tasaMensual * power)/(power - 1);
+      totalInteresesAPagar = (cuotaDiariaAux*numeroDePagos)-montoDinero;
       totalIvaAPagar = totalInteresesAPagar * 0.13;
+
+      cuotaDiaria = (montoDinero * tasaMensual * power)/(power - 1) + (totalIvaAPagar/(meses*12));
+
       totalAPagar = parseFloat(totalIvaAPagar) + parseFloat(totalInteresesAPagar) + parseFloat(montoDinero);
   }
 
