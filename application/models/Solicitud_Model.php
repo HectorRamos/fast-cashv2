@@ -4,7 +4,7 @@ class Solicitud_Model extends CI_Model
 {
 	public function obtenerPlazos()
 	{
-		$this->db->order_by("id_plazo", "desc");
+		$this->db->order_by("id_plazo", "asc");
 		$plazos= $this->db->get("tbl_plazos_prestamos");
 		return $plazos;
 	}
