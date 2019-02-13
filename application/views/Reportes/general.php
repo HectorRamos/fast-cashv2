@@ -1,4 +1,4 @@
-<style>
+ <style>
   #tablaImprimir{
     display: none;
   }
@@ -36,8 +36,8 @@
                 <div class="col-md-12 text-center">
                     <form class="form-inline" id="buscrPorFecha" method="post" action="<?= base_url() ?>Reportes/General/2">
                       <div class="margn">
-                        <div class="form-group">
-                          <label for="buscarPor">Buscar por </label>
+                        <div class="input-group">
+                          <span class="input-group-addon" for="buscarPor">Buscar por</span>
                           <select id="buscarP" name="buscarPor" class="select" data-placeholder="Seleccione un tipo de prestamo" data-live-search="true">
                             <option value=""></option>
                             <option value="1">Clientes</option>
@@ -198,6 +198,9 @@
                                     }
                                   ?>
                                 <div id="tablaImprimir">
+                                  <div style="position: absolute; background-size: 100% 100%; filter:alpha(opacity=25); filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0.5); opacity:.25; left:100px; top:220px;">
+                                    <img src="<?= base_url() ?>plantilla/images/fc_logoR.png">
+                                  </div>
                                   <div class="row">
                                     <div class="col-md-12">
                                         <div class="col-md-4 col-md-push-2 pull-left">

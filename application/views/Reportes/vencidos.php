@@ -165,6 +165,9 @@
                                     }
                                   ?>
                                 <div id="tablaImprimir">
+                                  <div style="position: absolute; background-size: 100% 100%; filter:alpha(opacity=25); filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0.5); opacity:.25; left:100px; top:220px;">
+                                    <img src="<?= base_url() ?>plantilla/images/fc_logoR.png">
+                                  </div>
                                   <div class="row">
                                     <div class="col-md-12">
                                         <div class="col-md-4 col-md-push-2 pull-left">
