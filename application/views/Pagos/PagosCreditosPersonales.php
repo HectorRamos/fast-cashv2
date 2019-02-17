@@ -108,6 +108,14 @@
                     </div>                
                   </div>
                 </div>
+                <div class="row">
+                <p><b>Indicaciones: </b>Para utilizar el valor fecha se debe activar antes de seleccionar un credito</p>
+                <label  for="chValorFecha">Activar valor fecha</label>
+                  <input type="checkbox" id="chValorFecha" >
+                </div>
+                <div class="row" id="DivValorFecha" style="display:none;">
+                  <input type="text" class="form-control DateTime" id="inputValorFecha" name="fechaPago" placeholder="Digitar de fecha" data-mask="9999/99/99" required data-parsley-required-message="Por favor, seleccione  una fecha">
+                </div>
                 <br>
                 <div id="alertaSiEnMora" class="alert alert-danger" style="display: none;">
                   <b>AVISO: </b>El crédito de <span id="spanCliente1" style="text-transform: lowercase; font-weight: bold;"></span> esta en mora y los días a pagar son: <label class="label label-default"><span id="spanDiasMora1">00.00</span></label>
@@ -375,7 +383,20 @@
 <script type="text/javascript"> 
   //Ver mas informacion
     var plazoMeses;
+    var output;
 $(document).on('ready', function(){
+
+  $( '#chValorFecha').on( 'click', function() {
+    if( $(this).is(':checked') ){
+        // Hacer algo si el checkbox ha sido seleccionado
+        document.getElementById('DivValorFecha').style.display='block';
+        
+    } else {
+        // Hacer algo si el checkbox ha sido deseleccionado
+        document.getElementById('DivValorFecha').style.display='none';
+
+    }
+});
 
   $('#MasMenos').toggle( 
       function(e){ 
@@ -525,18 +546,23 @@ $(document).on('ready', function(){
               var fechaProximoPago = registro[i]['fechaProximoPago'];
               plazoMeses =registro[i]['plazoMeses'];
               //SACANDO LA FECHA DEL PROXIMO PAGO EN ESTE CASO LA USARIAMOS PARA SABER SI ESTA EN MORA COMPARANDOLA CON LA FECHA ACTUAL... ESE ES EL SIGUIENTE PROCESO
-              var dt = new Date(fechaProximoPago); 
-             
-              //SACANDO LA FECHA ACTUAL.
-              //FECHA ACTUAL SE ALMACENA EN LA VARIABLE output
-              var d1 = new Date();
-              var month = d1.getMonth()+1;
-              var day = d1.getDate();
-              var output = d1.getFullYear() + '-' +
+              var dt = new Date(fechaProximoPago);
+              if( $('#chValorFecha').prop('checked') ) {
+                output = $('#inputValorFecha').val();
+              }
+              else{
+                //alert('NO Seleccionado');
+                //SACANDO LA FECHA ACTUAL.
+                //FECHA ACTUAL SE ALMACENA EN LA VARIABLE output
+                var d1 = new Date();
+                var month = d1.getMonth()+1;
+                var day = d1.getDate();
+                output = d1.getFullYear() + '-' +
                   (month<10 ? '0' : '') + month + '-' +
                   (day<10 ? '0' : '') + day;
+              } 
               //COMPROBANDO SI HAY MORA
-              if(Date.parse(output)>=Date.parse(fechaProximoPago)){
+              if(Date.parse(output)<=Date.parse(fechaProximoPago)){
                       // alert('el credito no esta en mora');
                     //alert('fecha proximo pago'+ fechaP);
                     //Calculando si esta en mora 
@@ -550,11 +576,9 @@ $(document).on('ready', function(){
                 var fechaFin = new Date(output).getTime();
                 var dias = fechaFin - fechaIncicio;
                 var diasMora=Math.round(dias/(1000*60*60*24));
-                
                 $('#diasMora').val(diasMora);
                 $('#spanDiasMora').text(diasMora);
                 $('#spanDiasMora1').text(diasMora);
-                
                 generarTabla($('#idCredito').val());
                 calcularMora();
                 }
@@ -608,13 +632,20 @@ $(document).on('ready', function(){
                   $('#numPagos').val(registro[i]['nPagos']);
                     plazoMeses =registro[i]['plazoMeses'];
                     //sacando fechas
-                    //FECHA ACTUAL SE ALMACENA EN LA VARIABLE output
-                    var d1 = new Date();
-                    var month = d1.getMonth()+1;
-                    var day = d1.getDate();
-                    var output = d1.getFullYear() + '-' +
-                    (month<10 ? '0' : '') + month + '-' +
-                    (day<10 ? '0' : '') + day;
+                    if( $('#chValorFecha').prop('checked') ) {
+                      output = $('#inputValorFecha').val();
+                    }
+                    else{
+                      //alert('NO Seleccionado');
+                      //SACANDO LA FECHA ACTUAL.
+                      //FECHA ACTUAL SE ALMACENA EN LA VARIABLE output
+                      var d1 = new Date();
+                      var month = d1.getMonth()+1;
+                      var day = d1.getDate();
+                      output = d1.getFullYear() + '-' +
+                        (month<10 ? '0' : '') + month + '-' +
+                        (day<10 ? '0' : '') + day;
+                    }
                     //FECHA EN QUE SE TIENE Q EFECTUAR EL PAGO SE ALMACENA EN LA VARIABLE fechaP.
                     var dt = new Date(registro[i]['fechaApertura']); 
                     var dayOfMonth = dt.getMonth();
@@ -626,7 +657,7 @@ $(document).on('ready', function(){
                     (month<10 ? '0' : '') + month + '-' +
                     (day<10 ? '0' : '') + day;
                     //VALIDANDO SI EL CREDITO ESTA EN MORA O NO;
-                    if(Date.parse(output)>=Date.parse(fechaP)){
+                    if(Date.parse(output)<=Date.parse(fechaP)){
                       // alert('el credito no esta en mora');
                     //alert('fecha proximo pago'+ fechaP);
                     //Calculando si esta en mora
@@ -898,7 +929,7 @@ function generarTabla(id){
                       var iva = Interes*0.13;
                       //var Interesp = parseFloat($('#interesPendiente1').val());
                       //var totalInteres = Interesp+Interes;
-                      var abonoCapital = cuota - Interes;
+                      var abonoCapital = cuota - Interes - iva;
                       var capitals = capital;
                       capital = capital- abonoCapital;
                       console.log('CapitalPendiente= '+capital);
@@ -934,7 +965,7 @@ function generarTabla(id){
                     var Interes=(capital*30*tasaI)/(360);
                     console.log("INteres"+Interes);
                     var iva = Interes*0.13;
-                    var abonoCapital = cuota - Interes;
+                    var abonoCapital = cuota - Interes- iva;
                     var capitals = capital;
                     capital = capital- abonoCapital;
                     var HTML="<div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Teorico de pagos</p></div>";

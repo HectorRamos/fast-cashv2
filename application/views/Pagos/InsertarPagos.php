@@ -104,6 +104,14 @@
                     </div>                
                   </div>
                 </div>
+                <div class="row">
+                <p><b>Indicaciones: </b>Para utilizar el valor fecha se debe activar antes de seleccionar un credito</p>
+                <label  for="chValorFecha">Activar valor fecha</label>
+                  <input type="checkbox" id="chValorFecha" >
+                </div>
+                <div class="row" id="DivValorFecha" style="display:none;">
+                  <input type="text" class="form-control DateTime" id="inputValorFecha" name="fechaPago" placeholder="Digitar de fecha" data-mask="9999/99/99" required data-parsley-required-message="Por favor, seleccione  una fecha">
+                </div>
                 <br>
                 <div id="alertaSiEnMora" class="alert alert-danger" style="display: none;">
                   <b>AVISO: </b>El crédito de <span id="spanCliente1" style="text-transform: lowercase; font-weight: bold;"></span> esta en mora y los días a pagar son: <label class="label label-default"><span id="spanDiasMora1">00.00</span></label>
@@ -359,7 +367,22 @@
 <script type="text/javascript"> 
   //Ver mas informacion
     var plazoMeses;
+    var output;
 $(document).on('ready', function(){
+
+  $(document).on('ready', function(){
+
+  $( '#chValorFecha').on( 'click', function() {
+    if( $(this).is(':checked') ){
+        // Hacer algo si el checkbox ha sido seleccionado
+        document.getElementById('DivValorFecha').style.display='block';
+        
+    } else {
+        // Hacer algo si el checkbox ha sido deseleccionado
+        document.getElementById('DivValorFecha').style.display='none';
+
+    }
+});
 
   $('#MasMenos').toggle( 
       function(e){ 
@@ -507,12 +530,20 @@ $(document).on('ready', function(){
               $('#fechaVencimiento').val(registro[i]['fechaVencimiento']);
               plazoMeses =registro[i]['plazoMeses'];
               // alert('fecha de vencimiento'+$('#fechaVencimiento').val());
-              var d = new Date();
-              var month = d.getMonth()+1;
-              var day = d.getDate();
-              var output = d.getFullYear() + '-' +
-              (month<10 ? '0' : '') + month + '-' +
-              (day<10 ? '0' : '') + day;
+              if( $('#chValorFecha').prop('checked') ) {
+                output = $('#inputValorFecha').val();
+              }
+              else{
+                //alert('NO Seleccionado');
+                //SACANDO LA FECHA ACTUAL.
+                //FECHA ACTUAL SE ALMACENA EN LA VARIABLE output
+                var d1 = new Date();
+                var month = d1.getMonth()+1;
+                var day = d1.getDate();
+                output = d1.getFullYear() + '-' +
+                  (month<10 ? '0' : '') + month + '-' +
+                  (day<10 ? '0' : '') + day;
+              } 
               // alert(output);
               if(Date.parse(output)<Date.parse($('#fechaVencimiento').val())){
                 // alert('el credito no esta en mora');
@@ -570,12 +601,20 @@ $(document).on('ready', function(){
                   $('#fechaVencimiento').val(registro[i]['fechaVencimiento']);
                   plazoMeses =registro[i]['plazoMeses'];
                   // alert('fecha de vencimiento'+$('#fechaVencimiento').val());
-                  var d = new Date();
-                  var month = d.getMonth()+1;
-                  var day = d.getDate();
-                  var output = d.getFullYear() + '-' +
-                  (month<10 ? '0' : '') + month + '-' +
-                  (day<10 ? '0' : '') + day;
+                  if( $('#chValorFecha').prop('checked') ) {
+                    output = $('#inputValorFecha').val();
+                  }
+                  else{
+                    //alert('NO Seleccionado');
+                    //SACANDO LA FECHA ACTUAL.
+                    //FECHA ACTUAL SE ALMACENA EN LA VARIABLE output
+                    var d1 = new Date();
+                    var month = d1.getMonth()+1;
+                    var day = d1.getDate();
+                    output = d1.getFullYear() + '-' +
+                      (month<10 ? '0' : '') + month + '-' +
+                      (day<10 ? '0' : '') + day;
+                  } 
                   // alert(output);
                   if(Date.parse(output)<Date.parse($('#fechaVencimiento').val())){
                     // alert('el credito no esta en mora'); 
