@@ -1,5 +1,8 @@
-<style>
+ <style>
   #tablaImprimir{
+    display: none;
+  }
+  #buscarPorCliente, #buscarPorFecha{
     display: none;
   }
 </style>
@@ -28,7 +31,25 @@
                 </div>
               </div>
             </div>
-            <div class="row" style="padding-left: 50px; padding-right: 50px;">
+            <!-- inicio -->
+            <div class="row" style="padding-left: 50px; padding-right: 50px;" id="buscarPor">
+                <div class="col-md-12 text-center">
+                    <form class="form-inline" id="buscrPorFecha" method="post" action="<?= base_url() ?>Reportes/General/2">
+                      <div class="margn">
+                        <div class="input-group">
+                          <span class="input-group-addon" for="buscarPor">Buscar por</span>
+                          <select id="buscarP" name="buscarPor" class="select" data-placeholder="Seleccione un tipo de prestamo" data-live-search="true">
+                            <option value=""></option>
+                            <option value="1">Clientes</option>
+                            <option value="2">Rango de fechas</option>
+                          </select>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+              </div> <!-- fin -->
+            <!-- inico -->
+            <div class="row" style="padding-left: 50px; padding-right: 50px;" id="buscarPorFecha">
                 <div class="col-md-12 text-center">
                     <form class="form-inline" id="buscrPorFecha" method="post" action="<?= base_url() ?>Reportes/General/2">
                       <div class="margn">
@@ -53,7 +74,28 @@
                       </div>
                     </form>
                   </div>
-              </div>
+              </div> <!-- fin -->
+
+              <!-- inico -->
+            <div class="row" style="padding-left: 50px; padding-right: 50px;" id="buscarPorCliente">
+                <div class="col-md-12 text-center">
+                    <form class="form-inline" id="buscrPorFecha" method="post" action="<?= base_url() ?>Reportes/GeneralPorCliente/">
+                      <div class="margn">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="form-group">
+                          <label for="fechaFinal">Nombre </label>
+                          <div class="input-group">
+                            <input type="text" class="form-control" name="nombreCliente" id="nombreCliente" placeholder="Nombre del cliente" required data-parsley-required-message="Por favor, digite un nombre">
+                          </div>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                        <a href="<?= base_url();?>Reportes/General/1" class="btn btn-warning refres"><i class="fa fa-refresh"></i></a>
+                      </div>
+                    </form>
+                  </div>
+              </div> <!-- fin -->
+
             <div class="panel-body">
               <div class="margn">
                 <table class="table">
@@ -156,6 +198,9 @@
                                     }
                                   ?>
                                 <div id="tablaImprimir">
+                                  <div style="position: absolute; background-size: 100% 100%; filter:alpha(opacity=25); filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0.5); opacity:.25; left:100px; top:220px;">
+                                    <img src="<?= base_url() ?>plantilla/images/fc_logoR.png">
+                                  </div>
                                   <div class="row">
                                     <div class="col-md-12">
                                         <div class="col-md-4 col-md-push-2 pull-left">
@@ -251,6 +296,29 @@
 <!-- ============================================================== -->
 
 <script>
+
+$(document).on("ready", main);
+function main()
+{
+  $("#buscarP").on("change", mostrarBusqueda);
+}
+
+function mostrarBusqueda()
+{
+  opcion = $(this).val();
+  switch(opcion) {
+  case "1":
+      $("#buscarPor").slideUp();
+      $('#buscarPorCliente').slideDown();
+    break;
+  case "2":
+      $("#buscarPor").slideUp();
+      $('#buscarPorFecha').slideDown();
+    break;
+  default:
+    alert(nel);
+} 
+}
     function imprimirTabla()
     {
       // $(".ocultarImprimir").hide();

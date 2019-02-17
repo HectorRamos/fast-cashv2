@@ -258,10 +258,13 @@
         var cliente= $('#NombreCliente').text();
         var capitalp=$(this).parents("tr").find("td")[5].innerHTML;
         var abono=$(this).parents("tr").find("td")[4].innerHTML;
-        var totalPago = $(this).parents("tr").find("td")[1].innerHTML
+        var totalPago = $(this).parents("tr").find("td")[1].innerHTML;
         var iva = $(this).parents("tr").find("td")[2].innerHTML;
         var interes = $(this).parents("tr").find("td")[3].innerHTML;
-        var HTML="<img src='<?= base_url()?>plantilla/images/fast_cash.png'  width='100'><div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Comprobante de pago</p></div>"
+
+        var HTML ="<div style='position: relative; '><img src='<?= base_url() ?>plantilla/images/fc_logoR.png' style='position: absolute; background-size: 100% 100%; filter:alpha(opacity=25); filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0.5); opacity:.25; left:100px; top: -10px;'></div>";
+
+         HTML+="<img src='<?= base_url()?>plantilla/images/fast_cash.png'  width='100'><div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Comprobante de pago</p></div>"
         ;
 
         HTML+= '<table  class="table table-bordered">';
