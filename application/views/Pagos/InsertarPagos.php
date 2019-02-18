@@ -70,6 +70,28 @@
               <!-- Formulario del empleado  -->
               <form method="post"  autocomplete="off" id="FrmPagos">
                 <div style="padding-left: 38px; padding-right: 38px; border: 1px solid #D5DBDB; border-radius: 5px;">
+                  <br>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div style="border-left: 2px solid green; margin-right: 10px;">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <label for="chValorFecha">&nbsp;Activar valor fecha: </label>
+                            <div class="checkbox checkbox-success checkbox-inline">
+                              <input type="checkbox" id="chValorFecha" align="right">
+                              <label for="chValorFecha"></label>
+                            </div>
+                            <div class="mar_che_cobrarP" id="DivValorFecha" style="display:none;">
+                              <div class="form-group">
+                                <input type="text" class="form-control DateTime" id="inputValorFecha" name="fechaPago" placeholder="Digitar de fecha" data-mask="9999/99/99" required data-parsley-required-message="Por favor, seleccione una fecha">
+                              </div>
+                            </div> 
+                          </div>
+                        </div>
+                      <p>&nbsp;<b>Indicaciones: </b>Para utilizar el valor fecha se debe activar antes de seleccionar un crédito.</p> 
+                      </div>
+                    </div>
+                  </div>
                   <div class="row">
                   <!--CAMPOS OCULTOS-->
                   <?php 
@@ -98,19 +120,11 @@
                     </div>
                     </div>                
                     <div class="col-sm-6 noneIMG" align="right">
-                      <div style="padding-bottom: 7px; padding-top: 7px;">
+                      <div style="padding-bottom: 7px; margin-top: -45px;">
                         <img src="<?= base_url()?>plantilla/images/tarjeta-de-credito.png" class="img-responsive img-thumbnail" alt="Pago" style="width: 70px;">
                       </div>
                     </div>                
                   </div>
-                </div>
-                <div class="row">
-                <p><b>Indicaciones: </b>Para utilizar el valor fecha se debe activar antes de seleccionar un credito</p>
-                <label  for="chValorFecha">Activar valor fecha</label>
-                  <input type="checkbox" id="chValorFecha" >
-                </div>
-                <div class="row" id="DivValorFecha" style="display:none;">
-                  <input type="text" class="form-control DateTime" id="inputValorFecha" name="fechaPago" placeholder="Digitar de fecha" data-mask="9999/99/99" required data-parsley-required-message="Por favor, seleccione  una fecha">
                 </div>
                 <br>
                 <div id="alertaSiEnMora" class="alert alert-danger" style="display: none;">
@@ -370,9 +384,7 @@
     var output;
 $(document).on('ready', function(){
 
-  $(document).on('ready', function(){
-
-  $( '#chValorFecha').on( 'click', function() {
+  $('#chValorFecha').on( 'click', function() {
     if( $(this).is(':checked') ){
         // Hacer algo si el checkbox ha sido seleccionado
         document.getElementById('DivValorFecha').style.display='block';
@@ -400,10 +412,11 @@ $(document).on('ready', function(){
 
 
   $('#btnPagar').on('click', function(){
+  fechaCheckbox = $("#inputValorFecha").val();
   fechaPago = $("#fechaPago").val();
   totalPago = $("#totalPago").val();
 
-  if (fechaPago != "" && totalPago != "")
+  if (fechaCheckbox != "" && fechaPago != "" && totalPago != "")
   {
   $('#FrmPagos').parsley().on('field:validated', function() {
     var ok = $('.parsley-error').length === 0;
@@ -429,7 +442,9 @@ $(document).on('ready', function(){
                   var cliente = $('select[name="idCredito"] option:selected').text();
                   arregloNombre = cliente.split(" - ");
 
-                  var HTML="<img src='<?= base_url()?>plantilla/images/fast_cash.png'  width='100'><div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Comprobante de pago</p></div>";
+                  var HTML ="<div style='position: relative; '><img src='<?= base_url() ?>plantilla/images/fc_logoR.png' style='position: absolute; background-size: 100% 100%; filter:alpha(opacity=25); filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0.5); opacity:.25; left:100px; top: -10px;'></div>";
+
+                    HTML+="<img src='<?= base_url()?>plantilla/images/fast_cash.png'  width='100'><div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Comprobante de pago</p></div>";
                     HTML+= '<table  class="table table-bordered">';
                       HTML+= '<tr class="tr tr1">';
                         HTML+= '<td><strong>Cliente</strong> </td>';

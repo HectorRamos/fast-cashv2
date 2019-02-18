@@ -71,6 +71,28 @@
               <!-- Formulario del empleado  -->
               <form method="post"  autocomplete="off" id="FrmPagos">
                 <div style="padding-left: 38px; padding-right: 38px; border: 1px solid #D5DBDB; border-radius: 5px;">
+                  <br>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div style="border-left: 2px solid green; margin-right: 10px;">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <label for="chValorFecha">&nbsp;Activar valor fecha: </label>
+                            <div class="checkbox checkbox-success checkbox-inline">
+                              <input type="checkbox" id="chValorFecha" align="right">
+                              <label for="chValorFecha"></label>
+                            </div>
+                            <div class="mar_che_cobrarP" id="DivValorFecha" style="display:none;">
+                              <div class="form-group">
+                                <input type="text" class="form-control DateTime" id="inputValorFecha" name="fechaPago" placeholder="Digitar de fecha" data-mask="9999/99/99" required data-parsley-required-message="Por favor, seleccione una fecha">
+                              </div>
+                            </div> 
+                          </div>
+                        </div>
+                      <p>&nbsp;<b>Indicaciones: </b>Para utilizar el valor fecha se debe activar antes de seleccionar un crédito.</p> 
+                      </div>
+                    </div>
+                  </div>
                   <div class="row">
                   <!--CAMPOS OCULTOS-->
                   <?php 
@@ -102,19 +124,11 @@
                     </div>
                     </div>                
                     <div class="col-sm-6 noneIMG" align="right">
-                      <div style="padding-bottom: 7px; padding-top: 7px;">
+                      <div style="padding-bottom: 7px; margin-top: -45px;">
                         <img src="<?= base_url()?>plantilla/images/tarjeta-de-credito.png" class="img-responsive img-thumbnail" alt="Pago" style="width: 70px;">
                       </div>
                     </div>                
                   </div>
-                </div>
-                <div class="row">
-                <p><b>Indicaciones: </b>Para utilizar el valor fecha se debe activar antes de seleccionar un credito</p>
-                <label  for="chValorFecha">Activar valor fecha</label>
-                  <input type="checkbox" id="chValorFecha" >
-                </div>
-                <div class="row" id="DivValorFecha" style="display:none;">
-                  <input type="text" class="form-control DateTime" id="inputValorFecha" name="fechaPago" placeholder="Digitar de fecha" data-mask="9999/99/99" required data-parsley-required-message="Por favor, seleccione  una fecha">
                 </div>
                 <br>
                 <div id="alertaSiEnMora" class="alert alert-danger" style="display: none;">
@@ -189,15 +203,15 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12" style="font-size: 1.4rem;">
+                                <div class="col-md-8" style="font-size: 1.4rem;">
                                     <input type="hidden" id="fechaProximoPago" name="fechaProximoPago">
                                     <label style="background: #C5E1A5; color: #000;  padding: 5px; border-radius: 5px;">Fecha de vencimiento de la cuota: <span style="font-weight: normal;">&nbsp;<span id="spanfechaProximoPago"></span></span></label>
                                 </div> 
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12" style="font-size: 1.4rem;">
+<!--                             </div>
+                            <div class="row"> -->
+                                <div class="col-md-4" style="font-size: 1.4rem;">
                                     <input type="hidden" id="txtCuota" name="txtCuota">
-                                    <label style="background: #C5E1A5; color: #000;  padding: 5px; border-radius: 5px;">Cuota <span style="font-weight: normal;"> $&nbsp;<span id="spanCuota"></span></span></label>
+                                    <label style="background: #82E0AA; color: #000;  padding: 5px; border-radius: 5px;">Cuota <span style="font-weight: normal;"> $&nbsp;<span id="spanCuota"></span></span></label>
                                 </div> 
                             </div>
                           </div>
@@ -414,10 +428,11 @@ $(document).on('ready', function(){
 
 
   $('#btnPagar').on('click', function(){
+  fechaCheckbox = $("#inputValorFecha").val();
   fechaPago = $("#fechaPago").val();
   totalPago = $("#totalPago").val();
 
-  if (fechaPago != "" && totalPago != "")
+  if (fechaCheckbox != "" && fechaPago != "" && totalPago != "")
   {
   $('#FrmPagos').parsley().on('field:validated', function() {
     var ok = $('.parsley-error').length === 0;
@@ -442,8 +457,9 @@ $(document).on('ready', function(){
 
                   var cliente = $('select[name="idCredito"] option:selected').text();
                   arregloNombre = cliente.split(" - ");
+                  var HTML ="<div style='position: relative; '><img src='<?= base_url() ?>plantilla/images/fc_logoR.png' style='position: absolute; background-size: 100% 100%; filter:alpha(opacity=25); filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0.5); opacity:.25; left:100px; top: -10px;'></div>";
 
-                  var HTML="<img src='<?= base_url()?>plantilla/images/fast_cash.png'  width='100'><div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Comprobante de pago</p></div>";
+                    HTML+="<img src='<?= base_url()?>plantilla/images/fast_cash.png'  width='100'><div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Comprobante de pago</p></div>";
                     HTML+= '<table  class="table table-bordered">';
                       HTML+= '<tr class="tr tr1">';
                         HTML+= '<td><strong>Cliente</strong> </td>';
@@ -911,15 +927,15 @@ function generarTabla(id){
                   //alert(registro[i]['nPagos']);
                   p=$('#numPagos').val();
                   if(p>0){
-                    var HTML="<div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Teorico de pagos</p></div>";
-                    HTML+= '<table  class="table table-bordered">';
-                      HTML+= '<tr class="tr tr1">';
+                    var HTML="<div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Teórico de pagos</p></div>";
+                    HTML+= '<div class="table-responsive"><table  class="table table-bordered">';
+                      HTML+= '<tr>';
                       HTML+= '<td><strong>N Pago</strong> </td>';
                       HTML+= '<td><strong>Saldo Inicial</strong> </td>';
                       HTML+= '<td><strong>Pago programado</strong> </td>';
                       HTML+= '<td><strong>Pago Total</strong> </td>';
                       HTML+= '<td><strong>Abono Capital</strong> </td>';
-                      HTML+= '<td><strong>Interes</strong> </td>';
+                      HTML+= '<td><strong>Interés</strong> </td>';
                       HTML+= '<td><strong>Saldo Final</strong> </td>';
                       HTML+= '</tr>';
                     for(var i=0; i<=p; i++){ 
@@ -934,7 +950,7 @@ function generarTabla(id){
                       capital = capital- abonoCapital;
                       console.log('CapitalPendiente= '+capital);
                       if(i < p){
-                        HTML+= '<tr class="tr tr1">';
+                        HTML+= '<tr>';
                         HTML+= ' <td>'+(i+1)+'</td>';
                         HTML+= '<td> $'+capitals+'</td>';
                         HTML+= '<td> $'+cuota+'</td>';
@@ -945,7 +961,7 @@ function generarTabla(id){
                         HTML+= '</tr>';
                       }
                       else if(i=p){
-                        HTML+= '<tr class="tr tr1" style="background-color:#70BFE8; color:white">';
+                        HTML+= '<tr style="background-color:#82E0AA; color:white">';
                         HTML+= ' <td>'+(parseFloat(i)+1)+'</td>';
                         HTML+= '<td> $'+capitals+'</td>';
                         HTML+= '<td> $'+cuota+'</td>';
@@ -956,7 +972,7 @@ function generarTabla(id){
                         HTML+= '</tr>';
                       }
                     }
-                    HTML+= '</table>';
+                    HTML+= '</table></div>';
                     document.getElementById('DivTablaTeorico').innerHTML = HTML;
                     $('#pagoTeorico').val(capital.toFixed(2));
                   }
@@ -969,14 +985,14 @@ function generarTabla(id){
                     var capitals = capital;
                     capital = capital- abonoCapital;
                     var HTML="<div class='row text-center'><h1>FAST CASH</h1><p> GOCAJAA GROUP, S.A.DE C.V.</p><p>Teorico de pagos</p></div>";
-                    HTML+= '<table  class="table table-bordered">';
+                    HTML+= '<div class="table-responsive"><table  class="table table-bordered">';
                       HTML+= '<tr class="tr tr1">';
                       HTML+= '<td><strong>N Pago</strong> </td>';
                       HTML+= '<td><strong>Saldo Inicial</strong> </td>';
                       HTML+= '<td><strong>Pago programado</strong> </td>';
                       HTML+= '<td><strong>Pago Total</strong> </td>';
                       HTML+= '<td><strong>Abono Capital</strong> </td>';
-                      HTML+= '<td><strong>Interes</strong> </td>';
+                      HTML+= '<td><strong>Interés</strong> </td>';
                       HTML+= '<td><strong>Saldo Final</strong> </td>';
                       HTML+= '</tr>';
                       HTML+= '<tr class="tr tr1" style="background-color:#70BFE8; color:white">';
@@ -988,7 +1004,7 @@ function generarTabla(id){
                         HTML+= '<td> $'+Interes+'</td>';
                         HTML+= '<td> $'+capital+'</td>';
                       HTML+= '</tr>';
-                      HTML+= '</table>';
+                      HTML+= '</table></div>';
                       document.getElementById('DivTablaTeorico').innerHTML = HTML;
                       $('#pagoTeorico').val(capital.toFixed(2));
                   }
