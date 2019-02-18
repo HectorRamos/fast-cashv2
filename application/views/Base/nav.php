@@ -107,14 +107,14 @@
                                     <a href="<?= base_url() ?>Solicitud/CrearSolicitud/2" title="Nuevo" data-toggle="tooltip" class="btn btn-success btn-block btn-lg waves-effect waves-light m-d-5" style="background-color: #006064; border-color: #006064;"><font style="color: #fff;"><i class="fa fa-paste fa-lg"></i> Crédito Personal</font></a>
                                 </div>
                             </div>
-                            <div class="row">
+                           <!--  <div class="row">
                                 <div class="form-group col-md-6">
                                     <a href="<?= base_url() ?>Solicitud/CrearSolicitud/3" title="Nuevo" data-toggle="tooltip" class="btn btn-success btn-block btn-lg waves-effect waves-light m-d-5" style="background-color: #1B4F72; border-color: #1B4F72;"><font style="color: #fff;"><i class="fa fa-list-alt fa-lg"></i> Crédito Falta Nombre</font></a>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <a href="<?= base_url() ?>Solicitud/CrearSolicitud/4" title="Nuevo" data-toggle="tooltip" class="btn btn-success btn-block btn-lg waves-effect waves-light m-d-5" style="background-color: #004D40; border-color: #004D40;"><font style="color: #fff;"><i class="fa fa-newspaper-o fa-lg"></i> Crédito Falta Nombre</font></a>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div  align="center">
@@ -145,14 +145,14 @@
                                     <a href="<?= base_url() ?>Pagos/CreditosPersonales" title="Hacer Pago" data-toggle="tooltip" class="btn btn-success btn-block btn-lg waves-effect waves-light m-d-5" style="background-color: #0E6251 border-color: #0E6251"><font style="color: #fff;"><i class="fa fa-address-card-o fa-lg"></i> Pago crédito personal</font></a>
                                 </div>
                             </div>
-                            <div class="row">
+                           <!--  <div class="row">
                                 <div class="form-group col-md-6">
                                     <a href="<?= base_url() ?>Pagos/3" title="Hacer Pago" data-toggle="tooltip" class="btn btn-success btn-block btn-lg waves-effect waves-light m-d-5" style="background-color: #148F77; border-color: #148F77;"><font style="color: #fff;"><i class="fa fa-newspaper-o fa-lg"></i> Pago crédito Falta Nombre</font></a>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <a href="<?= base_url() ?>Pagos/4" title="Hacer Pago" data-toggle="tooltip" class="btn btn-success btn-block btn-lg waves-effect waves-light m-d-5" style="background-color: #3498DB; border-color: #3498DB;"><font style="color: #fff;"><i class="fa fa-address-book-o fa-lg"></i> Pago crédito Falta Nombre</font></a>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div  align="center">
