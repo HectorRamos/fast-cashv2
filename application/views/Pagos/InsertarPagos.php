@@ -830,7 +830,6 @@ function calculos(){
 }
 
 function calcularMora(){
-
   var capitalPendiente = $('#capitalPendiente1').val();
   //alert(capitalPendiente);
   var totalp = $('#totalPago').val();
@@ -855,7 +854,6 @@ function calcularMora(){
     $('#spanCobroMora').text(mora.toFixed(4));
     $('#diasPagados').val(dias);
     $('#spanDiasPagados').text(dias);
-
   }
   else{
     //alert('No cobramos mora');

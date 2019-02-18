@@ -882,11 +882,21 @@ function calcularMora(){
   var diasMora2= $('#diasMora').val();
   var tasa = $('#tasa').val();
   if(diaspa!=0 && diasMora2!=0 && totalPago != 0){
-    var capitalMora =capitalPendiente - $('#pagoTeorico').val();
-    var tasaI = tasa/100;
-    var mora = (capitalMora * 0.05 * diasMora2)/30;
-    $('#cobroMora').val(mora.toFixed(4));
-    $('#spanCobroMora').text(mora.toFixed(4));
+    if(capitalPendiente >= $('#pagoTeorico').val() ){
+      var capitalMora =capitalPendiente - $('#pagoTeorico').val();
+      var tasaI = tasa/100;
+      var mora = (capitalMora * 0.05 * diasMora2)/30;
+      $('#cobroMora').val(mora.toFixed(4));
+      $('#spanCobroMora').text(mora.toFixed(4));
+    }
+    else{
+      var capitalMora = $('#pagoTeorico').val() - capitalPendiente;
+      var tasaI = tasa/100;
+      var mora = (capitalMora * 0.05 * diasMora2)/30;
+      $('#cobroMora').val(mora.toFixed(4));
+      $('#spanCobroMora').text(mora.toFixed(4));
+    }
+    
   }
   else{
     //alert('No cobramos mora');
