@@ -17,6 +17,7 @@ class Pagos_Model extends CI_Model{
 				'mora'=>$datos['cobroMora'],
 				'fechaPago'=>$datos['fechaPago'],
 				'fechaProximoPago'=>$datos['fechaProximoPago'],
+				'estadoFacturacion'=>$datos['estadoFacturacion'],
 				'estado'=>1,
 				'idCredito'=>$datos['idCredito']
 			 );
@@ -39,17 +40,42 @@ class Pagos_Model extends CI_Model{
 				$id = $datos['idCredito'];
 				if($this->db->query($sql)){
 					//return true;
-					$saldo = $datos['saldo']+$datos['pagoReal'];
+					$saldo = $datos['saldo']+$datos['pagoReal2'];
 						$caja  = array(
 							'detalleProceso' =>'Pago de credito del cliente '.$datos['Cliente'],
 							'fechaProceso'=>$datos['fechaCajaChica'],
-							'entrada'=>$datos['pagoReal'],
+							'entrada'=>$datos['pagoReal2'],
 							'saldo'=>$saldo,
 							'idCajaChica'=>$datos['idCajaChica'],
 							'idTIpoPago'=>1
 							 );
 						if($this->db->insert('tbl_cajageneral_procesos', $caja)){
-							return true;
+
+							if($datos['identificador']==2){
+								$pago = $datos['abonoCapital']+$datos['interes'];
+							$factura = array(
+								'noAfecta'=>$datos['abonoCapital'],
+								'ventasGravadas'=>$datos['interes'],
+								'saldoAnterior'=>$datos['capitalPendiente1'],
+								'saldoActual'=>$datos['capitalPendiente'],
+								'iva'=>0,
+								'pago'=>$pago,
+								'fechaAplicacion'=>$datos['fechaPago'],
+								'estadoFactura'=>1,
+								'id_Credito'=>$datos['idCredito']
+								);
+							if($this->db->insert('tbl_factura', $factura)){
+								return true;
+								//echo "INserto";
+							}
+							else{
+								return false;
+							}
+
+							}
+							else{
+								return true;
+							}
 						}
 						else{
 							return false;
@@ -73,7 +99,6 @@ class Pagos_Model extends CI_Model{
 		$sql = "SELECT count(*) AS nPagos FROM tbl_detallepagos AS p INNER JOIN tbl_creditos as cr on p.idCredito= cr.idCredito INNER JOIN tbl_amortizaciones AS a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes AS s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON s.idCliente = c.Id_Cliente WHERE p.idCredito = $id ORDER BY p.idDetallePago";
 		$result= $this->db->query($sql);
 		return $result;
-
 	}
 }
 ?>
