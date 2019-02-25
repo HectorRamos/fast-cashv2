@@ -67,7 +67,7 @@
                            <label for="">Monto de dinero</label>
                             <input type="text" class="form-control validaDigit" id="monto_dinero" name="monto_dinero" value="<?= $amortizacion->capital?>">
 
-                            <input type="text" class="form-control" id="numero_meses" name="numero_meses" value="<?= $amortizacion->plazoMeses ?>">
+                            <input type="hidden" class="form-control" id="numero_meses" name="numero_meses" value="<?= $amortizacion->plazoMeses ?>">
                             <input type="hidden" class="form-control" id="nombre_credito" name="nombre_credito">
                             <input type="hidden" class="form-control" id="id_solicitud" name="id_solicitud" value="<?= $amortizacion->idSolicitud ?>">
                             <input type="hidden" class="form-control" id="nombre_cliente" name="nombre_cliente" value="<?= $amortizacion->Nombre_Cliente ?>">
