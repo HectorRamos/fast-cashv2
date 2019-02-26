@@ -164,8 +164,14 @@
                                     if(!empty($Pagos)){
                                     foreach ($Pagos->result() as $listPagos) {
                                     $i = $i +1;
+                                    if($listPagos->estadoFacturacion==2){
+                                      $bcolor="#a5d6a7";
+                                    }
+                                    else{
+                                      $bcolor="#e8f5e9";
+                                    }
                                       ?>
-                                      <tr class="tr tr1">
+                                      <tr class="tr tr1" style="background-color:<?= $bcolor?>;">
                                       <td class="td td1" data-label="#"><b><?= $i?></b></td>
                                       <td class="td td1" data-label="Total Pago">$ <?= $listPagos->totalPago?></td>
                                       <td class="td td1" data-label="IVA">$ <?= $listPagos->iva?></td>

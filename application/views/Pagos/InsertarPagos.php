@@ -101,6 +101,9 @@
                   <input type="hidden" name="idCajaChica" value="<?php echo $caja->idCajaChica?>">
                   <input type="hidden" name="fechaCajaChica" value="<?= $caja->fechaCajaChica?>">
                   <input type="hidden" name="cantidadApertura" value="<?= $caja->cantidadApertura?>">
+                  <input type="hidden" id="fechaProximoPago" name="fechaProximoPago">
+                  <input type="hidden" name="identificador" value="1">
+                  <input type="hidden" name="estadoFacturacion" value="1">
                   <!--FIN DE LOS CAMPOS OCULTOS-->
                     <div class="form-group col-sm-6">
                       <div style="margin-top: 7px;">
@@ -360,6 +363,7 @@
                       <div align="right" style="margin-top: 10px;">
                         <span class="margBotones">
                            <a id="btnPagar" class="btn btn-info waves-effect waves-light m-d-5"><i class="fa fa-check fa-lg"></i> Pagar</a>
+
                           <a href="<?= base_url() ?>Creditos" class="btn btn-danger waves-effect waves-light m-d-5"><i class="fa fa-close fa-lg"></i> Cancelar</a>
                         </span>
                       </div>
@@ -374,7 +378,6 @@
     </div>
   </div>
 </div>
-
 <?php
 }
 ?>
