@@ -391,11 +391,12 @@ $(document).on('ready', function(){
     if( $(this).is(':checked') ){
         // Hacer algo si el checkbox ha sido seleccionado
         document.getElementById('DivValorFecha').style.display='block';
-        
+        $("#idCredito").prop('disabled', true);
     } else {
         // Hacer algo si el checkbox ha sido deseleccionado
         document.getElementById('DivValorFecha').style.display='none';
-
+        $("#idCredito").prop('disabled', false);
+        $("#inputValorFecha").val("");
     }
 });
 
@@ -413,13 +414,32 @@ $(document).on('ready', function(){
   );
   //Fin ver mas informacion
 
+$(document).ready(function(){
+  $('#inputValorFecha').change(function(){
+    if ($("#inputValorFecha").val() != "") {
+      $("#idCredito").prop('disabled', false);
+      // alert("FALSE");
+    }
+  });
+});
 
   $('#btnPagar').on('click', function(){
-  fechaCheckbox = $("#inputValorFecha").val();
+
+    if($("#chValorFecha").is(':checked') ){
+      if ($("#inputValorFecha").val() != "") {
+        // alert("ALGO");
+      } else {
+        $(document).ready(function(){
+          $.Notification.autoHideNotify('error', 'top center', 'Aviso!', 'Todos los campos son requeridos.');
+        });
+        return false;
+      }
+    } 
+
   fechaPago = $("#fechaPago").val();
   totalPago = $("#totalPago").val();
 
-  if (fechaCheckbox != "" && fechaPago != "" && totalPago != "")
+  if (fechaPago != "" && totalPago != "")
   {
   $('#FrmPagos').parsley().on('field:validated', function() {
     var ok = $('.parsley-error').length === 0;

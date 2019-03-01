@@ -1448,7 +1448,8 @@ public function ReportePendientesEXCEL()
 		$p = $val;
 		if($p ==1){
 			$datos = $this->Reportes_Model->CreditosMorosos();
-			$data = array('datos' => $datos );
+			$datos2 = $this->Reportes_Model->obtenerCreditosParaMora();
+			$data = array('datos' => $datos, 'datos2'=>$datos2);
 			$this->load->view('Base/header');
 			$this->load->view('Base/nav');
 			$this->load->view('Reportes/viewCreditosMorosos', $data);
@@ -1546,7 +1547,7 @@ public function ReportePendientesEXCEL()
 		$fechaActual = date("Y-m-d");
 		if($tipoCredito =="Crédito popular mixto" || $tipoCredito =="Crédito popular prendario" ||  $tipoCredito =="Crédito popular hipotecario" || $tipoCredito =="Crédito popular"){
 			$fechaComparacion = $creditos->fechaVencimiento;
-			if($fechaActual<$fechaComparacion){
+			if($fechaActual>$fechaComparacion){
 				$html .= "	<tr>";
 		        $html .= "      <td class='text-center'> $creditos->Codigo_Cliente</td>";
 		        $html .= "      <td class='text-center'> $creditos->Nombre_Cliente    $creditos->Apellido_Cliente</td>";
