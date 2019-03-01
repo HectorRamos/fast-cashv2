@@ -78,7 +78,6 @@
                             }
                             mysqli_close($conn);
                             ?>
-                            
                         </ul>
                         <div class="clearfix"></div>
                     </div>

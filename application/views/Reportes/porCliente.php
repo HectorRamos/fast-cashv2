@@ -29,23 +29,26 @@
               </div>
             </div>
               <!-- inico -->
-            <div class="row" style="padding-left: 50px; padding-right: 50px;" id="buscarPorCliente">
-                <div class="col-md-12 text-center">
-                    <form class="form-inline" id="buscrPorFecha" method="post" action="<?= base_url() ?>Reportes/GeneralPorCliente/">
-                        <a href="<?= base_url();?>Reportes/General/1" class="btn btn-warning refres"><i class="fa fa-refresh"></i>Volver</a>
-                      </div>
-                    </form>
-                  </div>
-              </div> <!-- fin -->
+              <div class="row" style="padding-left: 50px; padding-right: 50px;" id="buscarPorCliente">
+                  <div class="col-md-12 text-center">
+                      <form class="form-inline" id="buscrPorFecha" method="post" action="<?= base_url() ?>Reportes/GeneralPorCliente/">
+                         <a href="<?= base_url();?>Reportes/General/1" class="btn btn-warning refres"><i class="fa fa-refresh"></i>Volver</a>
+                      </form>
+                    </div>
+            </div> <!-- fin -->
 
             <div class="panel-body">
               <div class="margn">
                 <table class="table">
                   <div class="pull-left"></div>
                   <div class="pull-right">
+                  <?php 
+                    if (sizeof($datos->result()) != 0){
+                  ?>
                     <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ReporteGeneralClientePDF/<?= $cliente ?>" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a> 
                     <a title='Aprobar Solicitud'  href="<?= base_url() ?>Reportes/ReporteGeneralClienteEXCEL//<?= $cliente ?>" target="_blank" type='button' class='btn btn-success block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Excel </a>
                     <a title="Imprimir Solicitud" type="button" onclick="imprimirTabla()" class="btn btn-info block waves-effect waves-light m-b-5" data-toggle="tooltip" data-dismiss="modal"><i class="fa fa-print  fa-lg"></i> Imprimir</a>
+                    <?php } ?>
                   </div>
                </table>
                 <div class="row">
