@@ -72,6 +72,14 @@ class Reportes_Model extends CI_Model
 		
 	}
 
+	public function InforedFaltantes($inicio, $fin)
+	{
+		
+		$sql = "SELECT c.Codigo_Cliente, c.Nombre_Cliente, c.Apellido_Cliente, c.Tipo_Cliente, c.DUI_Cliente, c.NIT_Cliente,c.Fecha_Nacimiento_Cliente, c.Genero_Cliente, a.capital, a.ivaInteresCapital, a.plazoMeses,a.pagoCuota, a.cantidadCuota , cr.idCredito,cr.codigoCredito,cr.estadoCredito, cr.tipoCredito, cr.totalAbonado, cr.montoTotal, cr.fechaApertura, cr.fechaVencimiento, s.destinoCredito FROM tbl_creditos as cr INNER JOIN tbl_amortizaciones as a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes as s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON(s.idCliente = c.Id_Cliente) WHERE cr.fechaApertura BETWEEN '$inicio' AND '$fin' AND cr.totalAbonado='0' GROUP BY cr.idCredito ORDER BY cr.idCredito DESC ";
+		$datos = $this->db->query($sql);
+		return $datos;
+	}
+
 
 	public function Calificacion(){
 		$sql= "SELECT dp.*, dp.fechaProximoPago, c.idCredito, c.codigoCredito, c.tipoCredito,c.totalAbonado, c.fechaVencimiento,a.capital, c.fechaApertura, cl.Codigo_Cliente, cl.Nombre_Cliente, cl.Apellido_Cliente FROM tbl_detallepagos as dp INNER JOIN tbl_creditos as c ON(dp.idCredito = c.idCredito) INNER JOIN tbl_amortizaciones as a ON(c.idAmortizacion = a.idAmortizacion) INNER JOIN tbl_solicitudes as s ON(a.idSolicitud = s.idSolicitud) INNER JOIN tbl_clientes as cl ON(s.idCliente = cl.Id_Cliente) WHERE dp.idDetallePago IN (SELECT MAX(idDetallePago) FROM tbl_detallepagos) GROUP BY dp.idCredito";

@@ -71,7 +71,7 @@
                 <table class="table">
                   <div class="pull-left"></div>
                   <div class="pull-right">
-                    <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ReporteMorososPDF/<?php echo $parametro?>?fechaInicial=<?php echo $fechaInicial;?>&&fechaFinal=<?php echo $fechaFinal;?>" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a> 
+                    <!-- <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ReporteMorososPDF/<?php echo $parametro?>?fechaInicial=<?php echo $fechaInicial;?>&&fechaFinal=<?php echo $fechaFinal;?>" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a>  -->
                     <a title='Aprobar Solicitud'  href="<?= base_url() ?>Reportes/ReporteMorososEXCEL/<?php echo $parametro?>?fechaInicial=<?php echo $fechaInicial;?>&&fechaFinal=<?php echo $fechaFinal;?>" target="_blank" type='button' class='btn btn-success block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Excel </a>
                     <a title="Imprimir Solicitud" type="button" onclick="imprimirTabla()" class="btn btn-info block waves-effect waves-light m-b-5" data-toggle="tooltip" data-dismiss="modal"><i class="fa fa-print  fa-lg"></i> Imprimir</a>
                   </div>

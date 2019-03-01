@@ -1717,7 +1717,8 @@ public function ReportePendientesEXCEL()
 		// Inicio reporte infored
 		
 	$creditos = $this->Reportes_Model->ReporteInfored($inicio, $fin)->result();
-    if(count($creditos) > 0){
+	$creditosAdicionales = $this->Reportes_Model->InforedFaltantes($inicio, $fin)->result();
+    if(count($creditos) > 0 || count($creditosAdicionales) > 0){
         //Cargamos la librería de excel.
         $this->load->library('excel');
         $this->excel->setActiveSheetIndex(0);
@@ -2058,7 +2059,238 @@ public function ReportePendientesEXCEL()
                   break;
               }
 	       	$this->excel->getActiveSheet()->setCellValue("AD{$contador}", $eCredito);
-    	}	
+    	}	// Fin del foreach
+
+    	$contador = $contador;
+    	foreach($creditosAdicionales as $fila)
+        {
+           	//Incrementamos una fila más, para ir a la siguiente.
+           	$contador++;
+           	//Informacion de las filas de la consulta.
+
+			$this->excel->getActiveSheet()->setCellValue("A{$contador}", date('Y') );
+			$this->excel->getActiveSheet()->setCellValue("B{$contador}", $mes);
+	       	$this->excel->getActiveSheet()->setCellValue("C{$contador}", $fila->Nombre_Cliente." ".$fila->Apellido_Cliente);
+			$this->excel->getActiveSheet()->setCellValue("D{$contador}", "1");
+	       	$this->excel->getActiveSheet()->setCellValue("E{$contador}", $fila->codigoCredito); 
+	       	$this->excel->getActiveSheet()->setCellValue("F{$contador}", "");
+	       	$this->excel->getActiveSheet()->setCellValue("G{$contador}", $fila->fechaApertura);
+	       	$this->excel->getActiveSheet()->setCellValue("H{$contador}", $fila->capital);
+	       	$this->excel->getActiveSheet()->setCellValue("I{$contador}", $fila->plazoMeses);
+	       	$this->excel->getActiveSheet()->setCellValue("J{$contador}", $fila->capital);
+	       	$this->excel->getActiveSheet()->setCellValue("K{$contador}", "0.00");
+	       	// Otro proceso
+
+	         if (strlen(stristr($fila->tipoCredito,'popular'))>0) {
+	       		$this->excel->getActiveSheet()->setCellValue("L{$contador}", "9");
+	          }
+	          else
+	          {
+	       		$this->excel->getActiveSheet()->setCellValue("L{$contador}", "5");
+	          }
+
+	       	$this->excel->getActiveSheet()->setCellValue("M{$contador}", "1");
+	       	$this->excel->getActiveSheet()->setCellValue("N{$contador}", "COM");
+
+	       	$hoy = date('Y-m-d');
+	        $vencimiento = date($fila->fechaVencimiento);
+	        $dTrancurridos = $this->dias_transcurridos($vencimiento, $hoy);
+	        if ($vencimiento > $hoy)
+	        {
+	       		$this->excel->getActiveSheet()->setCellValue("O{$contador}", "0");
+	        }
+	        else
+	        {
+	       		$this->excel->getActiveSheet()->setCellValue("O{$contador}", $dTrancurridos);
+	        }
+
+	       	$this->excel->getActiveSheet()->setCellValue("P{$contador}", $fila->fechaApertura);
+	        
+              if (strlen(stristr($fila->tipoCredito,'prendario'))>0) {
+	       		$this->excel->getActiveSheet()->setCellValue("Q{$contador}", "PR");
+              }
+              else
+              {
+                if (strlen(stristr($fila->tipoCredito,'hipotecario'))>0) {
+	       			$this->excel->getActiveSheet()->setCellValue("Q{$contador}", "HI");
+                  }
+                  else{
+	       			$this->excel->getActiveSheet()->setCellValue("Q{$contador}", "FP");
+                  }
+              }
+
+	       	$this->excel->getActiveSheet()->setCellValue("R{$contador}", "02");
+	       	$this->excel->getActiveSheet()->setCellValue("S{$contador}", $fila->pagoCuota);
+	       	$this->excel->getActiveSheet()->setCellValue("T{$contador}", date('d'));
+	       	$this->excel->getActiveSheet()->setCellValue("U{$contador}", $fila->Fecha_Nacimiento_Cliente );
+	       	$this->excel->getActiveSheet()->setCellValue("V{$contador}", $fila->DUI_Cliente);
+	       	$this->excel->getActiveSheet()->setCellValue("W{$contador}", $fila->NIT_Cliente);
+	       	$this->excel->getActiveSheet()->setCellValue("X{$contador}", "Pendiente");
+	       	$this->excel->getActiveSheet()->setCellValue("Y{$contador}", $fila->fechaVencimiento);
+	       	$this->excel->getActiveSheet()->setCellValue("Z{$contador}", $fila->cantidadCuota);
+
+	       	$hoy = date('Y-m-d');
+	       	$cadena = "";
+            $vencimiento = date($fila->fechaVencimiento);
+            if ($vencimiento >= $hoy)
+              {
+                $cadena = "A1";
+              }
+            else
+              {
+                $numero =  $this->dias_transcurridos($vencimiento, $hoy);
+                if ($fila->destinoCredito==1)
+                {
+                	
+	                switch ($numero)
+	                {
+	                  case $numero > 0 && $numero <= 7:
+	                      $cadena = "A1";
+	                    break;
+	                  case $numero > 7 && $numero <= 14:
+	                      $cadena = "A2";
+	                    break;
+	                  case $numero > 14 && $numero <= 30:
+	                      $cadena = "B";
+	                    break;
+	                  case $numero > 30 && $numero <= 90:
+	                      $cadena = "C1";
+	                    break;
+	                  case $numero > 90 && $numero <= 120:
+	                      $cadena = "C2";
+	                    break;
+	                  case $numero > 120 && $numero <= 150:
+	                      $cadena = "D1";
+	                    break;
+	                  case $numero > 150 && $numero <= 180:
+	                      $cadena = "D2";
+	                    break;
+	                  case $numero > 180:
+	                      $cadena = "E";
+	                    break;
+	                  
+	                  default:
+	                    # code...
+	                    break;
+	                }
+                }
+                else
+                {
+                	if ($fila->destinoCredito==2)
+	                {
+	                	
+		                switch ($numero)
+		                {
+		                  case $numero > 0 && $numero <= 7:
+		                      $cadena = "A1";
+		                    break;
+		                  case $numero > 7 && $numero <= 30:
+		                      $cadena = "A2";
+		                    break;
+		                  case $numero > 30 && $numero <= 90:
+		                      $cadena = "B";
+		                    break;
+		                  case $numero > 90 && $numero <= 120:
+		                      $cadena = "C1";
+		                    break;
+		                  case $numero > 120 && $numero <= 180:
+		                      $cadena = "C2";
+		                    break;
+		                  case $numero > 180 && $numero <= 270:
+		                      $cadena = "D1";
+		                    break;
+		                  case $numero > 270 && $numero <= 360:
+		                      $cadena = "D2";
+		                    break;
+		                  case $numero > 360:
+		                      $cadena = "E";
+		                    break;
+		                  
+		                  default:
+		                    # code...
+		                    break;
+		                }
+	                }
+	                else
+	                {
+	                	if ($fila->destinoCredito==3)
+		                {
+		                	
+			                switch ($numero)
+			                {
+			                  case $numero > 0 && $numero <= 7:
+			                      $cadena = "A1";
+			                    break;
+			                  case $numero > 7 && $numero <= 30:
+			                      $cadena = "A2";
+			                    break;
+			                  case $numero > 30 && $numero <= 60:
+			                      $cadena = "B";
+			                    break;
+			                  case $numero > 60 && $numero <= 90:
+			                      $cadena = "C1";
+			                    break;
+			                  case $numero > 90 && $numero <= 120:
+			                      $cadena = "C2";
+			                    break;
+			                  case $numero > 120 && $numero <= 150:
+			                      $cadena = "D1";
+			                    break;
+			                  case $numero > 150 && $numero <= 180:
+			                      $cadena = "D2";
+			                    break;
+			                  case $numero > 180:
+			                      $cadena = "E";
+			                    break;
+			                  
+			                  default:
+			                    # code...
+			                    break;
+			                }
+		                }
+	                }
+                }
+              }
+	       	$this->excel->getActiveSheet()->setCellValue("AA{$contador}", $cadena);
+	       	$this->excel->getActiveSheet()->setCellValue("AB{$contador}", "Comerciante");
+
+	       	$sexo ="";
+	       	if ($fila->Genero_Cliente == "Masculino") {
+                $sexo = "M";
+              }
+              else
+              {
+              	if ($fila->Genero_Cliente == "Femenino") {
+	                $sexo = "F";
+              	}
+              	else
+              	{
+	                $sexo = "O";
+              	}
+              }
+	       	$this->excel->getActiveSheet()->setCellValue("AC{$contador}", $sexo);
+
+	       	$eCredito = "";
+	       	switch ($fila->estadoCredito) {
+                case 'Proceso':
+                      $eCredito = "1";
+                  break;
+                case 'Vencido':
+                      $eCredito = "1";
+                  break;
+                case 'Finalizado':
+                      $eCredito = "3";
+                  break;
+                case 'Saneado':
+                      $eCredito = "4 ";
+                  break;
+                
+                default:
+                  
+                  break;
+              }
+	       	$this->excel->getActiveSheet()->setCellValue("AD{$contador}", $eCredito);
+    	}	// Fin del foreach
         //Le ponemos un nombre al archivo que se va a generar.
         $archivo = "reporte_infored.xls";
         header('Content-Type: application/vnd.ms-excel');

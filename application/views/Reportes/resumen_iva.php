@@ -75,7 +75,7 @@
                     if (isset($si) && $si ==true)
                     {
                   ?>
-                      <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ResumenIvaPDF?i=<?= $fi?>&&f=<?= $ff ?>" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a> 
+                      <!-- <a title='Ver en PDF' href="<?= base_url() ?>Reportes/ResumenIvaPDF?i=<?= $fi?>&&f=<?= $ff ?>" target="_blank" type='button' class='btn btn-danger block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Ver en PDF </a>  -->
                       <a title='Aprobar Solicitud'  href="<?= base_url() ?>Reportes/ResumenIvaEXCEL?i=<?= $fi?>&&f=<?= $ff ?>" target="_blank" type='button' class='btn btn-success block waves-effect waves-light m-b-5'><i class='fa fa-file fa-lg'></i> Excel </a>
                       <a title="Imprimir Solicitud" type="button" onclick="imprimirTabla()" class="btn btn-info block waves-effect waves-light m-b-5" data-toggle="tooltip" data-dismiss="modal"><i class="fa fa-print  fa-lg"></i> Imprimir</a>
                   <?php } ?>
