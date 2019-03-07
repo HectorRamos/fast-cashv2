@@ -80,5 +80,12 @@ class Facturas extends CI_Controller
 
 		echo json_encode($datos);
 	}
+
+	public function facturarMes(){
+		$fecha1 = $this->input->get('fecha1');
+		$fecha2 = $this->input->get('fecha2');
+		$datos = $this->Factura_Model->generarFacturasMes($fecha1, $fecha2);
+		echo json_encode($datos);
+	}
 }
 ?>

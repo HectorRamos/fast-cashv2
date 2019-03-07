@@ -26,7 +26,26 @@
                       </div>
                     </div>
                     <div class="panel-body">
-                        <div class="row">
+                    <div id="divFiltros" class="margn" style="margin:15px;">
+
+                      <h3>Elija el tipo de facturacion:</h3>
+                      <!-- FILTROS -->
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="radio radio-success radio-inline">
+                            <input type="radio"  id="rbFiltroCredito" name="rbFiltro" onclick="filtros()">
+                            <label class="custom-control-label" for="rbFiltroCredito">Por credito</label>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="radio radio-success radio-inline">
+                            <input type="radio"  id="rbFiltroMes" onclick="filtros()" name="rbFiltro">
+                            <label class="control-label" for="rbFiltroMes">Facturar por mes</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                        <div class="row" id="divPorCredito" style="display:none;">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                               <div class="margn">
                               <div class="divBuscar">
@@ -199,9 +218,55 @@
                                   <!-- </div> -->
                                 </form>
                               </div>
+
+                                
                             </div>
+
                           </div>
+
                         </div>
+
+                      </div>
+                       <!--FILTROS POR MES-->
+                      <div id="divFiltroMes" style="display:none;">
+                                <form class="form-inline" id="buscrPorFecha" method="post">
+                                  <div class="margn">
+                                  <h4>Seleccione el rango de fechas para realizar la factura</h4>
+                                  <div class="row">
+                                  <div class="form-group col-md-2" align="center">
+                                      <div class="mar_che_cobrar">
+                                          <label for="cobra_mora">Imprimir automaticamente</label><br>
+                                          <div class="checkbox checkbox-success checkbox-inline">
+                                              <input type="checkbox" value="" id="ImprimirAuto" name="">
+                                              <label for="ImprimirAuto">Cobrar</label>
+                                          </div>
+                                      </div>  
+                                    </div>
+                                  </div>
+                                  <br>
+                                    <div class="form-group">
+                                      <label for="fechaInicio">Inicio </label>
+                                      <div class="input-group">
+                                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        <input type="text" class="form-control DateTime" name="fechaInicialMes" id="fechaInicioMes" placeholder="Fecha inicial" required data-parsley-required-message="Por favor, digite fecha de inicio" data-mask="9999/99/99">
+                                      </div>
+                                    </div>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-group">
+                                      <label for="fechaFinal">Final </label>
+                                      <div class="input-group">
+                                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        <input type="text" class="form-control DateTime" name="fechaFinalMes" id="fechaFinalMes" placeholder="Fecha final" required data-parsley-required-message="Por favor, digite fecha final" data-mask="9999/99/99">
+                                      </div>
+                                    </div>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a id="btnFacturaMes" onclick="FacturarMes()" class="btn btn-primary"><i class="fa fa-file-text-o"></i> Farcturar rango de fechas</a>
+                                  </div>
+                                </form>
+                                <br>
+                      </div>
+                      <div id="divMostrarDetalleMes">
+                        
                       </div>
                     </div>
                   </div>
@@ -310,8 +375,8 @@
                   $('#ventasGravadas').val(registro[i]['ventasGravadas']);
                   $('#ventasGravadasSpan').text(registro[i]['ventasGravadas']);
                   var Total = parseFloat(registro[i]['noAfectas'])+parseFloat(registro[i]['ventasGravadas']);
-                  $('#Total').val(Total);
-                  $('#TotalSpan').text(Total);
+                  $('#Total').val(Total.toFixed(4));
+                  $('#TotalSpan').text(Total.toFixed(4));
                 }
               }
             else{
@@ -324,7 +389,6 @@
        })
     });//fin
     //inicio
-
     $('#btnGuardarFactura').on('click', function(){
       // alert('qqqq')
       var fechaAplicacion=$('#fechaAplicacion').val();
@@ -351,8 +415,8 @@
                   //arregloNombre = cliente.split(" - ");
                   var HTML ='<div  style="width:100%; height:368.5px;">'
 
-                  HTML+='<div id="divEncabezado" style="width: 100%; height: 85.04px;  padding: 2px; margin: 1px;"></div>';
-                  HTML+=' <div id="divDetalle" style="width: 100%; height: 226.77px; padding: 5px;">';
+                  HTML+='<div id="divEncabezado" style="width: 100%; height: 150.04px;  padding: 2px; margin: 1px;"></div>';
+                  HTML+=' <div id="divDetalle" style="width: 100%; height: 226.77px; padding: 20px;">';
                   HTML+='<table style="width:100%; font-size:10px;">';
                   HTML+='<tr>';
                   //LINEA DEL NUMERO DE PRESTAMO
@@ -414,4 +478,170 @@
     //document.getElementById('divBuscar').style.display='none';
     $('#idCredito').val(id);
   }
+  function filtros(){
+    // document.getElementById('divCerrar').style.display='block';
+    // $(".divCerrar").css({"display":"block"});
+    if($('#rbFiltroCredito').prop('checked')){
+      document.getElementById('divPorCredito').style.display='block';
+      document.getElementById('divFiltroMes').style.display='none';
+    }
+    else if($('#rbFiltroMes').prop('checked')){
+      document.getElementById('divPorCredito').style.display='none';
+      document.getElementById('divFiltroMes').style.display='block';
+    }
+      //consultarFiltros(4)
+  }
+
+  function FacturarMes(){
+    var Fecha1 = $('#fechaInicioMes').val();
+    var Fecha2 = $('#fechaFinalMes').val();
+    var HTML ="";
+      $.ajax({
+          url:"<?= base_url()?>Facturas/facturarMes",
+          type:"GET",
+          data:{fecha1:Fecha1,fecha2:Fecha2},
+          success:function(respuesta){
+            var registro = eval(respuesta);
+            if (registro.length > 0)
+              {
+                if( $('#ImprimirAuto').is(':checked') ){
+                    // Hacer algo si el checkbox ha sido seleccionado
+                    for (var i =0 ; i<registro.length ; i++){
+                      alert('imprimiendo'+parseFloat(i+1)+' de '+registro.length);
+                      var fecha = new Date();
+                      var FechaAplicacion = fecha.getFullYear()+'-'+fecha.getMonth()+1+'-'+fecha.getDate();
+                      var HTML ='<div  style="width:100%; height:368.5px;">';
+                      HTML+='<div id="divEncabezado" style="width: 100%; height: 85.04px;  padding: 2px; margin: 1px;"></div>';
+                      HTML+=' <div id="divDetalle" style="width: 100%; height: 226.77px; padding: 5px;">';
+                      HTML+='<table style="width:100%; font-size:10px;">';
+                      HTML+='<tr>';
+                      //LINEA DEL NUMERO DE PRESTAMO
+                      HTML+='<td>No. Prestamo : '+registro[i]['codigoCredito']+'</td><td>Monto: '+registro[i]['capital']+'</td><td>Fecha Aplicación: '+FechaAplicacion+'</td>'
+                      HTML+='</tr>'
+                      //LINEA DEL CLIENTE
+                      HTML+='   <tr><td>Nombre del cliente: '+registro[i]['Nombre_Cliente']+' '+registro[i]['Apellido_Cliente']+'</td><td>Fecha de Otorgamiento: '+registro[i]['fechaApertura']+'</td><td>Fecha de Vencimiento: '+registro[i]['fechaVencimiento']+'</td></tr>';
+
+                      HTML+='<tr><td>Cuota: '+registro[i]['pagoCuota']+'</td><td>Fecha Ultimo Pago: '+registro[i]['fechaPago']+'</td></tr>';
+
+                      HTML+=' </table>';
+                      //DIV DETALLE
+                      HTML+='<div style="border:solid; border-width:1px; border-radius:15px; padding:10px;"><table style="width:100%; font-size:10px;">';
+
+                      HTML+='<tr><td>Pago &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td><td>No Afectas</td><td>Ventas Excentas</td> <td>Ventas Gravadas</td></tr>';
+
+                      HTML+='<tr><td>Capital &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td><td> '+registro[i]['noAfectas']+'</td><td></td> <td></td></tr>';
+
+                      HTML+='<tr><td>Interes &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td><td></td><td></td><td>'+registro[i]['ventasGravadas']+'</td> </tr>';
+
+                      HTML+='<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Sumas</td><td>'+registro[i]['noAfectas']+'</td><td>0</td><td>'+registro[i]['ventasGravadas']+'</td></tr>';
+
+                      var Total = parseFloat(registro[i]['noAfectas'])+parseFloat(registro[i]['ventasGravadas']);
+
+                      HTML+='<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Total</td><td></td><td></td><td>'+Total+'</td></tr>';
+                      HTML+='</table></div></div><div id="divFooter" style="width: 100%; height: 56.69px;"></div></div>';
+                      var pantalla=window.open(' ','popimpr');
+                      pantalla.document.write('<link href="<?= base_url() ?>plantilla/css/bootstrap.min.css" rel="stylesheet" />');
+                      pantalla.document.write(HTML);
+                      pantalla.document.close();
+                      pantalla.focus();
+                      pantalla.onload = function() {
+                      pantalla.print();
+                      pantalla.close();};
+                    
+                    }
+                    HTML2='<div class="row"><div class="alert alert-success"><h3>Se facturo correctamente desde  '+Fecha1+'hasta   '+Fecha2+'</h3></div></div>';
+                    document.getElementById('divMostrarDetalleMes').innerHTML=HTML2;
+
+                  }
+                else {
+                  var HTML ="";
+                    // Hacer algo si el checkbox ha sido deseleccionado
+                    for (var i =0 ; i<registro.length ; i++){
+                      
+
+                  HTML +='<br> <div id="divFactura" class="'+i+'">';
+                HTML +='<div style="padding-left: 38px; padding-right: 38px; padding-top: 10px; border: 1px solid #D5DBDB; border-radius: 5px;">';
+                HTML +='<div class="row">';
+                HTML +='<div class="col-md-6"><label for="codigoPrestamo">Código de Prestamo:&nbsp;</label><span id="codigoPrestamoSpan">'+registro[i]['codigoCredito']+'</span> </div><div class="col-md-6"><label for="Monto">Monto:&nbsp;</label><span id="MontoSpan">'+registro[i]['capital']+'</span></div></div>';
+                
+                HTML+='<div class="row"> <div class="col-md-6"><label for="Cliente">Cliente:&nbsp;</label> <span id="ClienteSpan">'+registro[i]['Nombre_Cliente']+' '+registro[i]['Apellido_Cliente']+'</span></div><div class="col-md-6"> <label for="fechaOtorgamiento">Fecha de otorgamiento:&nbsp;</label><span id="fechaOtorgamientoSpan">'+registro[i]['fechaApertura']+'</span></div></div>';
+
+                HTML +='<div class="row"> <div class="col-md-6"><label for="fechaVencimiento">Fecha de Vencimiento:&nbsp;</label><span id="fechaVencimientoSpan">'+registro[i]['fechaVencimiento']+'</span> </div><div class="col-md-6"><label for="Cuota">Cuota:&nbsp;</label><span id="CuotaSpan">'+registro[i]['pagoCuota']+'</span></div></div>';
+
+                HTML+='<div class="row"><div class="col-md-6"><label for="fechaUltimoPago">Fecha de último pago:&nbsp;</label><span id="fechaUltimoPagoSpan">'+registro[i]['fechaPago']+'</span></div><div class="col-md-6"><label for="noAfectas">no Afectas:&nbsp;</label><span id="noAfectasSpan">'+registro[i]['noAfectas']+'</span></div></div>';
+
+                var Total = parseFloat(registro[i]['noAfectas'])+parseFloat(registro[i]['ventasGravadas']);
+                                    
+                HTML+='<div class="row"><div class="col-md-6"><label for="ventasGravadas">Ventas Gravadas:&nbsp;</label><span id="ventasGravadasSpan">'+registro[i]['ventasGravadas']+'</span></div><div class="col-md-6"><div class="form-group"><label for="Total">Total:&nbsp;</label>$<span id="TotalSpan">'+Total.toFixed(4)+'</span></div></div></div></div>';
+
+                HTML+='<div align="center"> <br> <a href="javascript:void(0)" type="button" id="btnVolverAFecha" class="btn btn-default" ><i class="fa fa-chevron-left fa-lg"></i> Volver</a><a onclick="imprimirMes('+i+')" id="btnGuardarFactura" class="btn btn-success">Imprimir</a></div></div>';
+                }
+                document.getElementById('divMostrarDetalleMes').innerHTML=HTML;  
+                }
+              }
+            else{
+              alert('No hay datos');
+            }
+            }
+          });
+  }
+  //sacar los datos para imprimir
+
+function imprimirMes(indice){
+
+//declare an array
+var datos = new Array();
+//alert(indice);
+//var cadena = "'#divFactura div.'+indice+' span'";
+//alert(cadena);
+$('div.'+indice+' span').each(function(){
+    datos[''+$(this).attr('id')+''] = $(this).text();
+    datos.push($(this).text());
+});
+ console.log(datos['ventasGravadasSpan']);
+
+ //imprimiendo
+var fecha = new Date();
+var FechaAplicacion = fecha.getFullYear()+'-'+fecha.getMonth()+1+'-'+fecha.getDate();
+ var HTML ='<div  style="width:100%; height:368.5px;">';
+                  HTML+='<div id="divEncabezado" style="width: 100%; height: 150.04px;  padding: 2px; margin: 1px;"></div>';
+                  HTML+=' <div id="divDetalle" style="width: 100%; height: 226.77px; padding: 20px;">';
+                  HTML+='<table style="width:100%; font-size:10px;">';
+                  HTML+='<tr>';
+                  //LINEA DEL NUMERO DE PRESTAMO
+                  HTML+='<td>No. Prestamo : '+datos['codigoPrestamoSpan']+'</td><td>Monto: '+datos['MontoSpan']+'</td><td>Fecha Aplicación: '+FechaAplicacion+'</td>'
+                  HTML+='</tr>'
+                  //LINEA DEL CLIENTE
+                  HTML+='   <tr><td>Nombre del cliente: '+datos['ClienteSpan']+'</td><td>Fecha de Otorgamiento: '+datos['fechaOtorgamientoSpan']+'</td><td>Fecha de Vencimiento: '+datos['fechaVencimientoSpan']+'</td></tr>';
+
+                  HTML+='<tr><td>Cuota: '+datos['CuotaSpan']+'</td><td>Fecha Ultimo Pago: '+datos['fechaUltimoPagoSpan']+'</td></tr>';
+
+                  HTML+=' </table>';
+                  //DIV DETALLE
+                  HTML+='<div style="border:solid; border-width:1px; border-radius:15px; padding:10px;"><table style="width:100%; font-size:10px;">';
+
+                  HTML+='<tr><td>Pago &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td><td>No Afectas</td><td>Ventas Excentas</td> <td>Ventas Gravadas</td></tr>';
+
+                  HTML+='<tr><td>Capital &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td><td> '+datos['noAfectasSpan']+'</td><td></td> <td></td></tr>';
+
+                  HTML+='<tr><td>Interes &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td><td></td><td></td><td>'+datos['ventasGravadasSpan']+'</td> </tr>';
+
+                  HTML+='<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Sumas</td><td>'+datos['noAfectasSpan']+'</td><td>0</td><td>'+datos['ventasGravadasSpan']+'</td></tr>';
+
+                  HTML+='<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Total</td><td></td><td></td><td>'+datos['TotalSpan']+'</td></tr>';
+                  HTML+='</table></div></div><div id="divFooter" style="width: 100%; height: 56.69px;"></div></div>';
+
+                    var pantalla=window.open(' ','popimpr');
+                    pantalla.document.write('<link href="<?= base_url() ?>plantilla/css/bootstrap.min.css" rel="stylesheet" />');
+                  pantalla.document.write(HTML);
+                  pantalla.document.close();
+                  pantalla.focus();
+                  pantalla.onload = function() {
+                  pantalla.print();
+                  pantalla.close();
+
+                  $('div.'+indice).hide("fast");
+                  };
+  }
 </script>
+                                  

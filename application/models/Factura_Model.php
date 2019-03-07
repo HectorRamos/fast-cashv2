@@ -71,6 +71,47 @@ class Factura_Model extends CI_Model{
 		$resul = $this->db->query($sql);
 		return $resul->result();
 	}
+
+	public function generarFacturasMes($fechaInicio, $fechaFin){
+
+		$sql ="SELECT sum(p.abonoCapital) as noAfectas, sum(p.interes) as ventasGravadas,p.fechaPago, c.Nombre_Cliente, c.Apellido_Cliente, a.capital,a.pagoCuota,cr.idCredito, cr.codigoCredito, cr.fechaApertura, cr.fechaVencimiento,cr.totalAbonado FROM tbl_detallepagos AS p INNER JOIN tbl_creditos as cr on p.idCredito= cr.idCredito INNER JOIN tbl_amortizaciones AS a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes AS s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON s.idCliente = c.Id_Cliente WHERE p.estadoFacturacion = 1 AND p.fechaPago BETWEEN '$fechaInicio' AND '$fechaFin' group by cr.idCredito ";
+		//echo $sql;
+		$resul = $this->db->query($sql);
+		//echo json_encode($resul->result());
+		//$miArreglo=array($resul->result());
+		//var_dump($miArreglo);
+		foreach ($resul->result() as $insertar) {
+			//echo "dentro del for";
+			$pago = $insertar->noAfectas+$insertar->ventasGravadas;
+			$fechaApl = date('Y-m-d');
+			$insert = array(
+			'noAfecta'=>$insertar->noAfectas,
+			'ventasGravadas'=>$insertar->ventasGravadas,
+			'saldoAnterior'=>0,
+			'saldoActual'=>0,
+			'iva'=>0,
+			'pago'=>$pago,
+			'fechaAplicacion'=>$fechaApl,
+			'estadoFactura'=>1,
+			'id_Credito'=>$insertar->idCredito);
+
+			if($this->db->insert('tbl_factura', $insert)){
+				//echo "bine guardado";
+				
+				$idC= $insertar->idCredito;
+				$sql2 = "UPDATE tbl_detallepagos SET estadoFacturacion = 2 WHERE idCredito = $idC AND fechaPago BETWEEN '$fechaInicio' AND '$fechaFin'";
+				//echo $sql2;
+				$bool=$this->db->query($sql2);
+			}
+			else{
+				//return false;
+				//echo "mal guardado";
+			}
+		}
+		return $resul->result();
+
+	}
+
 }
 
 ?>

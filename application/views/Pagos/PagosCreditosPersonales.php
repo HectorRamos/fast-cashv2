@@ -484,8 +484,8 @@ $(document).ready(function(){
                   arregloNombre = cliente.split(" - ");
                   var HTML ='<div  style="width:100%; height:368.5px;">'
 
-                  HTML+='<div id="divEncabezado" style="width: 100%; height: 85.04px;  padding: 2px; margin: 1px;"></div>';
-                  HTML+=' <div id="divDetalle" style="width: 100%; height: 226.77px; padding: 5px;">';
+                  HTML+='<div id="divEncabezado" style="width: 100%; height: 150.04px;  padding: 2px; margin: 1px;"></div>';
+                  HTML+=' <div id="divDetalle" style="width: 100%; height: 226.77px; padding: 20px;">';
                   HTML+='<table style="width:100%; font-size:10px;">';
                   HTML+='<tr>';
                   //LINEA DEL NUMERO DE PRESTAMO
