@@ -22,19 +22,22 @@
                           <div class="col-sm-6">
                             <h3 class="panel-title">Facturar Créditos Populares</h3>
                           </div>
+                          <div class="col-sm-6">
+                            <a href="<?= base_url();?>Facturas/FacturarCreditosPopulares" class="btn btn-warning"><i class="fa fa-refresh"></i></a>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div class="panel-body">
-                    <div id="divFiltros" class="margn" style="margin:15px;">
+                    <div id="divFiltros" class="margn">
 
-                      <h3>Elija el tipo de facturacion:</h3>
+                      <h4>Elija el tipo de facturación:</h4>
                       <!-- FILTROS -->
                       <div class="row">
                         <div class="col-md-6">
                           <div class="radio radio-success radio-inline">
                             <input type="radio"  id="rbFiltroCredito" name="rbFiltro" onclick="filtros()">
-                            <label class="custom-control-label" for="rbFiltroCredito">Por credito</label>
+                            <label class="custom-control-label" for="rbFiltroCredito">Por crédito</label>
                           </div>
                         </div>
                         <div class="col-md-6">
@@ -45,6 +48,7 @@
                         </div>
                       </div>
                     </div>
+                    <br>
                         <div class="row" id="divPorCredito" style="display:none;">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                               <div class="margn">
@@ -55,7 +59,7 @@
                                 <div class="margn">
                                   <div class="row">
                                     <div class="col-md-8">
-                                      <input type="text" class="form-control" name="" id="txtBuscar" placeholder="Buscar por codigo de crédito">
+                                      <input type="text" class="form-control" name="" id="txtBuscar" placeholder="Buscar por código de crédito">
                                     </div>
                                     <div class="col-md-4">
                                       <a class="btn btn-success" id="btnBuscar"><i class="fa fa-search"></i> Buscar</a>
@@ -233,12 +237,12 @@
                                   <div class="margn">
                                   <h4>Seleccione el rango de fechas para realizar la factura</h4>
                                   <div class="row">
-                                  <div class="form-group col-md-2" align="center">
+                                  <div class="form-group col-md-4" align="center">
                                       <div class="mar_che_cobrar">
-                                          <label for="cobra_mora">Imprimir automaticamente</label><br>
+                                          <label for="cobra_mora">Imprimir automáticamente:</label>
                                           <div class="checkbox checkbox-success checkbox-inline">
                                               <input type="checkbox" value="" id="ImprimirAuto" name="">
-                                              <label for="ImprimirAuto">Cobrar</label>
+                                              <label for="ImprimirAuto"></label>
                                           </div>
                                       </div>  
                                     </div>
@@ -306,7 +310,7 @@
                 var HTML="";
                 HTML+='<table class="table">';
                 HTML+='<tr>';
-                HTML+='<th>Codigo Credito</th>';
+                HTML+='<th>Código Crédito</th>';
                 HTML+='<th>Cliente</th>';
                 HTML+='<th>Agregar</th>';
                 HTML+='</tr>';
@@ -317,7 +321,7 @@
                   HTML+='<tr>';
                   HTML+='<td>'+registro[i]['codigoCredito']+'</td>';
                   HTML+='<td>'+registro[i]['Nombre_Cliente']+' '+registro[i]['Apellido_Cliente']+'</td>';
-                  HTML+='<td><a onclick="abrirFecha('+registro[i]['idCredito']+')" class="btn btn-info">facturar</a></td>';
+                  HTML+='<td><a onclick="abrirFecha('+registro[i]['idCredito']+')" class="btn btn-info"><i class="fa fa-file-text-o"></i> Facturar</a></td>';
                   HTML+='</tr>';
                 }
                 HTML+='</tbody>';
@@ -507,7 +511,12 @@
                 if( $('#ImprimirAuto').is(':checked') ){
                     // Hacer algo si el checkbox ha sido seleccionado
                     for (var i =0 ; i<registro.length ; i++){
-                      alert('imprimiendo'+parseFloat(i+1)+' de '+registro.length);
+                      // alert('imprimiendo'+parseFloat(i+1)+' de '+registro.length);
+
+                      $(document).ready(function(){
+                        $.Notification.autoHideNotify('info', 'top center', 'Aviso!', 'Imprimiendo '+parseFloat(i+1)+' de '+registro.length);
+                      });
+
                       var fecha = new Date();
                       var FechaAplicacion = fecha.getFullYear()+'-'+fecha.getMonth()+1+'-'+fecha.getDate();
                       var HTML ='<div  style="width:100%; height:368.5px;">';
@@ -549,7 +558,7 @@
                       pantalla.close();};
                     
                     }
-                    HTML2='<div class="row"><div class="alert alert-success"><h3>Se facturo correctamente desde  '+Fecha1+'hasta   '+Fecha2+'</h3></div></div>';
+                    HTML2='<div class="alert alert-success" align="center"><h4>Se facturo correctamente desde  '+Fecha1+' hasta '+Fecha2+'</h4></div>';
                     document.getElementById('divMostrarDetalleMes').innerHTML=HTML2;
 
                   }
@@ -559,7 +568,7 @@
                     for (var i =0 ; i<registro.length ; i++){
                       
 
-                  HTML +='<br> <div id="divFactura" class="'+i+'">';
+                HTML +='<br> <div id="divFactura" class="'+i+'">';
                 HTML +='<div style="padding-left: 38px; padding-right: 38px; padding-top: 10px; border: 1px solid #D5DBDB; border-radius: 5px;">';
                 HTML +='<div class="row">';
                 HTML +='<div class="col-md-6"><label for="codigoPrestamo">Código de Prestamo:&nbsp;</label><span id="codigoPrestamoSpan">'+registro[i]['codigoCredito']+'</span> </div><div class="col-md-6"><label for="Monto">Monto:&nbsp;</label><span id="MontoSpan">'+registro[i]['capital']+'</span></div></div>';
@@ -574,13 +583,16 @@
                                     
                 HTML+='<div class="row"><div class="col-md-6"><label for="ventasGravadas">Ventas Gravadas:&nbsp;</label><span id="ventasGravadasSpan">'+registro[i]['ventasGravadas']+'</span></div><div class="col-md-6"><div class="form-group"><label for="Total">Total:&nbsp;</label>$<span id="TotalSpan">'+Total.toFixed(4)+'</span></div></div></div></div>';
 
-                HTML+='<div align="center"> <br> <a href="javascript:void(0)" type="button" id="btnVolverAFecha" class="btn btn-default" ><i class="fa fa-chevron-left fa-lg"></i> Volver</a><a onclick="imprimirMes('+i+')" id="btnGuardarFactura" class="btn btn-success">Imprimir</a></div></div>';
+                HTML+='<div align="center"> <br> <a onclick="imprimirMes('+i+')" id="btnGuardarFactura" class="btn btn-success"><i class="fa fa-print fa-lg"></i> Imprimir</a></div></div>';
                 }
                 document.getElementById('divMostrarDetalleMes').innerHTML=HTML;  
                 }
               }
             else{
-              alert('No hay datos');
+              // alert('No hay datos');
+              $(document).ready(function(){
+                $.Notification.autoHideNotify('error', 'top center', 'Aviso!', 'No hay datos.');
+              });
             }
             }
           });

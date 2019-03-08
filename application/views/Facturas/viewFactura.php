@@ -51,7 +51,7 @@
                             <h3 class="panel-title">Registro de Facturas</h3>
                           </div>
                           <div class="col-sm-6">
-                            <a href="<?= base_url();?>Facturas/" class="btn btn-warning refres"><i class="fa fa-refresh"></i></a>
+                            <a href="<?= base_url();?>Facturas/" class="btn btn-warning"><i class="fa fa-refresh"></i></a>
                           </div>
                         </div>
                       </div>

@@ -854,9 +854,9 @@ function calculos(){
           var vuelto;
           var capitalPend = $('#capitalPendiente1').val();
           vuelto = abonoCapital.toFixed(4) - capitalPend;
-          alert('valor de capialPedn'+capitalPend);
+          // alert('valor de capialPedn'+capitalPend);
           var newAbonoCApital = abonoCapital.toFixed(4)-vuelto.toFixed(4);
-          alert('valor de NewAbono'+newAbonoCApital);
+          // alert('valor de NewAbono'+newAbonoCApital);
           var newCapitalPendiente= parseFloat(capitalPend) - parseFloat(newAbonoCApital);
           alert('Nuevo capital pendiente'+newCapitalPendiente)
           var ab= $('#totalAb').val();
