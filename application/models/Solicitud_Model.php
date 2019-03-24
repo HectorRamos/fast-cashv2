@@ -133,7 +133,50 @@ class Solicitud_Model extends CI_Model
 if ($tipoC == "Crédito popular")
 	   {
 	   	$tasaInteres = $datos['tasa_interes']*12;
-	   	$nombreCredito = "Crédito popular";
+	   	if (isset($existeFiador) && isset($existePrenda) &&  !isset($existeHipoteca))
+			{
+				$nombreCredito = "Crédito popular mixto";
+			}
+			else
+			{
+				if (isset($existeFiador) && isset($existeHipoteca) &&  !isset($existePrenda))
+				{
+					$nombreCredito = "Crédito popular mixto";
+				}
+				else
+				{
+					if (isset($existeHipoteca) && isset($existePrenda) &&  !isset($existeFiador))
+						{
+							$nombreCredito = "Crédito popular mixto";
+						}
+					else
+					{
+						if (isset($existeFiador) && !isset($existePrenda) && !isset($existeHipoteca))
+						{
+							$nombreCredito = "Crédito popular";
+						}
+						else
+							{
+								if (!isset($existeFiador) && isset($existePrenda) && !isset($existeHipoteca))
+								{
+									$nombreCredito = "Crédito popular prendario";
+								}
+								else
+									{
+										if (!isset($existeFiador) && !isset($existePrenda) && isset($existeHipoteca))
+										{
+											$nombreCredito = "Crédito popular hipotecario";
+										}
+										else
+										{
+											$nombreCredito = "Crédito popular";
+										}
+									}
+							}
+					}
+				}
+			}
+
 	   }
 	   else
 	   {
@@ -141,19 +184,19 @@ if ($tipoC == "Crédito popular")
 			// definiendo tipo de credito
 			if (isset($existeFiador) && isset($existePrenda) &&  !isset($existeHipoteca))
 			{
-				$nombreCredito = "Crédito mixto";
+				$nombreCredito = "Crédito personal mixto";
 			}
 			else
 			{
 				if (isset($existeFiador) && isset($existeHipoteca) &&  !isset($existePrenda))
 				{
-					$nombreCredito = "Crédito mixto";
+					$nombreCredito = "Crédito personal mixto";
 				}
 				else
 				{
 					if (isset($existeHipoteca) && isset($existePrenda) &&  !isset($existeFiador))
 						{
-							$nombreCredito = "Crédito mixto";
+							$nombreCredito = "Crédito personal mixto";
 						}
 					else
 					{
@@ -165,13 +208,17 @@ if ($tipoC == "Crédito popular")
 							{
 								if (!isset($existeFiador) && isset($existePrenda) && !isset($existeHipoteca))
 								{
-									$nombreCredito = "Crédito prendario";
+									$nombreCredito = "Crédito personal prendario";
 								}
 								else
 									{
 										if (!isset($existeFiador) && !isset($existePrenda) && isset($existeHipoteca))
 										{
-											$nombreCredito = "Crédito hipotecario";
+											$nombreCredito = "Crédito personal hipotecario";
+										}
+										else
+										{
+											$nombreCredito = "Crédito personal";
 										}
 									}
 							}
