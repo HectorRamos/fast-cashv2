@@ -512,7 +512,6 @@ $(document).on('ready', function(){
               alert(output);
               if(Date.parse(output)<Date.parse($('#fechaVencimiento').val())){
                 alert('el credito no esta en mora');
-
               }
               else{
                 alert('el credito esta en mora');
@@ -525,8 +524,6 @@ $(document).on('ready', function(){
                 $('#diasMora').val(diasMora);
                 $('#spanDiasMora').text(diasMora);
                 calcularMora();
-
-
               }
               //alert(plazoMeses);
           }

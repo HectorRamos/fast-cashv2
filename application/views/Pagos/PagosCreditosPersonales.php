@@ -224,11 +224,22 @@
                                 <b style="font-size: 1.5rem; color: #990000;">Capital pendiente: </b>
                               </div>
                             </div>
+                            <div class="row" style="margin-top: 14px;">
+                              <div class="col-md-12" align="right">
+                                <b style="font-size: 1.5rem;">Dias en mora: </b>
+                              </div>
+                            </div>
+                            <div class="row" style="margin-top: 14px;">
+                              <div class="col-md-12" align="right">
+                                <b style="font-size: 1.5rem;">Cobro por mora al 5%: </b>
+                              </div>
+                            </div>
                              <div class="row" style="margin-top: 14px;">
                               <div class="col-md-12" align="right">
                                 <b style="font-size: 1.5rem;">Nuevo interes pendiente: </b>
                               </div>
                             </div>
+
                             <div class="row" style="margin-top: 14px;">
                               <div class="col-md-12" align="right">
                                 <b style="font-size: 1.5rem;">Vuelto: </b>
@@ -281,11 +292,26 @@
                             </div>
                             <div class="row">
                               <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
+                                  <input type="hidden" id="diasMora" name="diasMora" >
+                                  <label class="mostrLabel">Dias en mora:&nbsp;</label>
+                                  <label class="label label-default"style="background: #F0F4C3; color: #000; font-weight: normal;"> <span id="spanDiasMora">00.00</span></label>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
+                                  <input type="hidden" id="cobroMora" name="cobroMora" >
+                                  <label class="mostrLabel">Cobro por mora al 5%:&nbsp;</label>
+                                  <label class="label label-default"style="background: #F0F4C3; color: #000; font-weight: normal;">$ <span id="spanCobroMora">00.00</span></label>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
                                   <input type="hidden" id="interesP" name="interesPendiente" >
                                   <label class="mostrLabel" style="color: #990000;">Nuevo interes pendiente:&nbsp;</label>
                                   <label class="label label-default"style="background: #F2D7D5; color: #000; font-weight: normal;">$ <span id="spanInteresP">00.00</span></label>
                               </div>
                             </div>
+                            
                             <div class="row">
                               <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
                                   <input type="hidden" id="vuelto" name="vuelto" >
@@ -522,26 +548,44 @@ $(document).on('ready', function(){
                     var d = new Date();
                     var month = d.getMonth()+1;
                     var day = d.getDate();
+                    //FECHA ACTUAL SE ALMACENA EN LA VARIABLE output
                     var output = d.getFullYear() + '-' +
                     (month<10 ? '0' : '') + month + '-' +
                     (day<10 ? '0' : '') + day;
-                    alert(output);
-                   var dt = new Date(registro[i]['fechaApertura']); 
-                   alert(dt)
+                   
+
+                    var dt = new Date(registro[i]['fechaApertura']); 
                     var dayOfMonth = dt.getMonth();
                     dt.setMonth(dayOfMonth + 1);
                     var month = dt.getMonth()+1;
                     var day = dt.getDate();
                     var year = dt.getFullYear();
+                    
+                    //FECHA EN QUE SE TIENE Q EFECTUAR EL PAGO SE ALMACENA EN LA VARIABLE fechaP.
                     var fechaP = year + '-' +
                     (month<10 ? '0' : '') + month + '-' +
                     (day<10 ? '0' : '') + day;
-                    alert('fecha'+ fechaP)
-
-
+                    //alert('fecha proximo pago'+ fechaP);
                     //Calculando si esta en mora 
 
-                    
+                    if(Date.parse(output)<Date.parse(fechaP)){
+                      alert('el credito no esta en mora');
+
+                    }
+                    else{
+                      alert('El credito esta en mora');
+                      alert('el credito esta en mora');
+                      //sacando los dias que hay en mora
+
+                      var fechaIncicio = new Date(fechaP).getTime();
+                      var fechaFin = new Date(output).getTime();
+                      var dias = fechaFin - fechaIncicio;
+                      var diasMora=Math.round(dias/(1000*60*60*24));
+                      alert('dias a pagar de mora'+diasMora);
+                      $('#diasMora').val(diasMora);
+                      $('#spanDiasMora').text(diasMora);
+                      calcularMora();
+                    }
 
                     //alert(plazoMeses);
                 }//fin del for
@@ -573,6 +617,7 @@ $(document).on('ready', function(){
         $('#spanDiasPagados').text(diasp);
         //$('#diasPagados').val(00);
         //$('#spanDiasPagados').text(00);
+        calcularMora();
       }
     }
     else{
@@ -598,6 +643,7 @@ function calculos(){
     var totalp = $('#totalPago').val();
     var diaspa = $('#diasPagados').val();
     var tasa = $('#tasa').val();
+    var recargoMora = $('#cobroMora').val();
     var capitalpendiente1 = $('#capitalPendiente1').val();
     if(totalp ==""){
       //alert('campo para pagos vacio')
@@ -652,14 +698,14 @@ function calculos(){
          var tasaI = tasa/100;
          console.log("tasa en decimales"+tasaI);
 
-        var Interes=(capitalPendiente*30*tasaI)/(365);
+        var Interes=(capitalPendiente*diaspa*tasaI)/(365);
         console.log("INteres"+Interes);
         var iva = Interes*0.13;
 
         var Interesp = parseFloat($('#interesPendiente1').val());
         var totalInteres = Interesp+Interes;
 
-        var abonoCapital = totalp-totalInteres-iva;
+        var abonoCapital = totalp-totalInteres-iva- recargoMora;
 
         if(abonoCapital<0){
           abonoCapital=0;
@@ -716,12 +762,43 @@ function calculos(){
     }
 
 }
+function calcularMora(){
+
+  var capitalPendiente = $('#capitalPendiente1').val();
+  //alert(capitalPendiente);
+  var totalp = $('#totalPago').val();
+  var diaspa = $('#diasPagados').val();
+  var diasMora2= $('#diasMora').val();
+  var tasa = $('#tasa').val();
+  if(diaspa!=0 && diasMora2!=0){
+    //alert('cobramos mora');
+    var capitalpendiente1 = $('#capitalPendiente1').val();
+    var tasaI = tasa/100;
+    var dias = diaspa - diasMora2;
+    //alert('los dias de intereses son> '+dias);
+    var Interes=(capitalPendiente*dias*tasaI)/(30*plazoMeses);
+    var iva = Interes*0.13;
+    //alert('INtereses: '+Interes);
+    var sumatoria = parseFloat(capitalPendiente)+parseFloat(Interes)+parseFloat(iva);
+    //alert('sumatoria'+sumatoria);
+    var mora = (sumatoria * 0.05 * diasMora2)/365;
+    var moraTotal = parseFloat(sumatoria)+parseFloat(mora);
+    //alert('recargo por mora: '+mora+' total a pagar '+moraTotal);
+    $('#cobroMora').val(mora.toFixed(4));
+    $('#spanCobroMora').text(mora.toFixed(4));
+    $('#diasPagados').val(dias);
+    $('#spanDiasPagados').text(dias);
+
+  }
+  else{
+    //alert('No cobramos mora');
+  }   
+}
 
     function limpiar(){
         $('#idCredito').val("");
         $('#fechaPago').val("");
         $('#totalPago').val("");
-
         $('#spanDiasPagados').text("00");
         $('#spanIva').text("00.00");
         $('#spanInteres').text("00.00");
