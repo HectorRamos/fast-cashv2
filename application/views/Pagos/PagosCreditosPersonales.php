@@ -130,6 +130,7 @@
                       <div class="row">
                         <div class="col-md-12">
                           <input type="hidden" id="cliente"  name="Cliente">
+                          <input type="hidden" id="fechaProximoPago" name="fechaProximoPago">
                           <span id="spanCliente" style="font-size: 1.8rem;"></span>
                         </div>
                       </div>
@@ -315,12 +316,10 @@
                             <div class="row">
                               <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
                                   <input type="hidden" id="vuelto" name="vuelto" >
-                                  <input type="hidden" id="cobroMora" name="cobroMora" >
                                   <label class="mostrLabel">Vuelto:&nbsp;</label>
                                   <label class="label label-default"style="background: #F0F4C3; color: #000; font-weight: normal;">$ <span id="spanVuelto">00.00</span></label>
                               </div>
                             </div>
-                            
                             <div class="row" style="margin-top: 50px;">
                               <div class="col-md-12" style="font-size: 1.8rem; margin-bottom:10px;">
                                   <input type="hidden" id="totalAbonado" name="totalAbonado" >
@@ -498,19 +497,57 @@ $(document).on('ready', function(){
               $('#DivDatosPagos').show('fast/1000');
               $('#spanInteresPendiente').text(registro[i]['i']);
               $('#interesPendiente1').val(registro[i]['i']);
-              var fechaProximoPago = registro[i]['fechaProximoPago']
+              var fechaProximoPago = registro[i]['fechaProximoPago'];
               plazoMeses =registro[i]['plazoMeses'];
- 
+              
+              //SACANDO LA FECHA DEL PROXIMO PAGO EN ESTE CASO LA USARIAMOS PARA SABER SI ESTA EN MORA COMPARANDOLA CON LA FECHA ACTUAL... ESE ES EL SIGUIENTE PROCESO
               var dt = new Date(fechaProximoPago); 
-              alert(dt)
+              alert('fecha en que se tiene q hacer este pago'+fechaProximoPago)
+              //SACANDO LA FECHA ACTUAL.
+
+              //FECHA ACTUAL SE ALMACENA EN LA VARIABLE output
+              var d = new Date();
+              var month = d.getMonth()+1;
+              var day = d.getDate();
+              var output = d.getFullYear() + '-' +
+                  (month<10 ? '0' : '') + month + '-' +
+                  (day<10 ? '0' : '') + day;
+
+              alert('fecha actual'+output); 
+
+              //COMPROBANDO SI HAY MORA
+              if(Date.parse(output)<Date.parse(fechaProximoPago)){
+                      alert('el credito no esta en mora');
+                    //alert('fecha proximo pago'+ fechaP);
+                    //Calculando si esta en mora 
+                    }
+              else{
+                alert('El credito esta en mora');
+                //sacando los dias que hay en mora
+                var fechaIncicio = new Date(fechaProximoPago).getTime();
+                var fechaFin = new Date(output).getTime();
+                var dias = fechaFin - fechaIncicio;
+                var diasMora=Math.round(dias/(1000*60*60*24));
+                alert('dias a pagar de mora'+diasMora);
+                $('#diasMora').val(diasMora);
+                $('#spanDiasMora').text(diasMora);
+                calcularMora();
+                }
+
+
+              //SACANDO LA PROXIMA FECHA DE PAGO
               var dayOfMonth = dt.getMonth();
               dt.setMonth(dayOfMonth + 1);
               var month = dt.getMonth()+1;
               var day = dt.getDate();
               var year = dt.getFullYear();
-              alert('fecha'+ month+ '-'+day+'-'+year)
+              var NewFechaPago = dt.getFullYear() + '-' +
+                  (month<10 ? '0' : '') + month + '-' +
+                  (day<10 ? '0' : '') + day;
+              alert('la fecha en que se tiene q efectuar este pago es: '+fechaProximoPago+' la fecha del proximo pago'+ NewFechaPago);
+              
+              $('#fechaProximoPago').val(NewFechaPago);
               //alert(plazoMeses);
-
           }
         }
         else{
@@ -545,36 +582,37 @@ $(document).on('ready', function(){
                     $('#interesPendiente1').val(registro[i]['interesPendiente']);
                     plazoMeses =registro[i]['plazoMeses'];
                     //sacando fechas
+
+
+                    //FECHA ACTUAL SE ALMACENA EN LA VARIABLE output
                     var d = new Date();
                     var month = d.getMonth()+1;
                     var day = d.getDate();
-                    //FECHA ACTUAL SE ALMACENA EN LA VARIABLE output
                     var output = d.getFullYear() + '-' +
                     (month<10 ? '0' : '') + month + '-' +
                     (day<10 ? '0' : '') + day;
-                   
 
+
+
+                    //FECHA EN QUE SE TIENE Q EFECTUAR EL PAGO SE ALMACENA EN LA VARIABLE fechaP.
                     var dt = new Date(registro[i]['fechaApertura']); 
                     var dayOfMonth = dt.getMonth();
                     dt.setMonth(dayOfMonth + 1);
                     var month = dt.getMonth()+1;
                     var day = dt.getDate();
                     var year = dt.getFullYear();
-                    
-                    //FECHA EN QUE SE TIENE Q EFECTUAR EL PAGO SE ALMACENA EN LA VARIABLE fechaP.
                     var fechaP = year + '-' +
                     (month<10 ? '0' : '') + month + '-' +
                     (day<10 ? '0' : '') + day;
-                    //alert('fecha proximo pago'+ fechaP);
-                    //Calculando si esta en mora 
 
+                    //VALIDANDO SI EL CREDITO ESTA EN MORA O NO;
                     if(Date.parse(output)<Date.parse(fechaP)){
                       alert('el credito no esta en mora');
-
+                    //alert('fecha proximo pago'+ fechaP);
+                    //Calculando si esta en mora 
                     }
                     else{
                       alert('El credito esta en mora');
-                      alert('el credito esta en mora');
                       //sacando los dias que hay en mora
 
                       var fechaIncicio = new Date(fechaP).getTime();
@@ -586,6 +624,19 @@ $(document).on('ready', function(){
                       $('#spanDiasMora').text(diasMora);
                       calcularMora();
                     }
+                    //SACANDO LA FECHA DEL PROXIMO PAGO
+                    var d = new Date(fechaP);
+                    var dayOfMonth = dt.getMonth();
+                    dt.setMonth(dayOfMonth + 1);
+                    var month = dt.getMonth()+1;
+                    var day = d.getDate();
+                    //FECHA ACTUAL SE ALMACENA EN LA VARIABLE output
+                    var NewFechaPago = d.getFullYear() + '-' +
+                    (month<10 ? '0' : '') + month + '-' +
+                    (day<10 ? '0' : '') + day;
+
+                    alert('la fecha de pago es:'+fechaP+'el proximo pago debe realizarse en la siguiente fecha '+NewFechaPago);
+                    $('#fechaProximoPago').val(NewFechaPago);
 
                     //alert(plazoMeses);
                 }//fin del for

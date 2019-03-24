@@ -16,6 +16,7 @@ class Pagos_Model extends CI_Model{
 				'diasPagados'=>$datos['diasPagados'],
 				'mora'=>$datos['cobroMora'],
 				'fechaPago'=>$datos['fechaPago'],
+				'fechaProximoPago'=>$datos['fechaProximoPago'],
 				'estado'=>1,
 				'idCredito'=>$datos['idCredito']
 			 );
