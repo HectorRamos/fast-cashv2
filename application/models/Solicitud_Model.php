@@ -81,12 +81,9 @@ class Solicitud_Model extends CI_Model
 	   $mora = $datos['cobra_mora'];
 	   $idEstadoSolicitud = '1';
 
-	   if ($tipoC == "Crédito popular")
-	   {
-	   	$tasaInteres = $datos['tasa_interes']*12;
-	   }
 	   // Datos Amortizacion
-	   $tasaInteres = $datos['tasa_interes'];
+	   $nombreCredito = "";
+
 	   $capital = $datos['monto_dinero'];
 	   $totalInteres = $datos['intereses_pagar'];
 	   $totalIva = $datos['iva_pagar'];
@@ -133,9 +130,59 @@ class Solicitud_Model extends CI_Model
 			$estadoHipoteca= 1;
 		}
 
+if ($tipoC == "Crédito popular")
+	   {
+	   	$tasaInteres = $datos['tasa_interes']*12;
+	   	$nombreCredito = "Crédito popular";
+	   }
+	   else
+	   {
+	   	    $tasaInteres = $datos['tasa_interes'];
+			// definiendo tipo de credito
+			if (isset($existeFiador) && isset($existePrenda) &&  !isset($existeHipoteca))
+			{
+				$nombreCredito = "Crédito mixto";
+			}
+			else
+			{
+				if (isset($existeFiador) && isset($existeHipoteca) &&  !isset($existePrenda))
+				{
+					$nombreCredito = "Crédito mixto";
+				}
+				else
+				{
+					if (isset($existeHipoteca) && isset($existePrenda) &&  !isset($existeFiador))
+						{
+							$nombreCredito = "Crédito mixto";
+						}
+					else
+					{
+						if (isset($existeFiador) && !isset($existePrenda) && !isset($existeHipoteca))
+						{
+							$nombreCredito = "Crédito personal";
+						}
+						else
+							{
+								if (!isset($existeFiador) && isset($existePrenda) && !isset($existeHipoteca))
+								{
+									$nombreCredito = "Crédito prendario";
+								}
+								else
+									{
+										if (!isset($existeFiador) && !isset($existePrenda) && isset($existeHipoteca))
+										{
+											$nombreCredito = "Crédito hipotecario";
+										}
+									}
+							}
+					}
+				}
+			}
+			// fin	   	   
+	   }
 	   // Guardando la solicitud
 	   $sql = "INSERT INTO tbl_solicitudes(codigoSolicitud, fechaRecibido, observaciones, estadoSolicitud, cobraMora, tipoCredito, idCliente, idLineaPlazo, idEstadoSolicitud)
-	   		   VALUES('$codigoSolicitud', '$fechaRecibido', '$observaciones', '$estado', '$mora', '$tipoC' ,'$idCliente', '$idLineaPlazo', '$idEstadoSolicitud')";
+	   		   VALUES('$codigoSolicitud', '$fechaRecibido', '$observaciones', '$estado', '$mora', '$nombreCredito' ,'$idCliente', '$idLineaPlazo', '$idEstadoSolicitud')";
 	    if ($this->db->query($sql))
 		{
 			//Buscando el ultimo Id
