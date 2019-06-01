@@ -25,7 +25,8 @@ class Reportes_Model extends CI_Model
 		return $datos;
 	}
 	public function CreditosMorosos(){
-		$sql ="SELECT dp.fechaProximoPago, c.idCredito, c.codigoCredito, c.tipoCredito,c.totalAbonado, c.fechaVencimiento,a.capital, cl.Codigo_Cliente, cl.Nombre_Cliente, cl.Apellido_Cliente FROM tbl_detallepagos as dp INNER JOIN tbl_creditos as c ON(dp.idCredito = c.idCredito) INNER JOIN tbl_amortizaciones as a ON(c.idAmortizacion = a.idAmortizacion) INNER JOIN tbl_solicitudes as s ON(a.idSolicitud = s.idSolicitud) INNER JOIN tbl_clientes as cl ON(s.idCliente = cl.Id_Cliente) WHERE dp.idDetallePago IN (SELECT MAX(idDetallePago) FROM tbl_detallepagos) GROUP BY dp.idCredito";
+		//$sql ="SELECT dp.fechaProximoPago, c.idCredito, c.codigoCredito, c.tipoCredito,c.totalAbonado, c.fechaVencimiento,a.capital, cl.Codigo_Cliente, cl.Nombre_Cliente, cl.Apellido_Cliente FROM tbl_detallepagos as dp INNER JOIN tbl_creditos as c ON(dp.idCredito = c.idCredito) INNER JOIN tbl_amortizaciones as a ON(c.idAmortizacion = a.idAmortizacion) INNER JOIN tbl_solicitudes as s ON(a.idSolicitud = s.idSolicitud) INNER JOIN tbl_clientes as cl ON(s.idCliente = cl.Id_Cliente) WHERE dp.idDetallePago IN (SELECT MAX(idDetallePago) FROM tbl_detallepagos) GROUP BY dp.idCredito";
+		$sql = "SELECT dp.fechaProximoPago, c.idCredito, c.codigoCredito, c.tipoCredito,c.totalAbonado, c.fechaVencimiento,a.capital, cl.Codigo_Cliente, cl.Nombre_Cliente, cl.Apellido_Cliente FROM tbl_detallepagos as dp INNER JOIN tbl_creditos as c ON(dp.idCredito = c.idCredito) INNER JOIN tbl_amortizaciones as a ON(c.idAmortizacion = a.idAmortizacion) INNER JOIN tbl_solicitudes as s ON(a.idSolicitud = s.idSolicitud) INNER JOIN tbl_clientes as cl ON(s.idCliente = cl.Id_Cliente) WHERE c.estadoCredito ='Proceso' GROUP BY dp.idCredito";
 		$datos = $this->db->query($sql);
 		return $datos;
 	}
@@ -98,6 +99,11 @@ class Reportes_Model extends CI_Model
 	public function ObtenerCreditosCliente($nombre)
 	{
 		$sql = "SELECT c.Codigo_Cliente, c.Nombre_Cliente, c.Apellido_Cliente,a.capital, a.ivaInteresCapital, cr.idCredito,cr.codigoCredito,cr.estadoCredito, cr.tipoCredito, cr.totalAbonado, cr.interesPendiente, cr.fechaVencimiento FROM tbl_creditos as cr INNER JOIN tbl_amortizaciones as a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes as s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON s.idCliente = c.Id_Cliente WHERE c.Nombre_Cliente LIKE '%$nombre%' ORDER BY cr.idCredito DESC ";
+		$datos = $this->db->query($sql);
+		return $datos;
+	}
+	public function obtenerCreditosParaMora(){
+		$sql = "SELECT c.Codigo_Cliente, c.Codigo_Cliente, c.Nombre_Cliente, c.Apellido_Cliente,a.capital, cr.idCredito,cr.codigoCredito,cr.estadoCredito, cr.tipoCredito, cr.fechaVencimiento, cr.totalAbonado, cr.interesPendiente, cr.fechaApertura FROM tbl_creditos as cr INNER JOIN tbl_amortizaciones as a ON cr.idAmortizacion = a.idAmortizacion INNER JOIN tbl_solicitudes as s ON a.idSolicitud = s.idSolicitud INNER JOIN tbl_clientes as c ON s.idCliente = c.Id_Cliente WHERE totalAbonado=0 AND interesPendiente = 0 ORDER BY cr.idCredito DESC";
 		$datos = $this->db->query($sql);
 		return $datos;
 	}

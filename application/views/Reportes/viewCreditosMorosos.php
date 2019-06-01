@@ -101,10 +101,10 @@
                                     $i = $i +1;
                                     // if($creditos->estadoCredito=="Finalizado"){
                                     $tipoCredito = $creditos->tipoCredito;
-                                    echo $tipoCredito;
+                              
                                     if($tipoCredito =="Crédito popular mixto" || $tipoCredito =="Crédito popular prendario" ||  $tipoCredito =="Crédito popular hipotecario" || $tipoCredito =="Crédito popular"){
                                       $fechaComparacion = $creditos->fechaVencimiento;
-                                      if($fechaActual<$fechaComparacion){
+                                      if($fechaActual>$fechaComparacion){
                                         ?>
                                     <tr class="tr tr1">
                                       <td class="td td1" data-label="#" style="min-width: 10px; width: auto;"><b><?= $i;?></b></td>
@@ -119,8 +119,57 @@
                                     }
                                     }
                                     else if($tipoCredito =="Crédito personal mixto" || $tipoCredito =="Crédito personal prendario" ||  $tipoCredito =="Crédito personal hipotecario" || $tipoCredito =="Crédito personal"){
+
                                       $fechaComparacion = $creditos->fechaProximoPago;
-                                      if($fechaActual<$fechaComparacion){
+                                      if($fechaActual>$fechaComparacion){
+                                        ?>
+                                        <tr class="tr tr1">
+                                          <td class="td td1" data-label="#" style="min-width: 10px; width: auto;"><b><?= $i;?></b></td>
+                                          <td class="td td1" data-label="Código de Cliente"><?= $creditos->Codigo_Cliente?></td>
+                                          <td class="td td1" data-label="Cliente"><?= $creditos->Nombre_Cliente?>  <?=  $creditos->Apellido_Cliente?></td>
+                                          <td class="td td1" data-label="Tipo de Crédito"><?= $creditos->tipoCredito?></td>
+                                          <td class="td td1" data-label="Total a Pagar"><span class="label label-default" style="font-size: 1.2rem; font-family: Arial;">$ <?= $creditos->capital?></span></td>
+                                          <td class="td td1" data-label="Total Abonado"><span class="label label-warning" style="font-size: 1.2rem; font-family: Arial;">$ <?= $creditos->totalAbonado?></span></td>
+                                          <td class="td td1" data-label="Total Abonado"><span class="" style="font-size: 1.2rem; font-family: Arial;">En mora</span></td>
+                                        </tr>
+                                    <?php    
+                                      }
+                                    }
+                                    ?>
+                                    </tr>
+                                  <?php }} ?>
+
+                                  <!--Aqui inicia el otro arreglo-->
+                                  <?php  
+                                    $fechaActual = date("Y-m-d");
+                                    $i = 0;
+                                    if(!empty($datos2)){
+                                    foreach ($datos2->result() as $creditos) {
+                                    $i = $i +1;
+                                    // if($creditos->estadoCredito=="Finalizado"){
+                                    $tipoCredito = $creditos->tipoCredito;
+                                    
+                                    if($tipoCredito =="Crédito popular mixto" || $tipoCredito =="Crédito popular prendario" ||  $tipoCredito =="Crédito popular hipotecario" || $tipoCredito =="Crédito popular"){
+                                      $fechaComparacion = $creditos->fechaVencimiento;
+                                      if($fechaActual>$fechaComparacion){
+                                        ?>
+                                    <tr class="tr tr1">
+                                      <td class="td td1" data-label="#" style="min-width: 10px; width: auto;"><b><?= $i;?></b></td>
+                                      <td class="td td1" data-label="Código de Cliente"><?= $creditos->Codigo_Cliente?></td>
+                                      <td class="td td1" data-label="Cliente"><?= $creditos->Nombre_Cliente?>  <?=  $creditos->Apellido_Cliente?></td>
+                                      <td class="td td1" data-label="Tipo de Crédito"><?= $creditos->tipoCredito?></td>
+                                      <td class="td td1" data-label="Total a Pagar"><span class="label label-default" style="font-size: 1.2rem; font-family: Arial;">$ <?= $creditos->capital?></span></td>
+                                      <td class="td td1" data-label="Total Abonado"><span class="label label-warning" style="font-size: 1.2rem; font-family: Arial;">$ <?= $creditos->totalAbonado?></span></td>
+                                      <td class="td td1" data-label="Total Abonado"><span class="" style="font-size: 1.2rem; font-family: Arial;">En mora</span></td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    }
+                                    else if($tipoCredito =="Crédito personal mixto" || $tipoCredito =="Crédito personal prendario" ||  $tipoCredito =="Crédito personal hipotecario" || $tipoCredito =="Crédito personal"){
+
+                                      $fechaPrueba = date("Y-m-d", strtotime($creditos->fechaApertura."+ 30 days"));
+                                      $fechaComparacion = $fechaPrueba;
+                                      if($fechaActual>$fechaComparacion){
                                         ?>
                                         <tr class="tr tr1">
                                           <td class="td td1" data-label="#" style="min-width: 10px; width: auto;"><b><?= $i;?></b></td>
