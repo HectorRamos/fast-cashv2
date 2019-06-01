@@ -208,7 +208,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-8" style="font-size: 1.4rem;">
-                                    <input type="text" id="fechaProximoPago" name="fechaProximoPago">
+                                    <input type="hidden" id="fechaProximoPago" name="fechaProximoPago">
                                     <label style="background: #C5E1A5; color: #000;  padding: 5px; border-radius: 5px;">Fecha de vencimiento de la cuota: <span style="font-weight: normal;">&nbsp;<span id="spanfechaProximoPago"></span></span></label>
                                 </div> 
 <!--                             </div>
@@ -374,7 +374,7 @@
                       <div align="right" style="margin-top: 10px;">
                         <span class="margBotones">
                            <a id="btnPagar" class="btn btn-info waves-effect waves-light m-d-5"><i class="fa fa-check fa-lg"></i> Pagar</a>
-                           <button type="submit">INserer</button>
+                           <!-- <button type="submit">INserer</button> -->
                           <a href="<?= base_url() ?>Creditos" class="btn btn-danger waves-effect waves-light m-d-5"><i class="fa fa-close fa-lg"></i> Cancelar</a>
                         </span>
 
@@ -409,11 +409,12 @@ $(document).on('ready', function(){
     if( $(this).is(':checked') ){
         // Hacer algo si el checkbox ha sido seleccionado
         document.getElementById('DivValorFecha').style.display='block';
-        
+        $("#idCredito").prop('disabled', true);
     } else {
         // Hacer algo si el checkbox ha sido deseleccionado
         document.getElementById('DivValorFecha').style.display='none';
-
+        $("#idCredito").prop('disabled', false);
+        $("#inputValorFecha").val("");
     }
 });
 
@@ -431,13 +432,32 @@ $(document).on('ready', function(){
   );
   //Fin ver mas informacion
 
+$(document).ready(function(){
+  $('#inputValorFecha').change(function(){
+    if ($("#inputValorFecha").val() != "") {
+      $("#idCredito").prop('disabled', false);
+      // alert("FALSE");
+    }
+  });
+});
 
   $('#btnPagar').on('click', function(){
-  fechaCheckbox = $("#inputValorFecha").val();
+
+    if($("#chValorFecha").is(':checked') ){
+      if ($("#inputValorFecha").val() != "") {
+        // alert("ALGO");
+      } else {
+        $(document).ready(function(){
+          $.Notification.autoHideNotify('error', 'top center', 'Aviso!', 'Todos los campos son requeridos.');
+        });
+        return false;
+      }
+    }
+
   fechaPago = $("#fechaPago").val();
   totalPago = $("#totalPago").val();
 
-  if (fechaCheckbox != "" && fechaPago != "" && totalPago != "")
+  if (fechaPago != "" && totalPago != "")
   {
   $('#FrmPagos').parsley().on('field:validated', function() {
     var ok = $('.parsley-error').length === 0;

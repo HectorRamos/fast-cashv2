@@ -2029,6 +2029,25 @@ body.fixed-left .side-menu.left {
   margin-right: 10px;
   color: #fff;
 }
+.mini-stat-icon1 {
+  font-size: 40px;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  float: left;
+  margin-right: 10px;
+  margin-top: -8px;
+  color: #fff;
+}
+.mini-stat-info1 {
+  padding-top: 3px;
+}
+.mini-stat-info1 span {
+  display: block;
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+}
 .mini-stat-info {
   padding-top: 2px;
 }
